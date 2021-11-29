@@ -58,7 +58,11 @@ SUBSTITUTE  GOODS,  TECHNOLOGY,  SERVICES,  OR  ANY  CLAIMS  BY  THIRD   PARTIES
 /*----------------------------------------------------------------------------
  *     Constants
  *----------------------------------------------------------------------------*/
+#define CLASSB_ITCM_TEST_BUFFER_SIZE        (512U) // Do not modify
+#define CLASSB_DTCM_TEST_BUFFER_SIZE        (512U) // Do not modify
 #define CLASSB_SRAM_TEST_BUFFER_SIZE        (512U) // Do not modify
+#define CLASSB_ITCM_APP_AREA_START          (0x00000000U) // Do not modify
+#define CLASSB_DTCM_APP_AREA_START          (0x20000000U) // Do not modify
 #define CLASSB_SRAM_APP_AREA_START          (0x${CLASSB_SRAM_APP_START}U) // Do not modify
 
 /*----------------------------------------------------------------------------

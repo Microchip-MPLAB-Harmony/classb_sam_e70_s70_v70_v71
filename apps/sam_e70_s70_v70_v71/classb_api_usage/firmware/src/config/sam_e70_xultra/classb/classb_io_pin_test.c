@@ -70,8 +70,6 @@ Notes  : Before testing an output pin, call this function to enable input
 void CLASSB_IO_InputSamplingEnable(CLASSB_PORT_INDEX port, CLASSB_PORT_PIN pin)
 {
     // Enable input sampling
-    //PORT_REGS->GROUP[port].PORT_PINCFG[pin] = PORT_PINCFG_INEN_Msk;
-    // TODO_SMS
     switch(port)
     {
         case PORTA:

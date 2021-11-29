@@ -118,12 +118,6 @@ static void _CLASSB_Clock_RTT_Enable ( void )
     // unused variable error
     while(status & (~RTT_SR_Msk)){};
     
-    // TODO_SMS - determine is sync test is needed
-//    while((RTC_REGS->MODE0.RTC_SYNCBUSY & RTC_MODE0_SYNCBUSY_ENABLE_Msk) == RTC_MODE0_SYNCBUSY_ENABLE_Msk)
-//    {
-//        // Wait for synchronization after Enabling RTC
-//        ;
-//    }
 }
 
 /*============================================================================

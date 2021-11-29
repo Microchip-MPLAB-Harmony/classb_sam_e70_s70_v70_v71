@@ -81,7 +81,6 @@ Notes  : The RTC is reset after successfully performing the test.
 ============================================================================*/
 static void _CLASSB_RTT_Handler(void)
 {
-    // TODO_SMS
     uint32_t status = RTT_REGS->RTT_SR;
 	uint32_t flags = RTT_REGS->RTT_MR;
     
@@ -201,7 +200,7 @@ static void _CLASSB_TC0_CompareInit( void )
 {
     TC_TIMER_STATUS timer_status = 0;
     
-    // TODO_SMS - needs checked -> ID_TC0_CHANNEL0  ( 23)
+
     /* Enable Peripheral Clock */
     PMC_REGS->PMC_PCER0=0x835c00;
     

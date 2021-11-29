@@ -231,13 +231,12 @@ int main ( void )
     
     WDT_Clear();
     __disable_irq();
-    // TODO_SMS - Systick is default DIV2
+    // Note - Systick is default DIV2
     classb_test_status = CLASSB_ClockTest(150000000, 5, 500, true);
     __enable_irq();
     printf("\r\n Result of CPU Clock RST is %s\r\n", test_status_str[classb_test_status]);
         
     //Drive LOW on the pin to be tested.
-    /* TODO_SMS - read of PDSR is affecting output enable */
     LED0_OutputEnable();
     LED0_Clear();
     CLASSB_RST_IOTest(PORTA, PIN5, PORT_PIN_LOW);
@@ -245,7 +244,6 @@ int main ( void )
     printf("\r\n Result of PA5 LOW test is %s\r\n", test_status_str[classb_test_status]);
     
     //Drive HIGH on the pin to be tested.
-    /* TODO_SMS - read of PDSR is affecting output enable */
     LED0_OutputEnable();
     LED0_Set();
     CLASSB_IO_InputSamplingEnable(PORTA, PIN5);
@@ -267,7 +265,6 @@ int main ( void )
             if(USART1_ErrorGet() == USART_ERROR_NONE)
             {
                 USART1_Read(&data, 1);
-                /* TODO_SMS - read of PDSR is affecting output enable */
                 LED0_OutputEnable();
                 LED0_Toggle();
                 if((data == '\n') || (data == '\r'))

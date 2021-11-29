@@ -201,10 +201,10 @@ def instantiateComponent(classBComponent):
     # Read-only symbol for max CPU clock frequency
     classb_CPU_MaxClock = classBComponent.createIntegerSymbol("CLASSB_CPU_MAX_CLOCK", classBReadOnlyParams)
     classb_CPU_MaxClock.setLabel("Maximum CPU clock frequency")
-    classb_CPU_MaxClock.setDefaultValue(120000000)
+    classb_CPU_MaxClock.setDefaultValue(300000000)
     classb_CPU_MaxClock.setReadOnly(True)
-    classb_CPU_MaxClock.setMin(120000000)
-    classb_CPU_MaxClock.setMax(120000000)
+    classb_CPU_MaxClock.setMin(300000000)
+    classb_CPU_MaxClock.setMax(300000000)
     classb_CPU_MaxClock.setDescription("The self-test for CPU clock frequency assumes that the maximum CPU clock frequency is " + str(classb_CPU_MaxClock.getValue()) + "Hz")
     
     # Read-only symbol for expected RTC clock frequency

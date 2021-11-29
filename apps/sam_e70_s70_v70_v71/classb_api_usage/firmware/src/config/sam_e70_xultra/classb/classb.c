@@ -46,24 +46,16 @@
 /*----------------------------------------------------------------------------
  *     Constants
  *----------------------------------------------------------------------------*/
-// TODO_SMS - check requirements for TCM
-#define CLASSB_RESULT_ADDR                  (0x20000000U)
-#define CLASSB_COMPL_RESULT_ADDR            (0x20000004U)
-#define CLASSB_ONGOING_TEST_VAR_ADDR        (0x20000008U)
-#define CLASSB_TEST_IN_PROG_VAR_ADDR        (0x2000000cU)
-#define CLASSB_WDT_TEST_IN_PROG_VAR_ADDR    (0x20000010U)
-#define CLASSB_FLASH_TEST_VAR_ADDR          (0x20000014U)
-#define CLASSB_INTERRUPT_TEST_VAR_ADDR      (0x20000018U)
-#define CLASSB_INTERRUPT_COUNT_VAR_ADDR     (0x2000001cU)
 
-//#define CLASSB_RESULT_ADDR                  (0x20400000U)
-//#define CLASSB_COMPL_RESULT_ADDR            (0x20400004U)
-//#define CLASSB_ONGOING_TEST_VAR_ADDR        (0x20400008U)
-//#define CLASSB_TEST_IN_PROG_VAR_ADDR        (0x2040000cU)
-//#define CLASSB_WDT_TEST_IN_PROG_VAR_ADDR    (0x20400010U)
-//#define CLASSB_FLASH_TEST_VAR_ADDR          (0x20400014U)
-//#define CLASSB_INTERRUPT_TEST_VAR_ADDR      (0x20400018U)
-//#define CLASSB_INTERRUPT_COUNT_VAR_ADDR     (0x2040001cU)
+// SRAM Mapped
+#define CLASSB_RESULT_ADDR                  (0x20400000U)
+#define CLASSB_COMPL_RESULT_ADDR            (0x20400004U)
+#define CLASSB_ONGOING_TEST_VAR_ADDR        (0x20400008U)
+#define CLASSB_TEST_IN_PROG_VAR_ADDR        (0x2040000cU)
+#define CLASSB_WDT_TEST_IN_PROG_VAR_ADDR    (0x20400010U)
+#define CLASSB_FLASH_TEST_VAR_ADDR          (0x20400014U)
+#define CLASSB_INTERRUPT_TEST_VAR_ADDR      (0x20400018U)
+#define CLASSB_INTERRUPT_COUNT_VAR_ADDR     (0x2040001cU)
 
 #define CLASSB_SRAM_STARTUP_TEST_SIZE       (65536U)
 #define CLASSB_ITCM_STARTUP_TEST_SIZE       (19384U)
@@ -100,7 +92,7 @@ uint32_t classb_test_results __attribute__((persistent, address(CLASSB_RESULT_AD
  *     Functions
  *----------------------------------------------------------------------------*/
 
-// TODO_SMS - ***NOTE for DTCM/ITCM -
+/* ***NOTE for DTCM/ITCM - */
 /* DTCM/ITCM must be set to 32kB in fuse bits and the -mitcm option must 
  * be added as an 'Additional Driver Option' in the project properties 
  * xc32-ld section.  */
@@ -286,7 +278,6 @@ static void CLASSB_TestWDT(void)
     /* This persistent flag is checked after reset */
     *wdt_test_in_progress = CLASSB_TEST_STARTED;
 
-    // TODO_SMS -  No local WDT config for always on
     // If WDT is not enabled, enable WDT and wait
     if ((WDT_REGS->WDT_MR & WDT_MR_WDRSTEN_Msk) == 0)
     {
@@ -308,39 +299,6 @@ static void CLASSB_TestWDT(void)
         }
     }
 
-    
-//    /* If WDT ALWAYSON is set, wait till WDT resets the device */
-//    if ((WDT_REGS->WDT_CTRLA & WDT_CTRLA_ALWAYSON_Msk) == WDT_CTRLA_ALWAYSON_Msk)
-//    {
-//        // Infinite loop
-//        while (1)
-//        {
-//            ;
-//        }
-//    }
-//    else
-//    {
-//        // If WDT is not enabled, enable WDT and wait
-//        if ((WDT_REGS->WDT_CTRLA & WDT_CTRLA_ENABLE_Msk) == 0)
-//        {
-//            // Configure timeout
-//            WDT_REGS->WDT_CONFIG = WDT_CONFIG_PER_CYC256;
-//            WDT_REGS->WDT_CTRLA |= WDT_CTRLA_ENABLE_Msk;
-//            // Infinite loop
-//            while (1)
-//            {
-//                ;
-//            }
-//        }
-//        else
-//        {
-//            // Infinite loop
-//            while (1)
-//            {
-//                ;
-//            }
-//        }
-//    }
 }
 
 /*============================================================================
@@ -388,12 +346,9 @@ static CLASSB_INIT_STATUS CLASSB_Init(void)
     else
     {
         /* If it is a software reset and the Class B library has issued it */
-        // TODO_SMS
         rstc_regs_rstc_sr = RSTC_REGS->RSTC_SR;
         if ((*classb_test_in_progress == CLASSB_TEST_STARTED) &&
             ((rstc_regs_rstc_sr & RSTC_SR_RSTTYP_Msk) == RSTC_SR_RSTTYP_SOFT_RST))
-//        if ((*classb_test_in_progress == CLASSB_TEST_STARTED) &&
-//            ((RSTC_REGS->RSTC_RCAUSE & RSTC_RCAUSE_SYST_Msk) == RSTC_RCAUSE_SYST_Msk))
         {
             *classb_test_in_progress = CLASSB_TEST_NOT_STARTED;
             ret_val = CLASSB_SST_DONE;
@@ -408,7 +363,6 @@ static CLASSB_INIT_STATUS CLASSB_Init(void)
             bool result_area_test_ok = false;
             bool ram_buffer_test_ok = false;
             // Test the reserved SRAM
-            // TODO_SMS - DTCM_ADDR fails to hardware fault
             result_area_test_ok = CLASSB_RAMMarchC((uint32_t *)IRAM_ADDR,
                 CLASSB_SRAM_TEST_BUFFER_SIZE, CLASSB_MEM_REGION_SRAM);
             ram_buffer_test_ok = CLASSB_RAMMarchC((uint32_t *)IRAM_ADDR + CLASSB_SRAM_TEST_BUFFER_SIZE,
@@ -455,7 +409,6 @@ static CLASSB_STARTUP_STATUS CLASSB_Startup_Tests(void)
     uint16_t clock_test_rtc_cycles = ((5 * CLASSB_CLOCK_TEST_RATIO_NS_MS) / CLASSB_CLOCK_TEST_RTC_RATIO_NS);
     
     
-    // TODO_SMS - check this setup for timing
     /* Enable WDT */
     if ((WDT_REGS->WDT_MR & WDT_MR_WDRSTEN_Msk) == 0)
     {
@@ -555,7 +508,7 @@ static CLASSB_STARTUP_STATUS CLASSB_Startup_Tests(void)
     *ongoing_sst_id = CLASSB_TEST_CLOCK;
     // Clear WDT before test
     WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
-    // TODO_SMS - Clock test duration has issue
+
     cb_test_status = CLASSB_ClockTest(CLASSB_CLOCK_DEFAULT_CLOCK_FREQ, CLASSB_CLOCK_ERROR_PERCENT, clock_test_rtc_cycles, false);  
     if (cb_test_status == CLASSB_TEST_PASSED)
     {
