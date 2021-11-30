@@ -1,5 +1,5 @@
 /*******************************************************************************
-  Class B Library v2.0.0 Release
+  Class B Library v1.0.0 Release
 
   Company:
     Microchip Technology Inc.
@@ -17,7 +17,7 @@
 *******************************************************************************/
 
 /*******************************************************************************
-Copyright (c) 2020 released Microchip Technology Inc.  All rights reserved.
+Copyright (c) 2021 released Microchip Technology Inc.  All rights reserved.
 
 Microchip licenses to you the right to use, modify, copy and distribute
 Software only when embedded on a Microchip microcontroller or digital signal
@@ -58,13 +58,17 @@ SUBSTITUTE  GOODS,  TECHNOLOGY,  SERVICES,  OR  ANY  CLAIMS  BY  THIRD   PARTIES
 /*----------------------------------------------------------------------------
  *     Constants
  *----------------------------------------------------------------------------*/
-#define CLASSB_ITCM_TEST_BUFFER_SIZE        (512U) // Do not modify
-#define CLASSB_DTCM_TEST_BUFFER_SIZE        (512U) // Do not modify
 #define CLASSB_SRAM_TEST_BUFFER_SIZE        (512U) // Do not modify
-#define CLASSB_ITCM_APP_AREA_START          (0x00000000U) // Do not modify
+#define CLASSB_ITCM_APP_AREA_START          (0x0U) // Do not modify
 #define CLASSB_DTCM_APP_AREA_START          (0x20000000U) // Do not modify
 #define CLASSB_SRAM_APP_AREA_START          (0x20400400U) // Do not modify
         
+ /* This final addresses value will differ according to device variant and TCM selection */
+#define CLASSB_ITCM_FINAL_WORD_ADDRESS      (0x0U)  
+#define CLASSB_DTCM_FINAL_WORD_ADDRESS      (0x20000000U)  
+#define CLASSB_SRAM_FINAL_WORD_ADDRESS      (0x2045fffcU)  
+
+
 
 /*----------------------------------------------------------------------------
  *     Data types
@@ -88,7 +92,6 @@ typedef enum classb_sram_march_algo
     CLASSB_SRAM_MARCH_B       = 2
 } CLASSB_SRAM_MARCH_ALGO;
 
-
 /* Class B library memory region enum
 
   Summary:
@@ -107,7 +110,6 @@ typedef enum classb_mem_region
     CLASSB_MEM_REGION_SRAM      = 2
 } CLASSB_MEM_REGION;
 
-
 /*----------------------------------------------------------------------------
  *     Functions
  *----------------------------------------------------------------------------*/
@@ -122,9 +124,8 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTest(   uint32_t * start_addr,
                                             CLASSB_SRAM_MARCH_ALGO march_algo, 
                                             bool running_context,
                                             CLASSB_MEM_REGION mem_region);
-
 /* RAM march algorithms
- * Optimization is set to zero, else the compiler optimizes these function away.
+ * Optimization is set to zero, else the compiler optimizes these functions away.
  */
 bool __attribute__((optimize("-O0"))) CLASSB_RAMMarchC( uint32_t * start_addr, 
                                                         uint32_t test_size, 

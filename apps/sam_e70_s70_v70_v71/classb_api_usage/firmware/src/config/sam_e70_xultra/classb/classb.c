@@ -1,5 +1,5 @@
 /*******************************************************************************
-  Class B Library v2.0.0 Release
+  Class B Library v1.0.0 Release
 
   Company:
     Microchip Technology Inc.
@@ -16,7 +16,7 @@
 *******************************************************************************/
 
 /*******************************************************************************
-* Copyright (C) 2020 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -46,8 +46,6 @@
 /*----------------------------------------------------------------------------
  *     Constants
  *----------------------------------------------------------------------------*/
-
-// SRAM Mapped
 #define CLASSB_RESULT_ADDR                  (0x20400000U)
 #define CLASSB_COMPL_RESULT_ADDR            (0x20400004U)
 #define CLASSB_ONGOING_TEST_VAR_ADDR        (0x20400008U)
@@ -56,24 +54,23 @@
 #define CLASSB_FLASH_TEST_VAR_ADDR          (0x20400014U)
 #define CLASSB_INTERRUPT_TEST_VAR_ADDR      (0x20400018U)
 #define CLASSB_INTERRUPT_COUNT_VAR_ADDR     (0x2040001cU)
-
-#define CLASSB_SRAM_STARTUP_TEST_SIZE       (65536U)
-#define CLASSB_ITCM_STARTUP_TEST_SIZE       (19384U)
-#define CLASSB_DTCM_STARTUP_TEST_SIZE       (19384U)
+#define CLASSB_ITCM_STARTUP_TEST_SIZE       (0U)
+#define CLASSB_DTCM_STARTUP_TEST_SIZE       (0U)
+#define CLASSB_SRAM_STARTUP_TEST_SIZE       (98048U)
 #define CLASSB_CLOCK_ERROR_PERCENT          (5U)
 #define CLASSB_CLOCK_TEST_RTC_CYCLES        (200U)
 // RTC is clocked from 32768 Hz Crystal. One RTC cycle is 30517 nano sec
 #define CLASSB_CLOCK_TEST_RTC_RATIO_NS      (30517U)
 #define CLASSB_CLOCK_TEST_RATIO_NS_MS       (1000000U)
+
 // Internal RC 12MHz and Div/2 for SysTick
 #define CLASSB_CLOCK_DEFAULT_CLOCK_FREQ     (6000000U)
 #define CLASSB_INVALID_TEST_ID              (0xFFU)
+
 // Master clock setup - default master clock is set to 32k Hz clock   
 #define CLASSB_MASTER_CLOCK_PRESCALE    PMC_MCKR_PRES_CLK_1
 #define CLASSB_MASTER_CLOCK_DIVIDE      PMC_MCKR_MDIV_PCK_DIV2
 #define CLASSB_MASTER_CLOCK_SOURCE      PMC_MCKR_CSS_MAIN_CLK
-
-
 
 /*----------------------------------------------------------------------------
  *     Global Variables
@@ -83,10 +80,6 @@ volatile uint8_t * classb_test_in_progress;
 volatile uint8_t * wdt_test_in_progress;
 volatile uint8_t * interrupt_tests_status;
 volatile uint32_t * interrupt_count;
-
-/* prevent results from being overwritten at reset */
-uint32_t classb_test_results __attribute__((persistent, address(CLASSB_RESULT_ADDR), used));
-
 
 /*----------------------------------------------------------------------------
  *     Functions
@@ -120,6 +113,8 @@ __STATIC_INLINE void __attribute__((optimize("-O1"))) TCM_Enable(void)
     __DSB();
     __ISB();
 }
+
+
 
 /*============================================================================
 static void _CLASSB_MainClockInit ( void )
@@ -425,7 +420,6 @@ static CLASSB_STARTUP_STATUS CLASSB_Startup_Tests(void)
                              (uint32_t)CLASSB_MASTER_CLOCK_DIVIDE, 
                              (uint32_t)CLASSB_MASTER_CLOCK_SOURCE);
     
-    
     *ongoing_sst_id = CLASSB_TEST_CPU;
     // Test processor core registers
     cb_test_status = CLASSB_CPU_RegistersTest(false);
@@ -468,31 +462,23 @@ static CLASSB_STARTUP_STATUS CLASSB_Startup_Tests(void)
         cb_temp_startup_status = CLASSB_STARTUP_TEST_FAILED;
     }
 
-    // SRAM tests
+    // SRAM test
     // Clear WDT before test
     WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
     *ongoing_sst_id = CLASSB_TEST_RAM;
+                
     /* ITCM Region */
-    cb_test_status = CLASSB_SRAM_MarchTestInit(
-            (uint32_t *)CLASSB_ITCM_APP_AREA_START,
-            CLASSB_ITCM_STARTUP_TEST_SIZE, 
-            CLASSB_SRAM_MARCH_C, 
-            false, 
-            CLASSB_MEM_REGION_ITCM);
+    cb_test_status = CLASSB_SRAM_MarchTestInit((uint32_t *)CLASSB_ITCM_APP_AREA_START,
+        CLASSB_ITCM_STARTUP_TEST_SIZE, CLASSB_SRAM_MARCH_C, false, CLASSB_MEM_REGION_ITCM);
+                
     /* DTCM Region */
-    cb_test_status &= CLASSB_SRAM_MarchTestInit(
-            (uint32_t *)CLASSB_DTCM_APP_AREA_START,
-            CLASSB_DTCM_STARTUP_TEST_SIZE, 
-            CLASSB_SRAM_MARCH_C, 
-            false, 
-            CLASSB_MEM_REGION_DTCM);
+    cb_test_status = CLASSB_SRAM_MarchTestInit((uint32_t *)CLASSB_DTCM_APP_AREA_START,
+        CLASSB_DTCM_STARTUP_TEST_SIZE, CLASSB_SRAM_MARCH_C, false, CLASSB_MEM_REGION_DTCM);
+
+                
     /* SRAM Region */
-    cb_test_status &= CLASSB_SRAM_MarchTestInit(
-            (uint32_t *)CLASSB_SRAM_APP_AREA_START,
-            CLASSB_SRAM_STARTUP_TEST_SIZE, 
-            CLASSB_SRAM_MARCH_C, 
-            false, 
-            CLASSB_MEM_REGION_SRAM);
+    cb_test_status = CLASSB_SRAM_MarchTestInit((uint32_t *)CLASSB_SRAM_APP_AREA_START,
+        CLASSB_SRAM_STARTUP_TEST_SIZE, CLASSB_SRAM_MARCH_C, false, CLASSB_MEM_REGION_SRAM);
     
     if (cb_test_status == CLASSB_TEST_PASSED)
     {
@@ -503,12 +489,10 @@ static CLASSB_STARTUP_STATUS CLASSB_Startup_Tests(void)
        cb_temp_startup_status = CLASSB_STARTUP_TEST_FAILED;
     }
 
-   
     // Clock Test
     *ongoing_sst_id = CLASSB_TEST_CLOCK;
     // Clear WDT before test
     WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
-
     cb_test_status = CLASSB_ClockTest(CLASSB_CLOCK_DEFAULT_CLOCK_FREQ, CLASSB_CLOCK_ERROR_PERCENT, clock_test_rtc_cycles, false);  
     if (cb_test_status == CLASSB_TEST_PASSED)
     {

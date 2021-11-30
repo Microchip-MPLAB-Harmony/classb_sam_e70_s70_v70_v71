@@ -4,7 +4,7 @@
 
 
 project: classb_api_usage
-creation_date: 2021-11-16T08:33:13.891-07:00[America/Phoenix]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
+creation_date: 2021-11-30T10:36:03.562-07:00[America/Phoenix]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
 operating_system: Windows 10
 mhc_mode: Standalone            # [IDE|Standalone|Headless]
 mhc_version: v3.8.2
@@ -13,6 +13,7 @@ plugin_version: NA        # if MPLAB X plugin only
 compiler: xc32
 
 modules:
+    - {name: "classb_sam_e70_s70_v70_v71", version: "unknown"}
     - {name: "csp", version: "v3.10.0"}
     - {name: "core", version: "v3.10.0"}
     - {name: "dev_packs", version: "v3.10.0"}

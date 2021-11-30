@@ -46,9 +46,10 @@
 /*----------------------------------------------------------------------------
  *     Constants
  *----------------------------------------------------------------------------*/
-#define CLASSB_SRAM_FINAL_WORD_ADDRESS      (0x${CLASSB_SRAM_LASTWORD_ADDR}U)
-#define CLASSB_SRAM_BUFF_START_ADDRESS      (0x20000200U)
-#define CLASSB_SRAM_TEMP_STACK_ADDRESS      (0x20000100U)
+
+
+#define CLASSB_SRAM_BUFF_START_ADDRESS      (0x20400200U)
+#define CLASSB_SRAM_TEMP_STACK_ADDRESS      (0x20400100U)
 #define CLASSB_SRAM_ALL_32BITS_HIGH         (0xFFFFFFFFU)
 
 /*----------------------------------------------------------------------------
@@ -61,8 +62,12 @@ extern uint32_t _stack;
 /*----------------------------------------------------------------------------
  *     Functions
  *----------------------------------------------------------------------------*/
+
+
 extern void _CLASSB_UpdateTestResult(CLASSB_TEST_TYPE test_type,
     CLASSB_TEST_ID test_id, CLASSB_TEST_STATUS value);
+
+
 
 /*============================================================================
 static uint32_t _CLASSB_GetStackPointer(void)
@@ -114,10 +119,12 @@ static void _CLASSB_MemCopy(uint32_t* dest, uint32_t* src, uint32_t size_in_byte
 }
 
 /*============================================================================
-bool CLASSB_RAMMarchC(uint32_t * start_addr, uint32_t test_size_bytes)
+bool CLASSB_RAMMarchC(  uint32_t * start_addr, 
+                        uint32_t test_size_bytes,
+                        CLASSB_MEM_REGION mem_region )
 ------------------------------------------------------------------------------
 Purpose: Runs March C algorithm on the given SRAM area
-Input  : Start address and size
+Input  : Start address, size and memory region
 Output : Success or failure
 Notes  : This function is used by SRAM tests. It performs the following,
         // March C
@@ -130,15 +137,36 @@ Notes  : This function is used by SRAM tests. It performs the following,
         // High to low, read one write zero
         // High to low, read zero
 ============================================================================*/
-bool CLASSB_RAMMarchC(uint32_t * start_addr, uint32_t test_size_bytes)
+bool CLASSB_RAMMarchC(  uint32_t * start_addr, 
+                        uint32_t test_size_bytes,
+                        CLASSB_MEM_REGION mem_region )
 {
     bool sram_march_c_result = true;
     int32_t i = 0;
     uint32_t sram_read_val = 0;
     uint32_t test_size_words = (test_size_bytes / 4);
+    uint32_t test_buffer_size = 0;
+
+    /* memory region switch */
+    switch(mem_region)
+    {
+        case CLASSB_MEM_REGION_ITCM:
+            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
+            break;
+        case CLASSB_MEM_REGION_DTCM:
+            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
+            break;
+        
+        case CLASSB_MEM_REGION_SRAM:
+            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
+            break;            
+        default:
+            sram_march_c_result = false;
+            break;           
+    }
 
     // Test size is limited to CLASSB_SRAM_TEST_BUFFER_SIZE
-    if (test_size_bytes > CLASSB_SRAM_TEST_BUFFER_SIZE)
+    if (test_size_bytes > test_buffer_size)
     {
         sram_march_c_result = false;
     }
@@ -247,10 +275,12 @@ bool CLASSB_RAMMarchC(uint32_t * start_addr, uint32_t test_size_bytes)
 }
 
 /*============================================================================
-bool CLASSB_RAMMarchCMinus(uint32_t * start_addr, uint32_t test_size_bytes)
+bool CLASSB_RAMMarchCMinus( uint32_t * start_addr, 
+                            uint32_t test_size_bytes,
+                            CLASSB_MEM_REGION mem_region )
 ------------------------------------------------------------------------------
 Purpose: Runs March C algorithm on the given SRAM area
-Input  : Start address and size
+Input  : Start address, size and memory region
 Output : Success or failure
 Notes  : This function is used by SRAM tests. It performs the following,
         // March C minus
@@ -262,15 +292,36 @@ Notes  : This function is used by SRAM tests. It performs the following,
         // High to low, read one write zero
         // High to low, read zero
 ============================================================================*/
-bool CLASSB_RAMMarchCMinus(uint32_t * start_addr, uint32_t test_size_bytes)
+bool CLASSB_RAMMarchCMinus( uint32_t * start_addr, 
+                            uint32_t test_size_bytes,
+                            CLASSB_MEM_REGION mem_region )
 {
     bool sram_march_c_result = true;
     int32_t i = 0;
     uint32_t sram_read_val = 0;
     uint32_t test_size_words = (test_size_bytes / 4);
+    uint32_t test_buffer_size = 0;
+
+    /* memory region switch */
+    switch(mem_region)
+    {       
+        case CLASSB_MEM_REGION_ITCM:
+            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
+            break;               
+        case CLASSB_MEM_REGION_DTCM:
+            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
+            break;
+        case CLASSB_MEM_REGION_SRAM:
+            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
+            break;
+        
+        default:
+            sram_march_c_result = false;
+            break;           
+    }
 
     // Test size is limited to CLASSB_SRAM_TEST_BUFFER_SIZE
-    if (test_size_bytes > CLASSB_SRAM_TEST_BUFFER_SIZE)
+    if (test_size_bytes > test_buffer_size)
     {
         sram_march_c_result = false;
     }
@@ -366,10 +417,12 @@ bool CLASSB_RAMMarchCMinus(uint32_t * start_addr, uint32_t test_size_bytes)
 }
 
 /*============================================================================
-bool CLASSB_RAMMarchB(uint32_t * start_addr, uint32_t test_size_bytes)
+bool CLASSB_RAMMarchB(  uint32_t * start_addr, 
+                        uint32_t test_size_bytes,
+                        CLASSB_MEM_REGION mem_region)
 ------------------------------------------------------------------------------
 Purpose: Runs March C algorithm on the given SRAM area
-Input  : Start address and size
+Input  : Start address, size and memory region
 Output : Success or failure
 Notes  : This function is used by SRAM tests. It performs the following,
         // March B
@@ -381,15 +434,35 @@ Notes  : This function is used by SRAM tests. It performs the following,
         // High to low, read one write zero, write one write zero
         // High to low, read zero write one, write zero
 ============================================================================*/
-bool CLASSB_RAMMarchB(uint32_t * start_addr, uint32_t test_size_bytes)
+bool CLASSB_RAMMarchB(  uint32_t * start_addr, 
+                        uint32_t test_size_bytes,
+                        CLASSB_MEM_REGION mem_region )
 {
     bool sram_march_c_result = true;
     int32_t i = 0;
     uint32_t sram_read_val = 0;
     uint32_t test_size_words = (test_size_bytes / 4);
+    uint32_t test_buffer_size = 0;
+
+    /* memory region switch */
+    switch(mem_region)
+    {        
+        case CLASSB_MEM_REGION_ITCM:
+            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
+              break;        
+        case CLASSB_MEM_REGION_DTCM:
+            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
+            break;        
+        case CLASSB_MEM_REGION_SRAM:
+            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
+            break;        
+        default:
+            sram_march_c_result = false;
+            break;           
+    }
 
     // Test size is limited to CLASSB_SRAM_TEST_BUFFER_SIZE
-    if (test_size_bytes > CLASSB_SRAM_TEST_BUFFER_SIZE)
+    if (test_size_bytes > test_buffer_size)
     {
         sram_march_c_result = false;
     }
@@ -508,20 +581,25 @@ bool CLASSB_RAMMarchB(uint32_t * start_addr, uint32_t test_size_bytes)
 }
 
 /*============================================================================
-CLASSB_TEST_STATUS CLASSB_SRAM_MarchTestInit(uint32_t * start_addr,
-    uint32_t test_size_bytes, CLASSB_SRAM_MARCH_ALGO march_algo,
-    bool running_context)
+CLASSB_TEST_STATUS CLASSB_SRAM_MarchTestInit(   uint32_t * start_addr,
+                                                uint32_t test_size_bytes, 
+                                                CLASSB_SRAM_MARCH_ALGO march_algo,
+                                                bool running_context,
+                                                CLASSB_MEM_REGION mem_region )
 ------------------------------------------------------------------------------
 Purpose: Initialize to perform March-tests on SRAM.
 Input  : Start address, size of SRAM area to be tested,
          selected algorithm and the context (startup or run-time)
+         memory region to be tested
 Output : Test status.
 Notes  : This function uses register variables since the stack
          in SRAM also need to be tested.
 ============================================================================*/
-CLASSB_TEST_STATUS CLASSB_SRAM_MarchTestInit(uint32_t * start_addr,
-    uint32_t test_size_bytes, CLASSB_SRAM_MARCH_ALGO march_algo,
-    bool running_context)
+CLASSB_TEST_STATUS CLASSB_SRAM_MarchTestInit(   uint32_t * start_addr,
+                                                uint32_t test_size_bytes, 
+                                                CLASSB_SRAM_MARCH_ALGO march_algo,
+                                                bool running_context,
+                                                CLASSB_MEM_REGION mem_region)
 {
     /* This function uses register variables since the Stack also
      * need to be tested
@@ -534,7 +612,34 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTestInit(uint32_t * start_addr,
     register uint32_t stack_address asm("r6") = 0;
     register CLASSB_TEST_STATUS sram_init_retval asm("r8") =
         CLASSB_TEST_NOT_EXECUTED;
+    register uint32_t max_march_test_end_address  asm("r9") = 0;
+    register uint32_t min_mem_start_address  asm("r10") = 0;
+    register uint32_t stack_pointer_address  asm("r11") = 0;
 
+    /* memory region switch */
+    switch(mem_region)
+    {        
+        case CLASSB_MEM_REGION_ITCM:
+            max_march_test_end_address = CLASSB_ITCM_FINAL_WORD_ADDRESS;
+            min_mem_start_address = CLASSB_ITCM_APP_AREA_START;
+            stack_pointer_address = CLASSB_SRAM_TEMP_STACK_ADDRESS;
+            break;       
+        case CLASSB_MEM_REGION_DTCM:
+            max_march_test_end_address = CLASSB_DTCM_FINAL_WORD_ADDRESS;
+            min_mem_start_address = CLASSB_DTCM_APP_AREA_START;
+            stack_pointer_address = CLASSB_SRAM_TEMP_STACK_ADDRESS;
+            break;       
+        case CLASSB_MEM_REGION_SRAM:
+            max_march_test_end_address = CLASSB_SRAM_FINAL_WORD_ADDRESS;
+            min_mem_start_address = CLASSB_SRAM_APP_AREA_START;
+            stack_pointer_address = CLASSB_SRAM_TEMP_STACK_ADDRESS;
+            break;       
+        default:
+            // error out the test
+            min_mem_start_address = CLASSB_SRAM_APP_AREA_START + 10;
+            break;           
+    }
+    
     /* The address and test size must be a multiple of 4
      * The tested area should be above the reserved SRAM for Class B library
      * Address should be within the last SRAM word address.
@@ -542,8 +647,8 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTestInit(uint32_t * start_addr,
 
     if ((((uint32_t)start_addr % 4) != 0)
             || ((test_size_bytes % 4) != 0)
-            || (march_test_end_address > CLASSB_SRAM_FINAL_WORD_ADDRESS)
-            || (mem_start_address < CLASSB_SRAM_APP_AREA_START))
+            || (march_test_end_address > max_march_test_end_address)
+            || (mem_start_address < min_mem_start_address))
     {
         ;
     }
@@ -551,7 +656,7 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTestInit(uint32_t * start_addr,
     {
         // Move stack pointer to the reserved area before any SRAM test
         stack_address = _CLASSB_GetStackPointer();
-        _CLASSB_SetStackPointer(CLASSB_SRAM_TEMP_STACK_ADDRESS);
+        _CLASSB_SetStackPointer(stack_pointer_address);
         if (running_context == true)
         {
             _CLASSB_UpdateTestResult(CLASSB_TEST_TYPE_RST, CLASSB_TEST_RAM,
@@ -564,7 +669,7 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTestInit(uint32_t * start_addr,
         }
         
         sram_init_retval = CLASSB_SRAM_MarchTest(start_addr, test_size_bytes,
-            march_algo, running_context);
+            march_algo, running_context, mem_region);
 
         if (sram_init_retval == CLASSB_TEST_PASSED)
         {
@@ -602,9 +707,11 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTestInit(uint32_t * start_addr,
 }
 
 /*============================================================================
-CLASSB_TEST_STATUS CLASSB_SRAM_MarchTest(uint32_t * start_addr,
-    uint32_t test_size_bytes, CLASSB_SRAM_MARCH_ALGO march_algo,
-    bool running_context)
+CLASSB_TEST_STATUS CLASSB_SRAM_MarchTest(   uint32_t * start_addr,
+                                            uint32_t test_size_bytes, 
+                                            CLASSB_SRAM_MARCH_ALGO march_algo,
+                                            bool running_context,
+                                            CLASSB_MEM_REGION mem_region )
 ------------------------------------------------------------------------------
 Purpose: Perform March-tests on SRAM.
 Input  : Start address, size of SRAM area to be tested,
@@ -612,43 +719,74 @@ Input  : Start address, size of SRAM area to be tested,
 Output : Test status.
 Notes  : None.
 ============================================================================*/
-CLASSB_TEST_STATUS CLASSB_SRAM_MarchTest(uint32_t * start_addr,
-    uint32_t test_size_bytes, CLASSB_SRAM_MARCH_ALGO march_algo,
-    bool running_context)
+CLASSB_TEST_STATUS CLASSB_SRAM_MarchTest(   uint32_t * start_addr,
+                                            uint32_t test_size_bytes, 
+                                            CLASSB_SRAM_MARCH_ALGO march_algo,
+                                            bool running_context,
+                                            CLASSB_MEM_REGION mem_region)
 {
     CLASSB_TEST_STATUS classb_sram_status = CLASSB_TEST_NOT_EXECUTED;
     bool march_test_retval = false;
     // Use a local variable for calculations
     uint32_t mem_start_address = (uint32_t)start_addr;
     // Test will be done on blocks on 512 bytes
-    volatile uint32_t march_c_iterations = (test_size_bytes / CLASSB_SRAM_TEST_BUFFER_SIZE);
+    volatile uint32_t march_c_iterations = 0;
     // If the size is not a multiple of 512, then check the remaining area
-    volatile uint32_t march_c_short_itr_size = (test_size_bytes % CLASSB_SRAM_TEST_BUFFER_SIZE);
+    volatile uint32_t march_c_short_itr_size = 0;
     // Variable for loops
     int32_t i = 0;
     uint32_t * iteration_start_addr = 0;
+    uint32_t classb_buff_start_add = 0;
+    uint32_t classb_test_buff_size = 0;    
+
+    /* memory region switch */
+    switch(mem_region)
+    {        
+        case CLASSB_MEM_REGION_ITCM:
+            classb_test_buff_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
+            classb_buff_start_add = CLASSB_SRAM_BUFF_START_ADDRESS;
+            march_c_iterations = (test_size_bytes / CLASSB_SRAM_TEST_BUFFER_SIZE);
+            march_c_short_itr_size = (test_size_bytes % CLASSB_SRAM_TEST_BUFFER_SIZE);
+            break;        
+        case CLASSB_MEM_REGION_DTCM:
+            classb_test_buff_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
+            classb_buff_start_add = CLASSB_SRAM_BUFF_START_ADDRESS;
+            march_c_iterations = (test_size_bytes / CLASSB_SRAM_TEST_BUFFER_SIZE);
+            march_c_short_itr_size = (test_size_bytes % CLASSB_SRAM_TEST_BUFFER_SIZE);
+            break;       
+        case CLASSB_MEM_REGION_SRAM:
+            classb_test_buff_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
+            classb_buff_start_add = CLASSB_SRAM_BUFF_START_ADDRESS;
+            march_c_iterations = (test_size_bytes / CLASSB_SRAM_TEST_BUFFER_SIZE);
+            march_c_short_itr_size = (test_size_bytes % CLASSB_SRAM_TEST_BUFFER_SIZE);
+            break;        
+        default:
+            // error out the test
+            march_c_iterations = 0;
+            break;           
+    }
 
     for (i = 0; i < march_c_iterations; i++)
     {
-        iteration_start_addr = (uint32_t *)mem_start_address + (i * CLASSB_SRAM_TEST_BUFFER_SIZE);
+        iteration_start_addr = (uint32_t *)(mem_start_address + (i * classb_test_buff_size));
         // Copy the tested area
-        _CLASSB_MemCopy((uint32_t *)CLASSB_SRAM_BUFF_START_ADDRESS,
-            iteration_start_addr, CLASSB_SRAM_TEST_BUFFER_SIZE);
+        _CLASSB_MemCopy((uint32_t *)classb_buff_start_add,
+            iteration_start_addr, classb_test_buff_size);
         // Run the selected RAM March algorithm
         if (march_algo == CLASSB_SRAM_MARCH_C)
         {
             march_test_retval = CLASSB_RAMMarchC(iteration_start_addr,
-                CLASSB_SRAM_TEST_BUFFER_SIZE);
+                classb_test_buff_size, mem_region);
         }
         else if (march_algo == CLASSB_SRAM_MARCH_C_MINUS)
         {
             march_test_retval = CLASSB_RAMMarchCMinus(iteration_start_addr,
-                CLASSB_SRAM_TEST_BUFFER_SIZE);
+                classb_test_buff_size, mem_region);
         }
         else if (march_algo == CLASSB_SRAM_MARCH_B)
         {
             march_test_retval = CLASSB_RAMMarchB(iteration_start_addr,
-                CLASSB_SRAM_TEST_BUFFER_SIZE);
+                classb_test_buff_size, mem_region);
         }
         if (march_test_retval == false)
         {
@@ -659,8 +797,8 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTest(uint32_t * start_addr,
         else
         {
         // Restore the tested area
-        _CLASSB_MemCopy(iteration_start_addr, (uint32_t *)CLASSB_SRAM_BUFF_START_ADDRESS,
-            CLASSB_SRAM_TEST_BUFFER_SIZE);
+        _CLASSB_MemCopy(iteration_start_addr, (uint32_t *)classb_buff_start_add,
+            classb_test_buff_size);
         }
         classb_sram_status = CLASSB_TEST_PASSED;
     }
@@ -668,24 +806,24 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTest(uint32_t * start_addr,
     // If the tested area is not a multiple of 512 bytes
     if ((march_c_short_itr_size > 0) && (march_test_retval == true))
     {
-        iteration_start_addr = (uint32_t *)mem_start_address + (march_c_iterations * CLASSB_SRAM_TEST_BUFFER_SIZE);
-        _CLASSB_MemCopy((uint32_t *)CLASSB_SRAM_BUFF_START_ADDRESS,
+        iteration_start_addr = (uint32_t *)(mem_start_address + (march_c_iterations * classb_test_buff_size));
+        _CLASSB_MemCopy((uint32_t *)classb_buff_start_add,
             iteration_start_addr, march_c_short_itr_size);
         // Run the selected RAM March algorithm
         if (march_algo == CLASSB_SRAM_MARCH_C)
         {
             march_test_retval = CLASSB_RAMMarchC(iteration_start_addr,
-                CLASSB_SRAM_TEST_BUFFER_SIZE);
+                classb_test_buff_size, mem_region);
         }
         else if (march_algo == CLASSB_SRAM_MARCH_C_MINUS)
         {
             march_test_retval = CLASSB_RAMMarchCMinus(iteration_start_addr,
-                CLASSB_SRAM_TEST_BUFFER_SIZE);
+                classb_test_buff_size, mem_region);
         }
         else if (march_algo == CLASSB_SRAM_MARCH_B)
         {
             march_test_retval = CLASSB_RAMMarchB(iteration_start_addr,
-                CLASSB_SRAM_TEST_BUFFER_SIZE);
+                classb_test_buff_size, mem_region);
         }
         if (march_test_retval == false)
         {
@@ -696,7 +834,7 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTest(uint32_t * start_addr,
             classb_sram_status = CLASSB_TEST_PASSED;
             // Restore the tested area
             _CLASSB_MemCopy(iteration_start_addr,
-                (uint32_t *)CLASSB_SRAM_BUFF_START_ADDRESS, march_c_short_itr_size);
+                (uint32_t *)classb_buff_start_add, march_c_short_itr_size);
         }
     }
 

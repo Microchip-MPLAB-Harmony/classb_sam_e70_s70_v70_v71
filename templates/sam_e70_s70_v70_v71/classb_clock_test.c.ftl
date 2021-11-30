@@ -95,70 +95,69 @@ static void _CLASSB_Clock_SysTickStart ( void )
 }
 
 /*============================================================================
-static void _CLASSB_Clock_RTC_Enable(void)
+static void _CLASSB_Clock_RTT_Enable(void)
 ------------------------------------------------------------------------------
-Purpose: Enables the RTC
+Purpose: Enables the RTT
 Input  : None.
 Output : None.
 Notes  : None.
 ============================================================================*/
-static void _CLASSB_Clock_RTC_Enable ( void )
+static void _CLASSB_Clock_RTT_Enable ( void )
 {
-    RTC_REGS->MODE0.RTC_CTRLA |= RTC_MODE0_CTRLA_ENABLE_Msk;
-    while((RTC_REGS->MODE0.RTC_SYNCBUSY & RTC_MODE0_SYNCBUSY_ENABLE_Msk) == RTC_MODE0_SYNCBUSY_ENABLE_Msk)
-    {
-        // Wait for synchronization after Enabling RTC
-        ;
-    }
+    uint32_t status = 0;
+    
+    RTT_REGS->RTT_MR|= RTT_MR_RTTRST_Msk;
+    RTT_REGS->RTT_MR&= ~(RTT_MR_RTTDIS_Msk);
+    
+    // read status register to clear flag
+    status = RTT_REGS->RTT_SR & RTT_SR_Msk;
+    // unused variable error
+    while(status & (~RTT_SR_Msk)){};
+    
 }
 
 /*============================================================================
-static void _CLASSB_Clock_RTC_ClockInit(void)
+static void _CLASSB_Clock_RTT_ClockInit(void)
 ------------------------------------------------------------------------------
-Purpose: Configure clocks for the RTC peripheral
+Purpose: Configure clocks for the RTT peripheral
 Input  : None.
 Output : None.
 Notes  : This self-test configures RTC to use an external
          32.768kHz Crystal as reference clock. Do not use this self-test
          if the external crystal is not available.
 ============================================================================*/
-static void _CLASSB_Clock_RTC_ClockInit(void)
+static void _CLASSB_Clock_RTT_ClockInit(void)
 {
-    // Enable APB clock for RTC
-    MCLK_REGS->MCLK_APBAMASK |= MCLK_APBAMASK_RTC_Msk;
+ 
+    /* External clock signal on XIN32 pin is selected as the Slow Clock (SLCK) source.
+       Bypass 32K Crystal Oscillator  */
+    SUPC_REGS->SUPC_MR |= SUPC_MR_KEY_PASSWD | SUPC_MR_OSCBYPASS_BYPASS;
+    SUPC_REGS->SUPC_CR |= SUPC_CR_KEY_PASSWD | SUPC_CR_XTALSEL_CRYSTAL_SEL;
 
-    // Configure 32K External Oscillator
-    OSC32KCTRL_REGS->OSC32KCTRL_XOSC32K = OSC32KCTRL_XOSC32K_STARTUP(2) |
-        OSC32KCTRL_XOSC32K_ENABLE_Msk | OSC32KCTRL_XOSC32K_CGM(1) |
-        OSC32KCTRL_XOSC32K_EN1K_Msk | OSC32KCTRL_XOSC32K_EN32K_Msk | OSC32KCTRL_XOSC32K_XTALEN_Msk;
-    while(!((OSC32KCTRL_REGS->OSC32KCTRL_STATUS & OSC32KCTRL_STATUS_XOSC32KRDY_Msk) == OSC32KCTRL_STATUS_XOSC32KRDY_Msk))
+    /* Wait until the external clock signal is ready and
+       Slow Clock (SLCK) is switched to external clock signal */
+    while (!(SUPC_REGS->SUPC_SR & SUPC_SR_OSCSEL_Msk))
     {
-        // Wait for the XOSC32K Ready state
     }
-    // Select 32.768 kHz XOSC32K as RTC clock
-    OSC32KCTRL_REGS->OSC32KCTRL_RTCCTRL = OSC32KCTRL_RTCCTRL_RTCSEL(5);
+    
 }
 
 /*============================================================================
-static void _CLASSB_Clock_RTC_Init(void)
+static void _CLASSB_Clock_RTT_Init(void)
 ------------------------------------------------------------------------------
-Purpose: Configure RTC peripheral for CPU clock self-test
+Purpose: Configure RTT peripheral for CPU clock self-test
 Input  : None.
 Output : None.
 Notes  : The clocks required for RTC are configured in a separate function.
+         ** - 32,768 >= test_cycles >= 3
 ============================================================================*/
-static void _CLASSB_Clock_RTC_Init(uint32_t test_cycles)
+static void _CLASSB_Clock_RTT_Init(uint32_t test_cycles)
 {
-    RTC_REGS->MODE0.RTC_CTRLA = RTC_MODE0_CTRLA_SWRST_Msk;
-
-    while((RTC_REGS->MODE0.RTC_SYNCBUSY & RTC_MODE0_SYNCBUSY_SWRST_Msk) == RTC_MODE0_SYNCBUSY_SWRST_Msk)
-    {
-        // Wait for Synchronization after Software Reset
-        ;
-    }
-    RTC_REGS->MODE0.RTC_CTRLA = RTC_MODE0_CTRLA_MODE(0) | RTC_MODE0_CTRLA_PRESCALER(0x1) | RTC_MODE0_CTRLA_MATCHCLR_Msk ;
-    RTC_REGS->MODE0.RTC_COMP[0] = test_cycles;
-    RTC_REGS->MODE0.RTC_INTFLAG = RTC_MODE0_INTFLAG_Msk;
+      
+    // RTT Init
+    RTT_REGS->RTT_MR = RTT_MR_RTTRST_Msk;
+    RTT_REGS->RTT_MR = RTT_MR_RTPRES(test_cycles) | RTT_MR_RTTDIS_Msk | RTT_MR_ALMIEN_Msk;
+    
 }
 
 /*============================================================================
@@ -203,14 +202,15 @@ CLASSB_TEST_STATUS CLASSB_ClockTest(uint32_t cpu_clock_freq,
             _CLASSB_UpdateTestResult(CLASSB_TEST_TYPE_SST, CLASSB_TEST_CLOCK,
                 CLASSB_TEST_INPROGRESS);
         }
-
-        _CLASSB_Clock_RTC_ClockInit();
-        _CLASSB_Clock_RTC_Init(clock_test_rtc_cycles);
+      
+        _CLASSB_Clock_RTT_ClockInit();
+        _CLASSB_Clock_RTT_Init(clock_test_rtc_cycles);
         _CLASSB_Clock_SysTickStart();
-        _CLASSB_Clock_RTC_Enable();
+        _CLASSB_Clock_RTT_Enable();
 
         systick_count_a = _CLASSB_Clock_SysTickGetVal();
-        while(!((RTC_REGS->MODE0.RTC_INTFLAG & RTC_MODE0_INTFLAG_CMP0_Msk) == RTC_MODE0_INTFLAG_CMP0_Msk))
+        /* Wait for RTT Time lag to be set */
+        while(!((RTT_REGS->RTT_SR & RTT_SR_RTTINC_Msk) == RTT_SR_RTTINC_Msk))
         {
             ;
         }

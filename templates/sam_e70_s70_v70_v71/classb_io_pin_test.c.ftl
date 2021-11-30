@@ -69,8 +69,28 @@ Notes  : Before testing an output pin, call this function to enable input
 ============================================================================*/
 void CLASSB_IO_InputSamplingEnable(CLASSB_PORT_INDEX port, CLASSB_PORT_PIN pin)
 {
-    // Enable input sampling
-    PORT_REGS->GROUP[port].PORT_PINCFG[pin] = PORT_PINCFG_INEN_Msk;
+   // Enable input sampling
+    switch(port)
+    {
+        case PORTA:
+            PIOA_REGS->PIO_ODR = (1 << pin);
+            break;
+        case PORTB:
+            PIOB_REGS->PIO_ODR = (1 << pin);
+            break;
+        case PORTC:
+            PIOC_REGS->PIO_ODR = (1 << pin);
+            break;
+        case PORTD:
+            PIOD_REGS->PIO_ODR = (1 << pin);
+            break;
+        case PORTE:
+            PIOE_REGS->PIO_ODR = (1 << pin);
+            break;
+        default:
+            break;
+        
+    }
 }
 
 /*============================================================================
@@ -87,6 +107,7 @@ CLASSB_TEST_STATUS CLASSB_RST_IOTest(CLASSB_PORT_INDEX port, CLASSB_PORT_PIN pin
 {
     CLASSB_TEST_STATUS io_test_status = CLASSB_TEST_NOT_EXECUTED;
     CLASSB_PORT_PIN_STATE pin_read_state  = PORT_PIN_INVALID;
+    uint32_t port_status = 0;
 
     // Check the input variable limits
     if ((port > PORTD) || (pin > PIN31))
@@ -99,15 +120,50 @@ CLASSB_TEST_STATUS CLASSB_RST_IOTest(CLASSB_PORT_INDEX port, CLASSB_PORT_PIN pin
         io_test_status = CLASSB_TEST_INPROGRESS;
         _CLASSB_UpdateTestResult(CLASSB_TEST_TYPE_RST, CLASSB_TEST_IO,
                 CLASSB_TEST_INPROGRESS);
+        
 
-        if ((PORT_REGS->GROUP[port].PORT_IN & (1 << pin)) == (1 << pin))
+        switch(port)
         {
-            pin_read_state = PORT_PIN_HIGH;
+            case PORTA:
+                port_status = PIOA_REGS->PIO_PDSR;
+                if(port_status & (1 << pin))
+                    {pin_read_state = PORT_PIN_HIGH;}
+                else
+                    {pin_read_state = PORT_PIN_LOW;}
+                break;
+            case PORTB:
+                port_status = PIOB_REGS->PIO_PDSR;
+                if(port_status & (1 << pin))
+                    {pin_read_state = PORT_PIN_HIGH;}
+                else
+                    {pin_read_state = PORT_PIN_LOW;}
+                break;
+            case PORTC:
+                port_status = PIOC_REGS->PIO_PDSR;
+                if(port_status & (1 << pin))
+                    {pin_read_state = PORT_PIN_HIGH;}
+                else
+                    {pin_read_state = PORT_PIN_LOW;}
+                break;
+            case PORTD:
+                port_status = PIOD_REGS->PIO_PDSR;
+                if(port_status & (1 << pin))
+                    {pin_read_state = PORT_PIN_HIGH;}
+                else
+                    {pin_read_state = PORT_PIN_LOW;}
+                break;
+            case PORTE:
+                port_status = PIOE_REGS->PIO_PDSR;
+                if(port_status & (1 << pin))
+                    {pin_read_state = PORT_PIN_HIGH;}
+                else
+                    {pin_read_state = PORT_PIN_LOW;}
+                break;
+            default:
+                break;
+
         }
-        else
-        {
-            pin_read_state = PORT_PIN_LOW;
-        }
+        
         if (pin_read_state == state)
         {
             io_test_status = CLASSB_TEST_PASSED;

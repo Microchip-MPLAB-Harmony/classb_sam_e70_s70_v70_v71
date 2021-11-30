@@ -42,6 +42,8 @@
  *     include files
  *----------------------------------------------------------------------------*/
 #include "classb/classb_interrupt_test.h"
+#include "peripheral/tc/plib_tc_common.h"
+#include "peripheral/rtt/plib_rtt_common.h"
 
 /*----------------------------------------------------------------------------
  *     Constants
@@ -50,7 +52,7 @@
 #define CLASSB_INTR_VECTOR_TABLE_SIZE       (CLASSB_INTR_DEVICE_VECT_OFFSET + PERIPH_MAX_IRQn)
 #define CLASSB_INTR_MAX_INT_COUNT           (30U)
 #define CLASSB_INTR_TEST_RTC_COUNT          (50U)
-#define CLASSB_INTR_TEST_TC_COUNT           (100U)
+#define CLASSB_INTR_TEST_TC_COUNT           (512U)
 
 /*----------------------------------------------------------------------------
  *     Global Variables
@@ -70,25 +72,32 @@ extern void _CLASSB_UpdateTestResult(CLASSB_TEST_TYPE test_type,
     CLASSB_TEST_ID test_id, CLASSB_TEST_STATUS value);
 
 /*============================================================================
-static void _CLASSB_RTC_handler(void)
+static void _CLASSB_RTT_handler(void)
 ------------------------------------------------------------------------------
-Purpose: Custom handler used for RTC Interrupt test
+Purpose: Custom handler used for RTT Interrupt test
 Input  : None.
 Output : None.
 Notes  : The RTC is reset after successfully performing the test.
 ============================================================================*/
-static void _CLASSB_RTC_Handler(void)
+static void _CLASSB_RTT_Handler(void)
 {
-    // Clear the checked interrupt flag
-    RTC_REGS->MODE0.RTC_INTFLAG = RTC_MODE0_INTFLAG_CMP0_Msk;
-    *interrupt_tests_status = CLASSB_TEST_STARTED;
-    // Reset the tested peripheral
-    RTC_REGS->MODE0.RTC_CTRLA = RTC_MODE0_CTRLA_SWRST_Msk;
-    while((RTC_REGS->MODE0.RTC_SYNCBUSY & RTC_MODE0_SYNCBUSY_SWRST_Msk) == RTC_MODE0_SYNCBUSY_SWRST_Msk)
-    {
-        // Wait for Synchronization after Software Reset
-        ;
-    }
+    uint32_t status = RTT_REGS->RTT_SR;
+	uint32_t flags = RTT_REGS->RTT_MR;
+    
+    /* disable RTT interupts */
+	RTT_REGS->RTT_MR&= ~(RTT_MR_ALMIEN_Msk | RTT_MR_RTTINCIEN_Msk);
+    
+	if(flags & RTT_MR_RTTINCIEN_Msk)
+	{
+		if(status & RTT_SR_RTTINC_Msk)
+		{
+            *interrupt_tests_status = CLASSB_TEST_STARTED;
+		}
+	}
+    
+    /* Disable RTT */
+    RTT_REGS->RTT_MR|= RTT_MR_RTTDIS_Msk;
+    
 }
 
 /*============================================================================
@@ -102,9 +111,15 @@ Notes  : None.
 ============================================================================*/
 static void _CLASSB_TC0_Handler(void)
 {
-    // Clear the checked interrupt flag
-    TC0_REGS->COUNT16.TC_INTFLAG = TC_INTFLAG_OVF_Msk;
-    (*interrupt_count)++;
+    /* Read SR  */
+    TC_TIMER_STATUS timer_status = (TC_TIMER_STATUS)(TC0_REGS->TC_CHANNEL[0].TC_SR & TC_TIMER_STATUS_MSK);
+    
+    /* If flag set increment count */
+    if (TC_TIMER_NONE != timer_status)
+    {
+        (*interrupt_count)++;
+    }
+   
 }
 
 /*============================================================================
@@ -126,48 +141,51 @@ static void _CLASSB_BuildVectorTable(void)
         classb_ram_vector_table[i] = *(uint32_t *)(vector_start + (i * 4));
     }
     // Modify the tested interrupt handler address
-    classb_ram_vector_table[CLASSB_INTR_DEVICE_VECT_OFFSET + RTC_IRQn] = (uint32_t )&_CLASSB_RTC_Handler;
-    classb_ram_vector_table[CLASSB_INTR_DEVICE_VECT_OFFSET + TC0_IRQn] = (uint32_t )&_CLASSB_TC0_Handler;
+    classb_ram_vector_table[CLASSB_INTR_DEVICE_VECT_OFFSET + RTT_IRQn] = (uint32_t )&_CLASSB_RTT_Handler;
+    classb_ram_vector_table[CLASSB_INTR_DEVICE_VECT_OFFSET + TC0_CH0_IRQn] = (uint32_t )&_CLASSB_TC0_Handler;
     vtor_default_value = SCB->VTOR;
     // Update VTOR to point to the new vector table in SRAM
     SCB->VTOR = ((uint32_t)&classb_ram_vector_table[0] & SCB_VTOR_TBLOFF_Msk);
 }
 
 /*============================================================================
-static void _CLASSB_RTC_Init(void)
+static void _CLASSB_RTT_Init(void)
 ------------------------------------------------------------------------------
-Purpose: Configure RTC peripheral for Interrupt self-test
+Purpose: Configure RTT peripheral for Interrupt self-test
 Input  : None.
 Output : None.
 Notes  : The clocks required for RTC are enabled after reset. This function
          does not modify the default clocks.
 ============================================================================*/
-static void _CLASSB_RTC_Init(void)
+static void _CLASSB_RTT_Init(void)
 {
-    // Select the RTC clock
-    OSC32KCTRL_REGS->OSC32KCTRL_RTCCTRL = OSC32KCTRL_RTCCTRL_RTCSEL_ULP1K;
-    // Enable APB clock for RTC
-    RTC_REGS->MODE0.RTC_CTRLA = RTC_MODE0_CTRLA_SWRST_Msk;
+    uint32_t status = 0;
 
-    while((RTC_REGS->MODE0.RTC_SYNCBUSY & RTC_MODE0_SYNCBUSY_SWRST_Msk) == RTC_MODE0_SYNCBUSY_SWRST_Msk)
-    {
-        // Wait for Synchronization after Software Reset
-        ;
-    }
-    RTC_REGS->MODE0.RTC_CTRLA = RTC_MODE0_CTRLA_MODE(0) | RTC_MODE0_CTRLA_PRESCALER(0x1) | RTC_MODE0_CTRLA_MATCHCLR_Msk ;
-    RTC_REGS->MODE0.RTC_COMP[0] = CLASSB_INTR_TEST_RTC_COUNT;
-    RTC_REGS->MODE0.RTC_INTENSET = RTC_MODE0_INTENSET_CMP0_Msk;
+       
+    // RTT Init
+    RTT_REGS->RTT_MR |= RTT_MR_RTTRST_Msk;
+    RTT_REGS->RTT_MR = RTT_MR_RTPRES(CLASSB_INTR_TEST_RTC_COUNT) | RTT_MR_RTTDIS_Msk | RTT_MR_ALMIEN_Msk;
 
+    /* disable all interrupts */
+    RTT_REGS->RTT_MR &= ~(RTT_PERIODIC | RTT_ALARM);
+
+    /* clear any stale interrupts */
+    status = RTT_REGS->RTT_SR;
+    // unused variable error
+    while(status & (~RTT_SR_Msk)){};
+    
+    // enable interrupt
+    RTT_REGS->RTT_MR |= RTT_PERIODIC;
+    
     // Enable NVIC IRQn for RTC
-    NVIC_EnableIRQ(RTC_IRQn);
+    NVIC_EnableIRQ(RTT_IRQn);
+    
+    // RTT Enable
+    RTT_REGS->RTT_MR&= ~(RTT_MR_RTTDIS_Msk);
+    
+    // RTT Reset
+    RTT_REGS->RTT_MR |= RTT_MR_RTTRST_Msk;
 
-    // Start RTC
-    RTC_REGS->MODE0.RTC_CTRLA |= RTC_MODE0_CTRLA_ENABLE_Msk;
-    while((RTC_REGS->MODE0.RTC_SYNCBUSY & RTC_MODE0_SYNCBUSY_ENABLE_Msk) == RTC_MODE0_SYNCBUSY_ENABLE_Msk)
-    {
-        // Wait for synchronization after Enabling RTC
-        ;
-    }
 }
 
 /*============================================================================
@@ -180,37 +198,44 @@ Notes  : The TC0 is reset after successfully performing the test.
 ============================================================================*/
 static void _CLASSB_TC0_CompareInit( void )
 {
-    // Enable APB clock for TC0
-    MCLK_REGS->MCLK_APBAMASK |= MCLK_APBAMASK_TC0_Msk;
+    TC_TIMER_STATUS timer_status = 0;
+    
 
-    // Select Generic Clock 0 for TC0
-    GCLK_REGS->GCLK_PCHCTRL[9] = GCLK_PCHCTRL_GEN(0)  | GCLK_PCHCTRL_CHEN_Msk;
-    while ((GCLK_REGS->GCLK_PCHCTRL[9] & GCLK_PCHCTRL_CHEN_Msk) != GCLK_PCHCTRL_CHEN_Msk)
+    /* Enable Peripheral Clock */
+    PMC_REGS->PMC_PCER0=0x835c00;
+    
+    /* Use peripheral clock */
+    TC0_REGS->TC_CHANNEL[0].TC_EMR = TC_EMR_NODIVCLK_Msk;
+    /* clock selection and waveform selection */
+    TC0_REGS->TC_CHANNEL[0].TC_CMR =  TC_CMR_WAVEFORM_WAVSEL_UP_RC | TC_CMR_WAVE_Msk ;
+
+    /* write period */
+    TC0_REGS->TC_CHANNEL[0].TC_RC = CLASSB_INTR_TEST_TC_COUNT;
+
+    /* enable interrupt */
+    TC0_REGS->TC_CHANNEL[0].TC_IER = TC_IER_CPCS_Msk;
+    /* wait for sync */
+    while((TC0_REGS->TC_CHANNEL[0].TC_IMR & TC_IMR_CPCS_Msk) != TC_IMR_CPCS_Msk)
     {
-        // Wait for synchronization
+        // Wait for Synchronization
         ;
     }
-
-    // Reset TC
-    TC0_REGS->COUNT16.TC_CTRLA = TC_CTRLA_SWRST_Msk;
-    while((TC0_REGS->COUNT16.TC_SYNCBUSY & TC_SYNCBUSY_SWRST_Msk) == TC_SYNCBUSY_SWRST_Msk)
+    
+    /* Clear status */
+    timer_status = (TC_TIMER_STATUS)(TC0_REGS->TC_CHANNEL[0].TC_SR & TC_TIMER_STATUS_MSK);
+    /* Call registered callback function */
+    if (TC_TIMER_NONE != timer_status)
     {
-        // Wait for synchronization
-        ;
+        timer_status = timer_status;
     }
-    // Configure counter mode & prescaler
-    TC0_REGS->COUNT16.TC_CTRLA = TC_CTRLA_MODE_COUNT16 | TC_CTRLA_PRESCALER_DIV1024 | TC_CTRLA_PRESCSYNC_PRESC ;
-    // Configure waveform generation mode
-    TC0_REGS->COUNT16.TC_WAVE = TC_WAVE_WAVEGEN_MFRQ;
-    TC0_REGS->COUNT16.TC_CC[0] = CLASSB_INTR_TEST_TC_COUNT;
-
-    // Clear all interrupt flags
-    TC0_REGS->COUNT16.TC_INTFLAG = TC_INTFLAG_Msk;
-    TC0_REGS->COUNT16.TC_INTENSET |= TC_INTENSET_OVF_Msk;
-    TC0_REGS->COUNT16.TC_CTRLA |= TC_CTRLA_ENABLE_Msk;
-
-    // Enable NVIC IRQn for TC0
-    NVIC_EnableIRQ(TC0_IRQn);
+    
+    /*  Enable NVIC IRQn for TC0 */
+    NVIC_EnableIRQ(TC0_CH0_IRQn);
+    
+    /*  Start TC0 */
+    TC0_REGS->TC_CHANNEL[0].TC_CCR = (TC_CCR_CLKEN_Msk | TC_CCR_SWTRG_Msk);
+    
+    
 }
 
 /*============================================================================
@@ -246,7 +271,7 @@ CLASSB_TEST_STATUS CLASSB_SST_InterruptTest(void)
         CLASSB_TEST_INPROGRESS);
     _CLASSB_BuildVectorTable();
     _CLASSB_NVIC_Init();
-    _CLASSB_RTC_Init();
+    _CLASSB_RTT_Init();
     _CLASSB_TC0_CompareInit();
     // Wait until the flags are updated from the interrupt handlers
     while((*interrupt_tests_status == CLASSB_TEST_NOT_STARTED))
@@ -262,13 +287,20 @@ CLASSB_TEST_STATUS CLASSB_SST_InterruptTest(void)
         _CLASSB_UpdateTestResult(CLASSB_TEST_TYPE_SST, CLASSB_TEST_INTERRUPT,
             CLASSB_TEST_PASSED);
 
-        // Reset TC0 peripheral
-        TC0_REGS->COUNT16.TC_CTRLA = TC_CTRLA_SWRST_Msk;
-        while((TC0_REGS->COUNT16.TC_SYNCBUSY & TC_SYNCBUSY_SWRST_Msk) == TC_SYNCBUSY_SWRST_Msk)
+
+        /* Disable TC0  */
+        TC0_REGS->TC_CHANNEL[0].TC_CCR = (TC_CCR_CLKDIS_Msk);
+        
+        /* disable interrupt */
+        TC0_REGS->TC_CHANNEL[0].TC_IDR = TC_IDR_CPCS_Msk;
+        
+        /* wait for sync */
+        while((TC0_REGS->TC_CHANNEL[0].TC_IMR & TC_IMR_CPCS_Msk) != 0)
         {
-            // Wait for Synchronization after Software Reset
+            // Wait for Synchronization
             ;
         }
+                    
         // Restore SCB->VTOR
         SCB->VTOR = vtor_default_value;
     }

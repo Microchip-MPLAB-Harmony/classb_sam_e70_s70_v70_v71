@@ -58,12 +58,17 @@ SUBSTITUTE  GOODS,  TECHNOLOGY,  SERVICES,  OR  ANY  CLAIMS  BY  THIRD   PARTIES
 /*----------------------------------------------------------------------------
  *     Constants
  *----------------------------------------------------------------------------*/
-#define CLASSB_ITCM_TEST_BUFFER_SIZE        (512U) // Do not modify
-#define CLASSB_DTCM_TEST_BUFFER_SIZE        (512U) // Do not modify
 #define CLASSB_SRAM_TEST_BUFFER_SIZE        (512U) // Do not modify
-#define CLASSB_ITCM_APP_AREA_START          (0x00000000U) // Do not modify
-#define CLASSB_DTCM_APP_AREA_START          (0x20000000U) // Do not modify
+#define CLASSB_ITCM_APP_AREA_START          (0x${CLASSB_ITCM_APP_START}U) // Do not modify
+#define CLASSB_DTCM_APP_AREA_START          (0x${CLASSB_DTCM_APP_START}U) // Do not modify
 #define CLASSB_SRAM_APP_AREA_START          (0x${CLASSB_SRAM_APP_START}U) // Do not modify
+
+ /* This final addresses value will differ according to device variant and TCM selection */
+#define CLASSB_ITCM_FINAL_WORD_ADDRESS      (0x${CLASSB_ITCM_LASTWORD_ADDR}U)  
+#define CLASSB_DTCM_FINAL_WORD_ADDRESS      (0x${CLASSB_DTCM_LASTWORD_ADDR}U)  
+#define CLASSB_SRAM_FINAL_WORD_ADDRESS      (0x${CLASSB_SRAM_LASTWORD_ADDR}U)  
+
+
 
 /*----------------------------------------------------------------------------
  *     Data types
@@ -87,21 +92,50 @@ typedef enum classb_sram_march_algo
     CLASSB_SRAM_MARCH_B       = 2
 } CLASSB_SRAM_MARCH_ALGO;
 
+/* Class B library memory region enum
+
+  Summary:
+    Define which region of memory is to be tested.
+
+  Description:
+    Define which region of memory is to be tested.
+
+  Remarks:
+    None.
+*/
+typedef enum classb_mem_region
+{
+    CLASSB_MEM_REGION_ITCM      = 0,
+    CLASSB_MEM_REGION_DTCM      = 1,
+    CLASSB_MEM_REGION_SRAM      = 2
+} CLASSB_MEM_REGION;
+
 /*----------------------------------------------------------------------------
  *     Functions
  *----------------------------------------------------------------------------*/
 
-CLASSB_TEST_STATUS CLASSB_SRAM_MarchTestInit(uint32_t * start_addr,
-    uint32_t test_size, CLASSB_SRAM_MARCH_ALGO march_algo, bool running_context);
-CLASSB_TEST_STATUS CLASSB_SRAM_MarchTest(uint32_t * start_addr,
-    uint32_t test_size, CLASSB_SRAM_MARCH_ALGO march_algo, bool running_context);
-
+CLASSB_TEST_STATUS CLASSB_SRAM_MarchTestInit(   uint32_t * start_addr,
+                                                uint32_t test_size, 
+                                                CLASSB_SRAM_MARCH_ALGO march_algo, 
+                                                bool running_context,
+                                                CLASSB_MEM_REGION mem_region);
+CLASSB_TEST_STATUS CLASSB_SRAM_MarchTest(   uint32_t * start_addr,
+                                            uint32_t test_size, 
+                                            CLASSB_SRAM_MARCH_ALGO march_algo, 
+                                            bool running_context,
+                                            CLASSB_MEM_REGION mem_region);
 /* RAM march algorithms
- * Optimization is set to zero, else the compiler optimizes these function away.
+ * Optimization is set to zero, else the compiler optimizes these functions away.
  */
-bool __attribute__((optimize("-O0"))) CLASSB_RAMMarchC(uint32_t * start_addr, uint32_t test_size);
-bool __attribute__((optimize("-O0"))) CLASSB_RAMMarchCMinus(uint32_t * start_addr, uint32_t test_size);
-bool __attribute__((optimize("-O0"))) CLASSB_RAMMarchB(uint32_t * start_addr, uint32_t test_size);
+bool __attribute__((optimize("-O0"))) CLASSB_RAMMarchC( uint32_t * start_addr, 
+                                                        uint32_t test_size, 
+                                                        CLASSB_MEM_REGION mem_region);
+bool __attribute__((optimize("-O0"))) CLASSB_RAMMarchCMinus(uint32_t * start_addr, 
+                                                            uint32_t test_size, 
+                                                            CLASSB_MEM_REGION mem_region);
+bool __attribute__((optimize("-O0"))) CLASSB_RAMMarchB( uint32_t * start_addr, 
+                                                        uint32_t test_size, 
+                                                        CLASSB_MEM_REGION mem_region);
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

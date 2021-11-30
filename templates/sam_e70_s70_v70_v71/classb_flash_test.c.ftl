@@ -128,7 +128,7 @@ CLASSB_TEST_STATUS CLASSB_FlashCRCTest(uint32_t start_addr,
     /* Size must be less than the total flash size
      * Tested address must not exceed the available flash memory address
      */
-    if ((test_size <= FLASH_SIZE) && (final_addr_tested < FLASH_SIZE))
+    if ((test_size <= IFLASH_SIZE) && (final_addr_tested < IFLASH_SIZE))
     {
         /* Update test status to 'In Progress' */
         if (running_context == true)

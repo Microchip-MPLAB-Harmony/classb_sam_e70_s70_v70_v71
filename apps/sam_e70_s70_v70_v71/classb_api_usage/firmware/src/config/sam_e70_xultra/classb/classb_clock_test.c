@@ -1,5 +1,5 @@
 /*******************************************************************************
-  Class B Library v2.0.0 Release
+  Class B Library v1.0.0 Release
 
   Company:
     Microchip Technology Inc.
@@ -16,7 +16,7 @@
 *******************************************************************************/
 
 /*******************************************************************************
-* Copyright (C) 2020 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -50,13 +50,10 @@
 #define CLASSB_CLOCK_MAX_SYSTICK_VAL        (0xffffffU)
 #define CLASSB_CLOCK_RTC_CLK_FREQ           (32768U)
 #define CLASSB_CLOCK_MAX_TEST_ACCURACY      (5U)
-
 /* Since no floating point is used for clock test, multiply intermediate
  * values with 128.
  */
 #define CLASSB_CLOCK_MUL_FACTOR             (128U)
-
-
 
 /*----------------------------------------------------------------------------
  *     Global Variables
@@ -67,7 +64,6 @@
  *----------------------------------------------------------------------------*/
 extern void _CLASSB_UpdateTestResult(CLASSB_TEST_TYPE test_type,
     CLASSB_TEST_ID test_id, CLASSB_TEST_STATUS value);
-
 
 /*============================================================================
 static uint32_t _CLASSB_Clock_SysTickGetVal(void)

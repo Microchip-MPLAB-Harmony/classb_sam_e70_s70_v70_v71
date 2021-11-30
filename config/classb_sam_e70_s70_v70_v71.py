@@ -21,6 +21,7 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
+
 ################################################################################
 #### Call-backs ####
 ################################################################################
@@ -41,14 +42,14 @@ def instantiateComponent(classBComponent):
     execfile(Module.getPath() +"/config/interface.py")
     
     #Device params
-    classBFlashNode = ATDF.getNode("/avr-tools-device-file/devices/device/address-spaces/address-space/memory-segment@[name=\"FLASH\"]")
+    classBFlashNode = ATDF.getNode("/avr-tools-device-file/devices/device/address-spaces/address-space/memory-segment@[name=\"IFLASH\"]")
     if classBFlashNode != None:
         #Flash size
         classB_FLASH_SIZE = classBComponent.createIntegerSymbol("CLASSB_FLASH_SIZE", None)
         classB_FLASH_SIZE.setVisible(False)
         classB_FLASH_SIZE.setDefaultValue(int(classBFlashNode.getAttribute("size"), 16))
         
-    classBSRAMNode = ATDF.getNode("/avr-tools-device-file/devices/device/address-spaces/address-space/memory-segment@[name=\"HSRAM\"]")
+    classBSRAMNode = ATDF.getNode("/avr-tools-device-file/devices/device/address-spaces/address-space/memory-segment@[name=\"IRAM\"]")
     if classBSRAMNode != None:
         #SRAM size
         classB_SRAM_SIZE = classBComponent.createIntegerSymbol("CLASSB_SRAM_SIZE", None)
@@ -94,17 +95,42 @@ def instantiateComponent(classBComponent):
     classb_Ram_marchAlgo.setVisible(False)
     #This should be enabled based on the above configuration
     classb_Ram_marchAlgo.setDependencies(setClassB_SymbolVisibility, ["CLASSB_SRAM_TEST_OPT"])
-    
-    # Size of the area to be tested
+
+     # Size of the ITCM area to be tested
+    classb_ITCM_marchSize = classBComponent.createIntegerSymbol("CLASSB_ITCM_MARCH_SIZE", classB_UseSRAMTest)
+    classb_ITCM_marchSize.setLabel("Size of the ITCM test area (bytes)")
+    classb_ITCM_marchSize.setDefaultValue(0)
+    classb_ITCM_marchSize.setVisible(False)
+    classb_ITCM_marchSize.setMin(0)
+    classb_ITCM_marchSize.setMax(0)
+    classb_ITCM_marchSize.setDescription("Size of the ITCM area to be tested starting from 0x00000000")
+    classb_ITCM_marchSize.setDependencies(setClassB_SymbolVisibility, ["CLASSB_SRAM_TEST_OPT"])
+    #classb_ITCM_marchSize.setDependencies(classB_TCM_Update,["CLASSB_TCM_SIZE"])
+
+    # Size of the DTCM area to be tested
+    classb_DTCM_marchSize = classBComponent.createIntegerSymbol("CLASSB_DTCM_MARCH_SIZE", classB_UseSRAMTest)
+    classb_DTCM_marchSize.setLabel("Size of the DTCM test area (bytes)")
+    classb_DTCM_marchSize.setDefaultValue(0)
+    classb_DTCM_marchSize.setVisible(False)
+    classb_DTCM_marchSize.setMin(0)
+    classb_DTCM_marchSize.setMax(0)
+    classb_DTCM_marchSize.setDescription("Size of the DTCM area to be tested starting from 0x20000000")
+    classb_DTCM_marchSize.setDependencies(setClassB_SymbolVisibility, ["CLASSB_SRAM_TEST_OPT"])
+    #classb_DTCM_marchSize.setDependencies(classB_TCM_Update,["CLASSB_TCM_SIZE"])
+
+
+    # Size of the SRAM area to be tested
     classb_Ram_marchSize = classBComponent.createIntegerSymbol("CLASSB_SRAM_MARCH_SIZE", classB_UseSRAMTest)
-    classb_Ram_marchSize.setLabel("Size of the tested area (bytes)")
+    classb_Ram_marchSize.setLabel("Size of the SRAM test area (bytes)")
     classb_Ram_marchSize.setDefaultValue(classB_SRAM_SIZE.getValue() / 4)
     classb_Ram_marchSize.setVisible(False)
     classb_Ram_marchSize.setMin(0)
     # 1024 bytes are reserved for the use of Class B library
     classb_Ram_marchSize.setMax(classB_SRAM_SIZE.getValue() - 1024)
-    classb_Ram_marchSize.setDescription("Size of the SRAM area to be tested starting from 0x20000400")
+    classb_Ram_marchSize.setDescription("Size of the SRAM area to be tested starting from 0x20400400")
     classb_Ram_marchSize.setDependencies(setClassB_SymbolVisibility, ["CLASSB_SRAM_TEST_OPT"])
+    #classb_Ram_marchSize.setDependencies(classB_TCM_Update,["CLASSB_TCM_SIZE"])
+    
     
     # CRC-32 checksum availability
     classB_FlashCRC_Option = classBComponent.createBooleanSymbol("CLASSB_FLASH_CRC_CONF", classBMenu)
@@ -116,7 +142,7 @@ def instantiateComponent(classBComponent):
     # Address at which CRC-32 of the application image is stored
     classB_CRC_address = classBComponent.createHexSymbol("CLASSB_FLASHCRC_ADDR", classB_FlashCRC_Option)
     classB_CRC_address.setLabel("Flash CRC location")
-    classB_CRC_address.setDefaultValue(0xFE000)
+    classB_CRC_address.setDefaultValue(0x50000)
     classB_CRC_address.setMin(0)
     classB_CRC_address.setMax(classB_FLASH_SIZE.getValue() - 4)
     classB_CRC_address.setVisible(False)
@@ -156,29 +182,148 @@ def instantiateComponent(classBComponent):
     classB_UseInterTest.setVisible(True)
     classB_UseInterTest.setDefaultValue(False)
     classB_UseInterTest.setDescription("This self-test check interrupts operation with the help of NVIC, RTC and TC0")
-    
-    
+
+    # TCM Settings
+    classB_TCMSettings = classBComponent.createMenuSymbol("CLASSB_TCM_MENU", None)
+    classB_TCMSettings.setLabel("DTCM/ITCM Settings")
+
+    classB_TCM_size = classBComponent.createKeyValueSetSymbol("CLASSB_TCM_SIZE", classB_TCMSettings)
+    classB_TCM_size.setLabel("TCM Size - set to match config bits")
+    classB_TCM_size.setOutputMode("Value")
+    classB_TCM_size.setDisplayMode("Description")
+    classB_TCM_size.addKey("0KB", "0", "DTCM: 0KB, ITCM: 0KB")
+    classB_TCM_size.addKey("32KB", "1", "DTCM: 32KB, ITCM: 32KB")
+    classB_TCM_size.addKey("64KB", "2", "DTCM: 64 KB, ITCM: 64KB")
+    classB_TCM_size.addKey("128KB", "3", "DTCM: 128 KB,  ITCM: 128KB")
+    classB_TCM_size.setSelectedKey("0KB", 1)
+    tcm_size = (0)
+
+    classB_TCM_Comment = classBComponent.createCommentSymbol("classBTCMComment", classB_TCMSettings)
+    classB_TCM_Comment.setLabel("*** This must match the TCM Size config bit setting")
+
+    # TCM Settings Update Event
+    def classB_TCM_Update(comment, event):
+        data = comment.getComponent()
+        key_val = classB_TCM_size.getSelectedKey()
+
+        if key_val == "0KB":
+            tcm_size = (0)
+            tcm_total = (tcm_size * 2)
+            sram_actual = (classB_SRAM_SIZE.getValue() - tcm_total)
+            classB_ITCM_lastWordAddr.setValue((0x00000000 + tcm_size  - 4))
+            classB_DTCM_lastWordAddr.setValue((0x20000000 + tcm_size  - 4))            
+            classB_SRAM_lastWordAddr.setValue((0x20400000 + sram_actual  - 4))
+            classb_Ram_marchSize.setValue((sram_actual - 1024) / 4)
+            classb_Ram_marchSize.setMax(sram_actual - 1024)
+            classb_ITCM_marchSize.setValue(tcm_size  / 4)
+            classb_ITCM_marchSize.setMax(tcm_size )
+            classb_DTCM_marchSize.setValue(tcm_size  / 4)
+            classb_DTCM_marchSize.setMax(tcm_size )
+        elif key_val == "32KB":
+            tcm_size = (0x8000)
+            tcm_total = (tcm_size * 2)
+            sram_actual = (classB_SRAM_SIZE.getValue() - tcm_total)
+            classB_ITCM_lastWordAddr.setValue((0x00000000 + tcm_size  - 4))
+            classB_DTCM_lastWordAddr.setValue((0x20000000 + tcm_size  - 4))
+            classB_SRAM_lastWordAddr.setValue((0x20400000 + sram_actual  - 4))
+            classb_Ram_marchSize.setValue((sram_actual - 1024) / 4)
+            classb_Ram_marchSize.setMax(sram_actual - 1024)
+            classb_ITCM_marchSize.setValue(tcm_size  / 4)
+            classb_ITCM_marchSize.setMax(tcm_size )
+            classb_DTCM_marchSize.setValue(tcm_size  / 4)
+            classb_DTCM_marchSize.setMax(tcm_size )
+        elif key_val == "64KB":
+            tcm_size = (0x10000)
+            tcm_total = (tcm_size * 2)
+            sram_actual = (classB_SRAM_SIZE.getValue() - tcm_total)
+            classB_ITCM_lastWordAddr.setValue((0x00000000 + tcm_size  - 4))
+            classB_DTCM_lastWordAddr.setValue((0x20000000 + tcm_size  - 4))
+            classB_SRAM_lastWordAddr.setValue((0x20400000 + sram_actual  - 4))
+            classb_Ram_marchSize.setValue((sram_actual - 1024) / 4)
+            classb_Ram_marchSize.setMax(sram_actual - 1024)
+            classb_ITCM_marchSize.setValue(tcm_size  / 4)
+            classb_ITCM_marchSize.setMax(tcm_size )
+            classb_DTCM_marchSize.setValue(tcm_size  / 4)
+            classb_DTCM_marchSize.setMax(tcm_size )
+        elif key_val == "128KB":
+            tcm_size = (0x20000)
+            tcm_total = (tcm_size * 2)
+            sram_actual = (classB_SRAM_SIZE.getValue() - tcm_total)
+            classB_ITCM_lastWordAddr.setValue((0x00000000 + tcm_size  - 4))
+            classB_DTCM_lastWordAddr.setValue((0x20000000 + tcm_size  - 4))
+            classB_SRAM_lastWordAddr.setValue((0x20400000 + sram_actual  - 4))
+            classb_Ram_marchSize.setValue((sram_actual - 1024) / 4)
+            classb_Ram_marchSize.setMax(sram_actual - 1024)
+            classb_ITCM_marchSize.setValue(tcm_size  / 4)
+            classb_ITCM_marchSize.setMax(tcm_size )
+            classb_DTCM_marchSize.setValue(tcm_size  / 4)
+            classb_DTCM_marchSize.setMax(tcm_size )
+
+
+    # Read-only
     classBReadOnlyParams = classBComponent.createMenuSymbol("CLASSB_ADDR_MENU", None)
     classBReadOnlyParams.setLabel("Build parameters (read-only) used by the library")
     
+    # Read-only symbol for start of non-reserved ITCM
+    classb_AppITCM_start = classBComponent.createHexSymbol("CLASSB_ITCM_APP_START", classBReadOnlyParams)
+    classb_AppITCM_start.setLabel("Start address of ITCM")
+    classb_AppITCM_start.setDefaultValue(0x00000000)
+    classb_AppITCM_start.setReadOnly(True)
+    classb_AppITCM_start.setMin(0x00000000)
+    classb_AppITCM_start.setMax(0x00000000)
+    classb_AppITCM_start.setDescription("Start address of ITCM")
+    
+    #ITCM last word address
+    classB_ITCM_lastWordAddr = classBComponent.createHexSymbol("CLASSB_ITCM_LASTWORD_ADDR", classBReadOnlyParams)
+    classB_ITCM_lastWordAddr.setLabel("Address of the last word in ITCM")
+    classB_ITCM_lastWordAddr.setReadOnly(True)
+    classB_ITCM_lastWordAddr.setDefaultValue(0x00000000)
+    classB_ITCM_lastWordAddr.setMin(0x00000000)
+    classB_ITCM_lastWordAddr.setMax((0x00000000 + tcm_size  - 4))
+    itcm_top = hex(classB_ITCM_lastWordAddr.getValue() + 4)
+    classB_ITCM_lastWordAddr.setDescription("The ITCM memory address range is 0x00000000 to " + str(itcm_top))
+    classB_ITCM_lastWordAddr.setDependencies(classB_TCM_Update,["CLASSB_TCM_SIZE"])
+
+    # Read-only symbol for start of non-reserved DTCM
+    classb_AppDTCM_start = classBComponent.createHexSymbol("CLASSB_DTCM_APP_START", classBReadOnlyParams)
+    classb_AppDTCM_start.setLabel("Start address of DTCM")
+    classb_AppDTCM_start.setDefaultValue(0x20000000)
+    classb_AppDTCM_start.setReadOnly(True)
+    classb_AppDTCM_start.setMin(0x20000000)
+    classb_AppDTCM_start.setMax(0x20000000)
+    classb_AppDTCM_start.setDescription("Start address of DTCM")
+    
+    #DTCM last word address
+    classB_DTCM_lastWordAddr = classBComponent.createHexSymbol("CLASSB_DTCM_LASTWORD_ADDR", classBReadOnlyParams)
+    classB_DTCM_lastWordAddr.setLabel("Address of the last word in DTCM")
+    classB_DTCM_lastWordAddr.setReadOnly(True)
+    classB_DTCM_lastWordAddr.setDefaultValue(0x20000000)
+    classB_DTCM_lastWordAddr.setMin(0x20000000)
+    classB_DTCM_lastWordAddr.setMax((0x20000000 + tcm_size  - 4))
+    dtcm_top = hex(classB_DTCM_lastWordAddr.getValue() + 4)
+    classB_DTCM_lastWordAddr.setDescription("The DTCM memory address range is 0x20000000 to " + str(dtcm_top))
+    classB_DTCM_lastWordAddr.setDependencies(classB_TCM_Update,["CLASSB_TCM_SIZE"])
+
+
     # Read-only symbol for start of non-reserved SRAM
     classb_AppRam_start = classBComponent.createHexSymbol("CLASSB_SRAM_APP_START", classBReadOnlyParams)
     classb_AppRam_start.setLabel("Start address of non-reserved SRAM")
-    classb_AppRam_start.setDefaultValue(0x20000400)
+    classb_AppRam_start.setDefaultValue(0x20400400)
     classb_AppRam_start.setReadOnly(True)
-    classb_AppRam_start.setMin(0x20000400)
-    classb_AppRam_start.setMax(0x20000400)
+    classb_AppRam_start.setMin(0x20400400)
+    classb_AppRam_start.setMax(0x20400400)
     classb_AppRam_start.setDescription("Initial 1kB of SRAM is used by the Class B library")
     
     #SRAM last word address
     classB_SRAM_lastWordAddr = classBComponent.createHexSymbol("CLASSB_SRAM_LASTWORD_ADDR", classBReadOnlyParams)
     classB_SRAM_lastWordAddr.setLabel("Address of the last word in SRAM")
     classB_SRAM_lastWordAddr.setReadOnly(True)
-    classB_SRAM_lastWordAddr.setDefaultValue((0x20000000 + classB_SRAM_SIZE.getValue() - 4))
-    classB_SRAM_lastWordAddr.setMin((0x20000000 + classB_SRAM_SIZE.getValue() - 4))
-    classB_SRAM_lastWordAddr.setMax((0x20000000 + classB_SRAM_SIZE.getValue() - 4))
+    classB_SRAM_lastWordAddr.setDefaultValue((0x20400000 + classB_SRAM_SIZE.getValue()  - 4))
+    classB_SRAM_lastWordAddr.setMin(0x20400000)
+    classB_SRAM_lastWordAddr.setMax((0x20400000 + classB_SRAM_SIZE.getValue() - 4))
     sram_top = hex(classB_SRAM_lastWordAddr.getValue() + 4)
-    classB_SRAM_lastWordAddr.setDescription("The SRAM memory address range is 0x20000000 to " + str(sram_top))
+    classB_SRAM_lastWordAddr.setDescription("The SRAM memory address range is 0x20400000 to " + str(sram_top))
+    classB_SRAM_lastWordAddr.setDependencies(classB_TCM_Update,["CLASSB_TCM_SIZE"])
     
     # Read-only symbol for CRC-32 polynomial
     classb_FlashCRCPoly = classBComponent.createHexSymbol("CLASSB_FLASH_CRC32_POLY", classBReadOnlyParams)
@@ -395,6 +540,6 @@ def instantiateComponent(classBComponent):
     classB_xc32ld_reserve_sram = classBComponent.createSettingSymbol("CLASSB_XC32LD_RESERVE_SRAM", None)
     classB_xc32ld_reserve_sram.setCategory("C32-LD")
     classB_xc32ld_reserve_sram.setKey("appendMe")
-    classB_xc32ld_reserve_sram.setValue("-DRAM_ORIGIN=0x20000400"+",-DRAM_LENGTH=" + hex(classB_SRAM_SIZE.getValue() - 1024))
+    classB_xc32ld_reserve_sram.setValue("-DRAM_ORIGIN=0x20400400"+",-DRAM_LENGTH=" + hex(classB_SRAM_SIZE.getValue() - 1024))
+
    
-    

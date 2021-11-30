@@ -1,5 +1,5 @@
 /*******************************************************************************
-  Class B Library v2.0.0 Release
+  Class B Library v1.0.0 Release
 
   Company:
     Microchip Technology Inc.
@@ -17,7 +17,7 @@
 *******************************************************************************/
 
 /*******************************************************************************
-Copyright (c) 2020 released Microchip Technology Inc.  All rights reserved.
+Copyright (c) 2021 released Microchip Technology Inc.  All rights reserved.
 
 Microchip licenses to you the right to use, modify, copy and distribute
 Software only when embedded on a Microchip microcontroller or digital signal
@@ -80,7 +80,7 @@ typedef enum classb_port_index
     PORTB = 1,
     PORTC = 2,
     PORTD = 3,
-    PORTE = 4,
+    PORTE = 4
 } CLASSB_PORT_INDEX;
 
 // *****************************************************************************

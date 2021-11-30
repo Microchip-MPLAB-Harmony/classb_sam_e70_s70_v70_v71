@@ -79,7 +79,8 @@ typedef enum classb_port_index
     PORTA = 0,
     PORTB = 1,
     PORTC = 2,
-    PORTD = 3
+    PORTD = 3,
+    PORTE = 4
 } CLASSB_PORT_INDEX;
 
 // *****************************************************************************

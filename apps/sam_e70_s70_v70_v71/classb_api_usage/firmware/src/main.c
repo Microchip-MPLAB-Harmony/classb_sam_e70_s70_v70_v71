@@ -231,7 +231,7 @@ int main ( void )
     
     WDT_Clear();
     __disable_irq();
-    // Note - Systick is default DIV2
+    // Systick is default DIV2
     classb_test_status = CLASSB_ClockTest(150000000, 5, 500, true);
     __enable_irq();
     printf("\r\n Result of CPU Clock RST is %s\r\n", test_status_str[classb_test_status]);

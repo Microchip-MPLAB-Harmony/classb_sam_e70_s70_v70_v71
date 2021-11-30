@@ -50,10 +50,11 @@ SUBSTITUTE  GOODS,  TECHNOLOGY,  SERVICES,  OR  ANY  CLAIMS  BY  THIRD   PARTIES
 ;       CLASSB_TEST_ID test_id, CLASSB_TEST_STATUS value) */
 .global _CLASSB_UpdateTestResult
 
+
 ; /* SRAM address for SST results */
-.equ SST_RES_ADDRESS, 0x20000000
+.equ SST_RES_ADDRESS, 0x20400000
 ; /* SRAM address for RST results */
-.equ RST_RES_ADDRESS, 0x20000002
+.equ RST_RES_ADDRESS, 0x20400002
 ; /* Result mask is 0x03 (2-bit results) */
 .equ RESULT_BIT_MASK, 0x03
 ; /* CLASSB_TEST_STATUS */

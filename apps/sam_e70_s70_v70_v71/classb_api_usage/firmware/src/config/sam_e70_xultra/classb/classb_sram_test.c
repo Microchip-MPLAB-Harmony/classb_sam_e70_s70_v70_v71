@@ -1,5 +1,5 @@
 /*******************************************************************************
-  Class B Library v2.0.0 Release
+  Class B Library v1.0.0 Release
 
   Company:
     Microchip Technology Inc.
@@ -16,7 +16,7 @@
 *******************************************************************************/
 
 /*******************************************************************************
-* Copyright (C) 2020 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -46,20 +46,8 @@
 /*----------------------------------------------------------------------------
  *     Constants
  *----------------------------------------------------------------------------*/
-/* This final address value will be fixed at 32KB */
-#define CLASSB_ITCM_FINAL_WORD_ADDRESS      (0x00007ffcU)
-#define CLASSB_ITCM_BUFF_START_ADDRESS      (0x00000200U)
-#define CLASSB_ITCM_TEMP_STACK_ADDRESS      (0x00000100U)
-#define CLASSB_ITCM_ALL_32BITS_HIGH         (0xFFFFFFFFU)
 
-/* This final address value will be fixed at 32KB */
-#define CLASSB_DTCM_FINAL_WORD_ADDRESS      (0x00007ffcU)
-#define CLASSB_DTCM_BUFF_START_ADDRESS      (0x20000200U)
-#define CLASSB_DTCM_TEMP_STACK_ADDRESS      (0x20000100U)
-#define CLASSB_DTCM_ALL_32BITS_HIGH         (0xFFFFFFFFU)
 
-/* This final address value will differ according to device variant */
-#define CLASSB_SRAM_FINAL_WORD_ADDRESS      (0x2045fffcU)
 #define CLASSB_SRAM_BUFF_START_ADDRESS      (0x20400200U)
 #define CLASSB_SRAM_TEMP_STACK_ADDRESS      (0x20400100U)
 #define CLASSB_SRAM_ALL_32BITS_HIGH         (0xFFFFFFFFU)
@@ -163,11 +151,12 @@ bool CLASSB_RAMMarchC(  uint32_t * start_addr,
     switch(mem_region)
     {
         case CLASSB_MEM_REGION_ITCM:
-            test_buffer_size = CLASSB_ITCM_TEST_BUFFER_SIZE;
+            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
             break;
         case CLASSB_MEM_REGION_DTCM:
-            test_buffer_size = CLASSB_DTCM_TEST_BUFFER_SIZE;
+            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
             break;
+        
         case CLASSB_MEM_REGION_SRAM:
             test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
             break;
@@ -317,14 +306,15 @@ bool CLASSB_RAMMarchCMinus( uint32_t * start_addr,
     switch(mem_region)
     {
         case CLASSB_MEM_REGION_ITCM:
-            test_buffer_size = CLASSB_ITCM_TEST_BUFFER_SIZE;
+            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
             break;
         case CLASSB_MEM_REGION_DTCM:
-            test_buffer_size = CLASSB_DTCM_TEST_BUFFER_SIZE;
+            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
             break;
         case CLASSB_MEM_REGION_SRAM:
             test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
             break;
+        
         default:
             sram_march_c_result = false;
             break;           
@@ -458,10 +448,10 @@ bool CLASSB_RAMMarchB(  uint32_t * start_addr,
     switch(mem_region)
     {
         case CLASSB_MEM_REGION_ITCM:
-            test_buffer_size = CLASSB_ITCM_TEST_BUFFER_SIZE;
+            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
             break;
         case CLASSB_MEM_REGION_DTCM:
-            test_buffer_size = CLASSB_DTCM_TEST_BUFFER_SIZE;
+            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
             break;
         case CLASSB_MEM_REGION_SRAM:
             test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
@@ -632,12 +622,12 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTestInit(   uint32_t * start_addr,
         case CLASSB_MEM_REGION_ITCM:
             max_march_test_end_address = CLASSB_ITCM_FINAL_WORD_ADDRESS;
             min_mem_start_address = CLASSB_ITCM_APP_AREA_START;
-            stack_pointer_address = CLASSB_ITCM_TEMP_STACK_ADDRESS;
+            stack_pointer_address = CLASSB_SRAM_TEMP_STACK_ADDRESS;
             break;
         case CLASSB_MEM_REGION_DTCM:
             max_march_test_end_address = CLASSB_DTCM_FINAL_WORD_ADDRESS;
             min_mem_start_address = CLASSB_DTCM_APP_AREA_START;
-            stack_pointer_address = CLASSB_DTCM_TEMP_STACK_ADDRESS;
+            stack_pointer_address = CLASSB_SRAM_TEMP_STACK_ADDRESS;
             break;
         case CLASSB_MEM_REGION_SRAM:
             max_march_test_end_address = CLASSB_SRAM_FINAL_WORD_ADDRESS;
@@ -753,16 +743,16 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTest(   uint32_t * start_addr,
     switch(mem_region)
     {
         case CLASSB_MEM_REGION_ITCM:
-            classb_test_buff_size = CLASSB_ITCM_TEST_BUFFER_SIZE;
-            classb_buff_start_add = CLASSB_ITCM_BUFF_START_ADDRESS;
-            march_c_iterations = (test_size_bytes / CLASSB_ITCM_TEST_BUFFER_SIZE);
-            march_c_short_itr_size = (test_size_bytes % CLASSB_ITCM_TEST_BUFFER_SIZE);
+            classb_test_buff_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
+            classb_buff_start_add = CLASSB_SRAM_BUFF_START_ADDRESS;
+            march_c_iterations = (test_size_bytes / CLASSB_SRAM_TEST_BUFFER_SIZE);
+            march_c_short_itr_size = (test_size_bytes % CLASSB_SRAM_TEST_BUFFER_SIZE);
             break;
         case CLASSB_MEM_REGION_DTCM:
-            classb_test_buff_size = CLASSB_DTCM_TEST_BUFFER_SIZE;
-            classb_buff_start_add = CLASSB_DTCM_BUFF_START_ADDRESS;
-            march_c_iterations = (test_size_bytes / CLASSB_DTCM_TEST_BUFFER_SIZE);
-            march_c_short_itr_size = (test_size_bytes % CLASSB_DTCM_TEST_BUFFER_SIZE);
+            classb_test_buff_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
+            classb_buff_start_add = CLASSB_SRAM_BUFF_START_ADDRESS;
+            march_c_iterations = (test_size_bytes / CLASSB_SRAM_TEST_BUFFER_SIZE);
+            march_c_short_itr_size = (test_size_bytes % CLASSB_SRAM_TEST_BUFFER_SIZE);
             break;
         case CLASSB_MEM_REGION_SRAM:
             classb_test_buff_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
