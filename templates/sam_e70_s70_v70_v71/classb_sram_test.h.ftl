@@ -124,18 +124,7 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTest(   uint32_t * start_addr,
                                             CLASSB_SRAM_MARCH_ALGO march_algo, 
                                             bool running_context,
                                             CLASSB_MEM_REGION mem_region);
-/* RAM march algorithms
- * Optimization is set to zero, else the compiler optimizes these functions away.
- */
-bool __attribute__((optimize("-O0"))) CLASSB_RAMMarchC( uint32_t * start_addr, 
-                                                        uint32_t test_size, 
-                                                        CLASSB_MEM_REGION mem_region);
-bool __attribute__((optimize("-O0"))) CLASSB_RAMMarchCMinus(uint32_t * start_addr, 
-                                                            uint32_t test_size, 
-                                                            CLASSB_MEM_REGION mem_region);
-bool __attribute__((optimize("-O0"))) CLASSB_RAMMarchB( uint32_t * start_addr, 
-                                                        uint32_t test_size, 
-                                                        CLASSB_MEM_REGION mem_region);
+
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

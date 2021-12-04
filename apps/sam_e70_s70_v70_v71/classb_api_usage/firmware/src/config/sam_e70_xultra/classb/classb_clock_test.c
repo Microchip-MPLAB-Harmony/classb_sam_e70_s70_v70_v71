@@ -55,6 +55,10 @@
  */
 #define CLASSB_CLOCK_MUL_FACTOR             (128U)
 
+/* The default SysTick clock is Master Clock divided by two. This can be modified
+here for different setups.  */
+#define CLASSB_CLOCK_SYSTICK_DIV            (2U)
+
 /*----------------------------------------------------------------------------
  *     Global Variables
  *----------------------------------------------------------------------------*/
@@ -178,7 +182,8 @@ CLASSB_TEST_STATUS CLASSB_ClockTest(uint32_t cpu_clock_freq,
     bool running_context)
 {
     CLASSB_TEST_STATUS clock_test_status = CLASSB_TEST_NOT_EXECUTED;
-    int64_t expected_ticks = ((cpu_clock_freq / CLASSB_CLOCK_RTC_CLK_FREQ) * clock_test_rtc_cycles);
+    /* cpu_clock_freq is corrected for Systick divider with CLASSB_CLOCK_SYSTICK_DIV */
+    int64_t expected_ticks = (((cpu_clock_freq / CLASSB_CLOCK_SYSTICK_DIV) / CLASSB_CLOCK_RTC_CLK_FREQ) * clock_test_rtc_cycles);
     volatile uint32_t systick_count_a = 0;
     volatile uint32_t systick_count_b = 0;
     int64_t ticks_passed = 0;

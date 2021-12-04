@@ -215,6 +215,8 @@ def instantiateComponent(classBComponent):
             classB_SRAM_lastWordAddr.setValue((0x20400000 + sram_actual  - 4))
             classb_Ram_marchSize.setValue((sram_actual - 1024) / 4)
             classb_Ram_marchSize.setMax(sram_actual - 1024)
+            classB_xc32ld_reserve_sram.setValue("-DRAM_ORIGIN=0x20400400"+",-DRAM_LENGTH=" + hex(sram_actual - 1024))
+            classB_xc32ld_reserve_sram_comment.setLabel("LD Option: " + classB_xc32ld_reserve_sram.getValue())
             classb_ITCM_marchSize.setValue(tcm_size  / 4)
             classb_ITCM_marchSize.setMax(tcm_size )
             classb_DTCM_marchSize.setValue(tcm_size  / 4)
@@ -228,6 +230,8 @@ def instantiateComponent(classBComponent):
             classB_SRAM_lastWordAddr.setValue((0x20400000 + sram_actual  - 4))
             classb_Ram_marchSize.setValue((sram_actual - 1024) / 4)
             classb_Ram_marchSize.setMax(sram_actual - 1024)
+            classB_xc32ld_reserve_sram.setValue("-DRAM_ORIGIN=0x20400400"+",-DRAM_LENGTH=" + hex(sram_actual - 1024))
+            classB_xc32ld_reserve_sram_comment.setLabel("LD Option: " + classB_xc32ld_reserve_sram.getValue())
             classb_ITCM_marchSize.setValue(tcm_size  / 4)
             classb_ITCM_marchSize.setMax(tcm_size )
             classb_DTCM_marchSize.setValue(tcm_size  / 4)
@@ -241,6 +245,8 @@ def instantiateComponent(classBComponent):
             classB_SRAM_lastWordAddr.setValue((0x20400000 + sram_actual  - 4))
             classb_Ram_marchSize.setValue((sram_actual - 1024) / 4)
             classb_Ram_marchSize.setMax(sram_actual - 1024)
+            classB_xc32ld_reserve_sram.setValue("-DRAM_ORIGIN=0x20400400"+",-DRAM_LENGTH=" + hex(sram_actual - 1024))
+            classB_xc32ld_reserve_sram_comment.setLabel("LD Option: " + classB_xc32ld_reserve_sram.getValue())
             classb_ITCM_marchSize.setValue(tcm_size  / 4)
             classb_ITCM_marchSize.setMax(tcm_size )
             classb_DTCM_marchSize.setValue(tcm_size  / 4)
@@ -254,6 +260,8 @@ def instantiateComponent(classBComponent):
             classB_SRAM_lastWordAddr.setValue((0x20400000 + sram_actual  - 4))
             classb_Ram_marchSize.setValue((sram_actual - 1024) / 4)
             classb_Ram_marchSize.setMax(sram_actual - 1024)
+            classB_xc32ld_reserve_sram.setValue("-DRAM_ORIGIN=0x20400400"+",-DRAM_LENGTH=" + hex(sram_actual - 1024))
+            classB_xc32ld_reserve_sram_comment.setLabel("LD Option: " + classB_xc32ld_reserve_sram.getValue())
             classb_ITCM_marchSize.setValue(tcm_size  / 4)
             classb_ITCM_marchSize.setMax(tcm_size )
             classb_DTCM_marchSize.setValue(tcm_size  / 4)
@@ -456,6 +464,24 @@ def instantiateComponent(classBComponent):
     classBHeaderSRAMTest.setProjectPath("config/" + configName +"/classb")
     classBHeaderSRAMTest.setType("HEADER")
     classBHeaderSRAMTest.setMarkup(True)
+
+    # Source File for SRAM March test algorithms
+    classBSourceSRAMTest = classBComponent.createFileSymbol("CLASSB_SOURCE_SRAM_ALGO", None)
+    classBSourceSRAMTest.setSourcePath("/templates/sam_e70_s70_v70_v71/classb_sram_algorithm.c.ftl")
+    classBSourceSRAMTest.setOutputName("classb_sram_algorithm.c")
+    classBSourceSRAMTest.setDestPath("/classb")
+    classBSourceSRAMTest.setProjectPath("config/" + configName + "/classb")
+    classBSourceSRAMTest.setType("SOURCE")
+    classBSourceSRAMTest.setMarkup(True)
+    
+    # Header File for SRAM March test algorithms
+    classBHeaderSRAMTest = classBComponent.createFileSymbol("CLASSB_HEADER_SRAM_ALGO", None)
+    classBHeaderSRAMTest.setSourcePath("/templates/sam_e70_s70_v70_v71/classb_sram_algorithm.h.ftl")
+    classBHeaderSRAMTest.setOutputName("classb_sram_algorithm.h")
+    classBHeaderSRAMTest.setDestPath("/classb")
+    classBHeaderSRAMTest.setProjectPath("config/" + configName +"/classb")
+    classBHeaderSRAMTest.setType("HEADER")
+    classBHeaderSRAMTest.setMarkup(True)
     
     # Source File for Flash test
     classBSourceFLASHTest = classBComponent.createFileSymbol("CLASSB_SOURCE_FLASH_TEST", None)
@@ -541,5 +567,8 @@ def instantiateComponent(classBComponent):
     classB_xc32ld_reserve_sram.setCategory("C32-LD")
     classB_xc32ld_reserve_sram.setKey("appendMe")
     classB_xc32ld_reserve_sram.setValue("-DRAM_ORIGIN=0x20400400"+",-DRAM_LENGTH=" + hex(classB_SRAM_SIZE.getValue() - 1024))
+
+    classB_xc32ld_reserve_sram_comment = classBComponent.createCommentSymbol("classB_XC32_LD_Comment", classBReadOnlyParams)
+    classB_xc32ld_reserve_sram_comment.setLabel("LD Option: " + classB_xc32ld_reserve_sram.getValue())
 
    

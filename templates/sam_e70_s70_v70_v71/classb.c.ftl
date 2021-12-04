@@ -68,8 +68,8 @@
 #define CLASSB_CLOCK_TEST_RTC_RATIO_NS      (30517U)
 #define CLASSB_CLOCK_TEST_RATIO_NS_MS       (1000000U)
 
-// Internal RC 12MHz and Div/2 for SysTick
-#define CLASSB_CLOCK_DEFAULT_CLOCK_FREQ     (6000000U)
+// Default - Internal RC 12MHz
+#define CLASSB_CLOCK_DEFAULT_CLOCK_FREQ     (12000000U)
 #define CLASSB_INVALID_TEST_ID              (0xFFU)
 
 // Master clock setup - default master clock is set to 32k Hz clock   
@@ -363,10 +363,8 @@ static CLASSB_INIT_STATUS CLASSB_Init(void)
             bool result_area_test_ok = false;
             bool ram_buffer_test_ok = false;
             // Test the reserved SRAM
-            result_area_test_ok = CLASSB_RAMMarchC((uint32_t *)IRAM_ADDR,
-                CLASSB_SRAM_TEST_BUFFER_SIZE, CLASSB_MEM_REGION_SRAM);
-            ram_buffer_test_ok = CLASSB_RAMMarchC((uint32_t *)IRAM_ADDR + CLASSB_SRAM_TEST_BUFFER_SIZE,
-                CLASSB_SRAM_TEST_BUFFER_SIZE, CLASSB_MEM_REGION_SRAM);
+            result_area_test_ok = CLASSB_RAMMarchC((uint32_t *)IRAM_ADDR, CLASSB_SRAM_TEST_BUFFER_SIZE);
+            ram_buffer_test_ok = CLASSB_RAMMarchC((uint32_t *)IRAM_ADDR + CLASSB_SRAM_TEST_BUFFER_SIZE, CLASSB_SRAM_TEST_BUFFER_SIZE);
 
             if ((result_area_test_ok == true) && (ram_buffer_test_ok == true))
             {
@@ -487,39 +485,60 @@ static CLASSB_STARTUP_STATUS CLASSB_Startup_Tests(void)
         <#if CLASSB_SRAM_TEST_OPT == true>
 
             <#lt>    // SRAM test
-            <#lt>    // Clear WDT before test
-            <#lt>    WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
+
             <#lt>    *ongoing_sst_id = CLASSB_TEST_RAM;
+
             <#if CLASSB_SRAM_MARCH_ALGORITHM?has_content>
                 
+                    <#lt>    // Clear WDT before test
+                    <#lt>    WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
+
                     <#lt>   /* ITCM Region */
                     <#lt>    cb_test_status = CLASSB_SRAM_MarchTestInit((uint32_t *)CLASSB_ITCM_APP_AREA_START,
                     <#lt>        CLASSB_ITCM_STARTUP_TEST_SIZE, ${CLASSB_SRAM_MARCH_ALGORITHM}, false, CLASSB_MEM_REGION_ITCM);
                 
+                    <#lt>    // Clear WDT before test
+                    <#lt>    WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
+
                     <#lt>   /* DTCM Region */
                     <#lt>    cb_test_status = CLASSB_SRAM_MarchTestInit((uint32_t *)CLASSB_DTCM_APP_AREA_START,
                     <#lt>        CLASSB_DTCM_STARTUP_TEST_SIZE, ${CLASSB_SRAM_MARCH_ALGORITHM}, false, CLASSB_MEM_REGION_DTCM);
 
-                
+                    <#lt>    // Clear WDT before test
+                    <#lt>    WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
+
                     <#lt>   /* SRAM Region */
                     <#lt>    cb_test_status = CLASSB_SRAM_MarchTestInit((uint32_t *)CLASSB_SRAM_APP_AREA_START,
                     <#lt>        CLASSB_SRAM_STARTUP_TEST_SIZE, ${CLASSB_SRAM_MARCH_ALGORITHM}, false, CLASSB_MEM_REGION_SRAM);
 
+                    <#lt>    // Clear WDT before test
+                    <#lt>    WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
+
             <#else>
                 
+                    <#lt>    // Clear WDT before test
+                    <#lt>    WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
+
                     <#lt>   /* ITCM Region */
                     <#lt>    cb_test_status = CLASSB_SRAM_MarchTestInit((uint32_t *)CLASSB_ITCM_APP_AREA_START,
                     <#lt>        CLASSB_ITCM_STARTUP_TEST_SIZE, CLASSB_SRAM_MARCH_C, false, CLASSB_MEM_REGION_ITCM);
 
-                
+                    <#lt>    // Clear WDT before test
+                    <#lt>    WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
+
                     <#lt>   /* DTCM Region */
                     <#lt>    cb_test_status = CLASSB_SRAM_MarchTestInit((uint32_t *)CLASSB_DTCM_APP_AREA_START,
                     <#lt>        CLASSB_DTCM_STARTUP_TEST_SIZE, CLASSB_SRAM_MARCH_C, false, CLASSB_MEM_REGION_DTCM);
 
-                
+                    <#lt>    // Clear WDT before test
+                    <#lt>    WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
+
                     <#lt>   /* SRAM Region */
                     <#lt>    cb_test_status = CLASSB_SRAM_MarchTestInit((uint32_t *)CLASSB_SRAM_APP_AREA_START,
                     <#lt>        CLASSB_SRAM_STARTUP_TEST_SIZE, CLASSB_SRAM_MARCH_C, false, CLASSB_MEM_REGION_SRAM);
+
+                    <#lt>    // Clear WDT before test
+                    <#lt>    WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
 
             </#if>
             <#lt>    if (cb_test_status == CLASSB_TEST_PASSED)

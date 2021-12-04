@@ -54,17 +54,17 @@
 #define CLASSB_FLASH_TEST_VAR_ADDR          (0x20400014U)
 #define CLASSB_INTERRUPT_TEST_VAR_ADDR      (0x20400018U)
 #define CLASSB_INTERRUPT_COUNT_VAR_ADDR     (0x2040001cU)
-#define CLASSB_ITCM_STARTUP_TEST_SIZE       (0U)
-#define CLASSB_DTCM_STARTUP_TEST_SIZE       (0U)
-#define CLASSB_SRAM_STARTUP_TEST_SIZE       (98048U)
+#define CLASSB_ITCM_STARTUP_TEST_SIZE       (8192U)
+#define CLASSB_DTCM_STARTUP_TEST_SIZE       (8192U)
+#define CLASSB_SRAM_STARTUP_TEST_SIZE       (8192U)
 #define CLASSB_CLOCK_ERROR_PERCENT          (5U)
 #define CLASSB_CLOCK_TEST_RTC_CYCLES        (200U)
 // RTC is clocked from 32768 Hz Crystal. One RTC cycle is 30517 nano sec
 #define CLASSB_CLOCK_TEST_RTC_RATIO_NS      (30517U)
 #define CLASSB_CLOCK_TEST_RATIO_NS_MS       (1000000U)
 
-// Internal RC 12MHz and Div/2 for SysTick
-#define CLASSB_CLOCK_DEFAULT_CLOCK_FREQ     (6000000U)
+// Default - Internal RC 12MHz
+#define CLASSB_CLOCK_DEFAULT_CLOCK_FREQ     (12000000U)
 #define CLASSB_INVALID_TEST_ID              (0xFFU)
 
 // Master clock setup - default master clock is set to 32k Hz clock   
@@ -307,7 +307,7 @@ Notes  : This function is executed on every device reset. This shall be
          performed.
 ============================================================================*/
 static CLASSB_INIT_STATUS CLASSB_Init(void)
-{    
+{
     uint32_t rstc_regs_rstc_sr = RSTC_REGS->RSTC_SR;
     
     /* Initialize persistent pointers
@@ -358,10 +358,8 @@ static CLASSB_INIT_STATUS CLASSB_Init(void)
             bool result_area_test_ok = false;
             bool ram_buffer_test_ok = false;
             // Test the reserved SRAM
-            result_area_test_ok = CLASSB_RAMMarchC((uint32_t *)IRAM_ADDR,
-                CLASSB_SRAM_TEST_BUFFER_SIZE, CLASSB_MEM_REGION_SRAM);
-            ram_buffer_test_ok = CLASSB_RAMMarchC((uint32_t *)IRAM_ADDR + CLASSB_SRAM_TEST_BUFFER_SIZE,
-                CLASSB_SRAM_TEST_BUFFER_SIZE, CLASSB_MEM_REGION_SRAM);
+            result_area_test_ok = CLASSB_RAMMarchC((uint32_t *)IRAM_ADDR, CLASSB_SRAM_TEST_BUFFER_SIZE);
+            ram_buffer_test_ok = CLASSB_RAMMarchC((uint32_t *)IRAM_ADDR + CLASSB_SRAM_TEST_BUFFER_SIZE, CLASSB_SRAM_TEST_BUFFER_SIZE);
 
             if ((result_area_test_ok == true) && (ram_buffer_test_ok == true))
             {
@@ -402,15 +400,15 @@ static CLASSB_STARTUP_STATUS CLASSB_Startup_Tests(void)
     CLASSB_STARTUP_STATUS cb_temp_startup_status = CLASSB_STARTUP_TEST_NOT_EXECUTED;
     CLASSB_TEST_STATUS cb_test_status = CLASSB_TEST_NOT_EXECUTED;
     uint16_t clock_test_rtc_cycles = ((5 * CLASSB_CLOCK_TEST_RATIO_NS_MS) / CLASSB_CLOCK_TEST_RTC_RATIO_NS);
-    
-    
-    /* Enable WDT */
+
+
+     /* Enable WDT */
     if ((WDT_REGS->WDT_MR & WDT_MR_WDRSTEN_Msk) == 0)
     {
         WDT_REGS->WDT_MR = WDT_MR_WDD (4095) | WDT_MR_WDV(4095) \
                    | WDT_MR_WDRSTEN_Msk;
     }
-    
+
      /* Init Main Clock */
     _CLASSB_MainClockInit();
     
@@ -419,66 +417,77 @@ static CLASSB_STARTUP_STATUS CLASSB_Startup_Tests(void)
     _CLASSB_MasterClockInit ((uint32_t)CLASSB_MASTER_CLOCK_PRESCALE, 
                              (uint32_t)CLASSB_MASTER_CLOCK_DIVIDE, 
                              (uint32_t)CLASSB_MASTER_CLOCK_SOURCE);
-    
-    *ongoing_sst_id = CLASSB_TEST_CPU;
-    // Test processor core registers
-    cb_test_status = CLASSB_CPU_RegistersTest(false);
 
-    if (cb_test_status == CLASSB_TEST_PASSED)
-    {
-        cb_temp_startup_status = CLASSB_STARTUP_TEST_PASSED;
-    }
-    else if (cb_test_status == CLASSB_TEST_FAILED)
-    {
-        cb_temp_startup_status = CLASSB_STARTUP_TEST_FAILED;
-    }
+        *ongoing_sst_id = CLASSB_TEST_CPU;
+        // Test processor core registers
+        cb_test_status = CLASSB_CPU_RegistersTest(false);
 
-    // Program Counter test
-    *ongoing_sst_id = CLASSB_TEST_PC;
-    cb_test_status = CLASSB_CPU_PCTest(false);
+        if (cb_test_status == CLASSB_TEST_PASSED)
+        {
+            cb_temp_startup_status = CLASSB_STARTUP_TEST_PASSED;
+        }
+        else if (cb_test_status == CLASSB_TEST_FAILED)
+        {
+            cb_temp_startup_status = CLASSB_STARTUP_TEST_FAILED;
+        }
 
-    if (cb_test_status == CLASSB_TEST_PASSED)
-    {
-        cb_temp_startup_status = CLASSB_STARTUP_TEST_PASSED;
-    }
-    else if (cb_test_status == CLASSB_TEST_FAILED)
-    {
-        cb_temp_startup_status = CLASSB_STARTUP_TEST_FAILED;
-    }
-    // Enable FPU
-    SCB->CPACR |= (0xFu << 20);
-    __DSB();
-    __ISB();
-    // Test FPU registers
-    *ongoing_sst_id = CLASSB_TEST_FPU;
-    cb_test_status = CLASSB_FPU_RegistersTest(false);
+        // Program Counter test
+        *ongoing_sst_id = CLASSB_TEST_PC;
+        cb_test_status = CLASSB_CPU_PCTest(false);
 
-    if (cb_test_status == CLASSB_TEST_PASSED)
-    {
-        cb_temp_startup_status = CLASSB_STARTUP_TEST_PASSED;
-    }
-    else if (cb_test_status == CLASSB_TEST_FAILED)
-    {
-        cb_temp_startup_status = CLASSB_STARTUP_TEST_FAILED;
-    }
+        if (cb_test_status == CLASSB_TEST_PASSED)
+        {
+            cb_temp_startup_status = CLASSB_STARTUP_TEST_PASSED;
+        }
+        else if (cb_test_status == CLASSB_TEST_FAILED)
+        {
+            cb_temp_startup_status = CLASSB_STARTUP_TEST_FAILED;
+        }
+        // Enable FPU
+        SCB->CPACR |= (0xFu << 20);
+        __DSB();
+        __ISB();
+        // Test FPU registers
+        *ongoing_sst_id = CLASSB_TEST_FPU;
+        cb_test_status = CLASSB_FPU_RegistersTest(false);
+        
+        if (cb_test_status == CLASSB_TEST_PASSED)
+        {
+            cb_temp_startup_status = CLASSB_STARTUP_TEST_PASSED;
+        }
+        else if (cb_test_status == CLASSB_TEST_FAILED)
+        {
+            cb_temp_startup_status = CLASSB_STARTUP_TEST_FAILED;
+        }
 
     // SRAM test
+
+    *ongoing_sst_id = CLASSB_TEST_RAM;
+
+                
     // Clear WDT before test
     WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
-    *ongoing_sst_id = CLASSB_TEST_RAM;
                 
-    /* ITCM Region */
+   /* ITCM Region */
     cb_test_status = CLASSB_SRAM_MarchTestInit((uint32_t *)CLASSB_ITCM_APP_AREA_START,
         CLASSB_ITCM_STARTUP_TEST_SIZE, CLASSB_SRAM_MARCH_C, false, CLASSB_MEM_REGION_ITCM);
-                
-    /* DTCM Region */
+        
+    // Clear WDT before test
+    WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
+    
+   /* DTCM Region */
     cb_test_status = CLASSB_SRAM_MarchTestInit((uint32_t *)CLASSB_DTCM_APP_AREA_START,
         CLASSB_DTCM_STARTUP_TEST_SIZE, CLASSB_SRAM_MARCH_C, false, CLASSB_MEM_REGION_DTCM);
 
+    // Clear WDT before test
+    WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
                 
-    /* SRAM Region */
+   /* SRAM Region */
     cb_test_status = CLASSB_SRAM_MarchTestInit((uint32_t *)CLASSB_SRAM_APP_AREA_START,
         CLASSB_SRAM_STARTUP_TEST_SIZE, CLASSB_SRAM_MARCH_C, false, CLASSB_MEM_REGION_SRAM);
+
+    // Clear WDT before test
+    WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
     
     if (cb_test_status == CLASSB_TEST_PASSED)
     {
@@ -493,7 +502,7 @@ static CLASSB_STARTUP_STATUS CLASSB_Startup_Tests(void)
     *ongoing_sst_id = CLASSB_TEST_CLOCK;
     // Clear WDT before test
     WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
-    cb_test_status = CLASSB_ClockTest(CLASSB_CLOCK_DEFAULT_CLOCK_FREQ, CLASSB_CLOCK_ERROR_PERCENT, clock_test_rtc_cycles, false);  
+    cb_test_status = CLASSB_ClockTest(CLASSB_CLOCK_DEFAULT_CLOCK_FREQ, CLASSB_CLOCK_ERROR_PERCENT, clock_test_rtc_cycles, false);
     if (cb_test_status == CLASSB_TEST_PASSED)
     {
         cb_temp_startup_status = CLASSB_STARTUP_TEST_PASSED;
@@ -538,12 +547,12 @@ Notes  : This function is called from Reset_Handler.
 void _on_reset(void)
 {
     CLASSB_STARTUP_STATUS startup_tests_status = CLASSB_STARTUP_TEST_FAILED;
-    
+
     /* Enable ITCM/DTCM memory */
     TCM_Enable();
 
     CLASSB_INIT_STATUS init_status = CLASSB_Init();
-    
+
     if (init_status == CLASSB_SST_NOT_DONE)
     {
         *classb_test_in_progress = CLASSB_TEST_STARTED;
@@ -551,7 +560,7 @@ void _on_reset(void)
         startup_tests_status = CLASSB_Startup_Tests();
 
         if (startup_tests_status == CLASSB_STARTUP_TEST_PASSED)
-        {            
+        {
             // Reset the device if all tests are passed.
             NVIC_SystemReset();
         }

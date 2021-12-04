@@ -158,21 +158,21 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;ComponentGraph dnOrder=&quot;0&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;GraphSettings canvasHeight=&quot;357&quot; canvasWidth=&quot;594&quot; dnOrder=&quot;0&quot;/&gt;
+    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;HarmonyCore&quot; x=&quot;21&quot; y=&quot;154&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;cmsis&quot; x=&quot;320&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;2&quot; id=&quot;core&quot; x=&quot;218&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;3&quot; id=&quot;dfp&quot; x=&quot;20&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;4&quot; id=&quot;efc&quot; x=&quot;24&quot; y=&quot;61&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;5&quot; id=&quot;lib_classb_sam_e70_s70_v70_v71&quot; x=&quot;460&quot; y=&quot;20&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;5&quot; id=&quot;lib_classb_sam_e70_s70_v70_v71&quot; x=&quot;473&quot; y=&quot;22&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;6&quot; id=&quot;rtt&quot; x=&quot;172&quot; y=&quot;61&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;7&quot; id=&quot;stdio&quot; x=&quot;156&quot; y=&quot;263&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;8&quot; id=&quot;tc0&quot; x=&quot;319&quot; y=&quot;59&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;9&quot; id=&quot;usart1&quot; x=&quot;24&quot; y=&quot;249&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
-    &lt;GraphSettings canvasHeight=&quot;357&quot; canvasWidth=&quot;593&quot; dnOrder=&quot;1&quot;/&gt;
   &lt;/UserData&gt;
 &lt;/UserData&gt;
 </value>
@@ -311,7 +311,7 @@
   &lt;core dnOrder=&quot;0&quot; id=&quot;DEVICE_TCM_SIZE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
       &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;0&quot;/&gt;
-      &lt;User dnOrder=&quot;1&quot; value=&quot;1&quot;/&gt;
+      &lt;User dnOrder=&quot;1&quot; value=&quot;2&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -1331,6 +1331,28 @@
 </value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PMC_MCKR_MDIV"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;PMC_MCKR_MDIV&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;PCK_DIV2&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PMC_MCKR_PRES"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;PMC_MCKR_PRES&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;CLK_1&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PMC_PCER0"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PMC_PCER0&quot;&gt;
@@ -1771,6 +1793,19 @@
 </value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SYSTICK_PERIOD_MS"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;SYSTICK_PERIOD_MS&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Float dnOrder=&quot;0&quot; id=&quot;max&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;55.92405&lt;/Value&gt;
+      &lt;/Float&gt;
+    &lt;/Attributes&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SYSTICK_PERIOD_US"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;SYSTICK_PERIOD_US&quot;&gt;
@@ -1918,7 +1953,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;TCM_SIZE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;32 KB&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;64 KB&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -2234,7 +2269,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;lib_classb_sam_e70_s70_v70_v71&gt;
   &lt;lib_classb_sam_e70_s70_v70_v71 dnOrder=&quot;0&quot; id=&quot;CLASSB_DTCM_LASTWORD_ADDR&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;lib_classb_sam_e70_s70_v70_v71&quot; value=&quot;536870908&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;lib_classb_sam_e70_s70_v70_v71&quot; value=&quot;536903676&quot;/&gt;
     &lt;/Values&gt;
   &lt;/lib_classb_sam_e70_s70_v70_v71&gt;
 &lt;/lib_classb_sam_e70_s70_v70_v71&gt;
@@ -2246,14 +2281,14 @@
   &lt;lib_classb_sam_e70_s70_v70_v71 dnOrder=&quot;0&quot; id=&quot;CLASSB_DTCM_MARCH_SIZE&quot;&gt;
     &lt;Attributes dnOrder=&quot;0&quot;&gt;
       &lt;Integer dnOrder=&quot;0&quot; id=&quot;max&quot;&gt;
-        &lt;Value dnOrder=&quot;0&quot;&gt;0&lt;/Value&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;32768&lt;/Value&gt;
       &lt;/Integer&gt;
       &lt;Boolean dnOrder=&quot;1&quot; id=&quot;visible&quot;&gt;
         &lt;Value dnOrder=&quot;0&quot;&gt;true&lt;/Value&gt;
       &lt;/Boolean&gt;
     &lt;/Attributes&gt;
     &lt;Values dnOrder=&quot;1&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;lib_classb_sam_e70_s70_v70_v71&quot; value=&quot;0&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;lib_classb_sam_e70_s70_v70_v71&quot; value=&quot;8192&quot;/&gt;
     &lt;/Values&gt;
   &lt;/lib_classb_sam_e70_s70_v70_v71&gt;
 &lt;/lib_classb_sam_e70_s70_v70_v71&gt;
@@ -2286,7 +2321,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;lib_classb_sam_e70_s70_v70_v71&gt;
   &lt;lib_classb_sam_e70_s70_v70_v71 dnOrder=&quot;0&quot; id=&quot;CLASSB_ITCM_LASTWORD_ADDR&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;lib_classb_sam_e70_s70_v70_v71&quot; value=&quot;-4&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;lib_classb_sam_e70_s70_v70_v71&quot; value=&quot;32764&quot;/&gt;
     &lt;/Values&gt;
   &lt;/lib_classb_sam_e70_s70_v70_v71&gt;
 &lt;/lib_classb_sam_e70_s70_v70_v71&gt;
@@ -2298,14 +2333,14 @@
   &lt;lib_classb_sam_e70_s70_v70_v71 dnOrder=&quot;0&quot; id=&quot;CLASSB_ITCM_MARCH_SIZE&quot;&gt;
     &lt;Attributes dnOrder=&quot;0&quot;&gt;
       &lt;Integer dnOrder=&quot;0&quot; id=&quot;max&quot;&gt;
-        &lt;Value dnOrder=&quot;0&quot;&gt;0&lt;/Value&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;32768&lt;/Value&gt;
       &lt;/Integer&gt;
       &lt;Boolean dnOrder=&quot;1&quot; id=&quot;visible&quot;&gt;
         &lt;Value dnOrder=&quot;0&quot;&gt;true&lt;/Value&gt;
       &lt;/Boolean&gt;
     &lt;/Attributes&gt;
     &lt;Values dnOrder=&quot;1&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;lib_classb_sam_e70_s70_v70_v71&quot; value=&quot;0&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;lib_classb_sam_e70_s70_v70_v71&quot; value=&quot;8192&quot;/&gt;
     &lt;/Values&gt;
   &lt;/lib_classb_sam_e70_s70_v70_v71&gt;
 &lt;/lib_classb_sam_e70_s70_v70_v71&gt;
@@ -2316,7 +2351,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;lib_classb_sam_e70_s70_v70_v71&gt;
   &lt;lib_classb_sam_e70_s70_v70_v71 dnOrder=&quot;0&quot; id=&quot;CLASSB_SRAM_LASTWORD_ADDR&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;lib_classb_sam_e70_s70_v70_v71&quot; value=&quot;541458428&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;lib_classb_sam_e70_s70_v70_v71&quot; value=&quot;541392892&quot;/&gt;
     &lt;/Values&gt;
   &lt;/lib_classb_sam_e70_s70_v70_v71&gt;
 &lt;/lib_classb_sam_e70_s70_v70_v71&gt;
@@ -2328,14 +2363,15 @@
   &lt;lib_classb_sam_e70_s70_v70_v71 dnOrder=&quot;0&quot; id=&quot;CLASSB_SRAM_MARCH_SIZE&quot;&gt;
     &lt;Attributes dnOrder=&quot;0&quot;&gt;
       &lt;Integer dnOrder=&quot;0&quot; id=&quot;max&quot;&gt;
-        &lt;Value dnOrder=&quot;0&quot;&gt;392192&lt;/Value&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;326656&lt;/Value&gt;
       &lt;/Integer&gt;
       &lt;Boolean dnOrder=&quot;1&quot; id=&quot;visible&quot;&gt;
         &lt;Value dnOrder=&quot;0&quot;&gt;true&lt;/Value&gt;
       &lt;/Boolean&gt;
     &lt;/Attributes&gt;
     &lt;Values dnOrder=&quot;1&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;lib_classb_sam_e70_s70_v70_v71&quot; value=&quot;98048&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;lib_classb_sam_e70_s70_v70_v71&quot; value=&quot;81664&quot;/&gt;
+      &lt;User dnOrder=&quot;1&quot; value=&quot;8192&quot;/&gt;
     &lt;/Values&gt;
   &lt;/lib_classb_sam_e70_s70_v70_v71&gt;
 &lt;/lib_classb_sam_e70_s70_v70_v71&gt;
@@ -2358,7 +2394,7 @@
   &lt;lib_classb_sam_e70_s70_v70_v71 dnOrder=&quot;0&quot; id=&quot;CLASSB_TCM_SIZE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
       &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;lib_classb_sam_e70_s70_v70_v71&quot; value=&quot;0&quot;/&gt;
-      &lt;User dnOrder=&quot;1&quot; value=&quot;0&quot;/&gt;
+      &lt;User dnOrder=&quot;1&quot; value=&quot;1&quot;/&gt;
     &lt;/Values&gt;
   &lt;/lib_classb_sam_e70_s70_v70_v71&gt;
 &lt;/lib_classb_sam_e70_s70_v70_v71&gt;
@@ -2749,7 +2785,7 @@
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\classb\classb_clock_test.c</file>
-         <hash>c98d108c3907afd44d959bed770d8f435dbda7e15851ff4f535242282776b7fc</hash>
+         <hash>ceb148b4d188a0ca0119013d690814104f0a94218ea16a5f257578896b954fbe</hash>
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\device.h</file>
@@ -2845,7 +2881,7 @@
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\classb\classb.c</file>
-         <hash>92d9142a7de361560c0914a81427c5f3325fdea11ea647446569e9463b53332b</hash>
+         <hash>56042bd457223adf1b61ed49049c8606964272d6948c586feb9bcaa4dcefe540</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\NN\Source\FullyConnectedFunctions\arm_fully_connected_s8.c</file>
@@ -2853,7 +2889,7 @@
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\classb\classb.h</file>
-         <hash>af42a06292a216928e681a32c6f41e7c2ef29d15bd38528ef257b490e0a92e96</hash>
+         <hash>3f17032e435fbf77678a9ec7cf475291aaa9bcf6c33ba47c9d1dfb2af2583c8e</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAME70Q21B_DFP\instance\tc3.h</file>
@@ -2937,7 +2973,7 @@
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\startup_xc32.c</file>
-         <hash>f86f4f1efcae9bae434cc2b87a9e6255e57f0596e0790477deaac31ebd764a3f</hash>
+         <hash>3ed5235787594ffd39867cdcb4de1f7bf5857395a81340e214e4a15542579cb4</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAME70Q21B_DFP\component\gpbr.h</file>
@@ -3120,12 +3156,12 @@
          <hash>be31c5f8ec2ec48d25c6cb7ceec9f95c3f01b3f1617b44ff42163425e5a52d75</hash>
       </entry>
       <entry>
-         <file>..\src\config\sam_e70_xultra\peripheral\efc\plib_efc.c</file>
-         <hash>8be9112c3f429a87758ecf528bab200101a0843c1ee428400ed2b8c51dcbadb0</hash>
-      </entry>
-      <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_armclang_ltm.h</file>
          <hash>8621969ea669a1b230ff2125a760ef66d575c48cb45e9e457f768909abcbda46</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\sam_e70_xultra\peripheral\efc\plib_efc.c</file>
+         <hash>8be9112c3f429a87758ecf528bab200101a0843c1ee428400ed2b8c51dcbadb0</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAME70Q21B_DFP\instance\rswdt.h</file>
@@ -3137,7 +3173,7 @@
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\classb\classb_sram_test.h</file>
-         <hash>80bfbd0e73c80d102226dd1e61a33cbde5fb694e98b390df200e3b1120dfcc23</hash>
+         <hash>b00b4ba73dc1368af9d1fe9c42621ba3d09be1cdafa02644bbc42c9ec85cc942</hash>
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\classb\classb_interrupt_test.c</file>
@@ -3169,7 +3205,7 @@
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\classb\classb_sram_test.c</file>
-         <hash>ca6b3c0699ec592aaf2bdeb9da0162c5a4c8b3f0ffa2e7b052bf7c5a31fc2f6b</hash>
+         <hash>0f57d754e3f364dc8cb264a3c575b7d9aa9d452157dfaef190294aaac08891c7</hash>
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\classb\classb_interrupt_test.h</file>
@@ -3341,7 +3377,7 @@
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\definitions.h</file>
-         <hash>541601fbf863ade4b8d127378c0ba28a5f13f731a49453470dc44d20ed4b0c3c</hash>
+         <hash>90bb01842b7cd855311ef03a0f7185326cd98bb25653eed9d5074567282278d3</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAME70Q21B_DFP\pio\same70q21b.h</file>
@@ -3497,7 +3533,7 @@
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\initialization.c</file>
-         <hash>2a91b3b8b0395445f2c9f26ecbb86ec9b722f16d088b82d36e2b5bca0a514e7f</hash>
+         <hash>f7005e501a2faf4f1d218f51367d738113ad3a2537adcfcdd9e5b1c1fced5951</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAME70Q21B_DFP\instance\wdt.h</file>
@@ -3876,6 +3912,10 @@
          <hash>725f6d6c922706695a3179f942aa284d5d7ec6730aafe4e334ff74fae70900e0</hash>
       </entry>
       <entry>
+         <file>..\src\config\sam_e70_xultra\classb\classb_sram_algorithm.c</file>
+         <hash>ddc720b6c9ff4555629e486df30bdbf264cabf0ed253df3c6b2e64adc211bdf7</hash>
+      </entry>
+      <entry>
          <file>..\src\packs\ATSAME70Q21B_DFP\component\rswdt.h</file>
          <hash>7aaa42d57396685867bc93b7e170fb077913db302e2fdaee110894216926d03a</hash>
       </entry>
@@ -3886,6 +3926,10 @@
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\DSP\Include\arm_math_types_f16.h</file>
          <hash>68e41af22af1d577b15f36303fef65d462c67d380c8849f1f0f5e82c3db18a54</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\sam_e70_xultra\classb\classb_sram_algorithm.h</file>
+         <hash>b7bdda3a3372069290f73b593586d0054c3f7b706d7ade1b471a531dd10e5c17</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\NN\Source\ConvolutionFunctions\arm_depthwise_conv_3x3_s8.c</file>

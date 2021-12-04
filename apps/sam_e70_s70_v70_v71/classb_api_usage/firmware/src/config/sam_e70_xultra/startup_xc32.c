@@ -199,7 +199,7 @@ void __attribute__((optimize("-O1"), section(".text.Reset_Handler"), long_call, 
 #endif
 
 
-    TCM_Configure(1);
+    TCM_Configure(2);
 
     /* Enable TCM   */
     TCM_Enable();

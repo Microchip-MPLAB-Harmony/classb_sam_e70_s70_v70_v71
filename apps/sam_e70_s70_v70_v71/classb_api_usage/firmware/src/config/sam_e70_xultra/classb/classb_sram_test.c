@@ -42,6 +42,7 @@
  *     include files
  *----------------------------------------------------------------------------*/
 #include "classb/classb_sram_test.h"
+#include "classb/classb_sram_algorithm.h"
 
 /*----------------------------------------------------------------------------
  *     Constants
@@ -119,468 +120,6 @@ static void _CLASSB_MemCopy(uint32_t* dest, uint32_t* src, uint32_t size_in_byte
 }
 
 /*============================================================================
-bool CLASSB_RAMMarchC(  uint32_t * start_addr, 
-                        uint32_t test_size_bytes,
-                        CLASSB_MEM_REGION mem_region )
-------------------------------------------------------------------------------
-Purpose: Runs March C algorithm on the given SRAM area
-Input  : Start address, size and memory region
-Output : Success or failure
-Notes  : This function is used by SRAM tests. It performs the following,
-        // March C
-        // Low to high, write zero
-        // Low to high, read zero write one
-        // Low to high, read one write zero
-        // Low to high, read zero
-
-        // High to low, read zero write one
-        // High to low, read one write zero
-        // High to low, read zero
-============================================================================*/
-bool CLASSB_RAMMarchC(  uint32_t * start_addr, 
-                        uint32_t test_size_bytes,
-                        CLASSB_MEM_REGION mem_region )
-{
-    bool sram_march_c_result = true;
-    int32_t i = 0;
-    uint32_t sram_read_val = 0;
-    uint32_t test_size_words = (test_size_bytes / 4);
-    uint32_t test_buffer_size = 0;
-    
-    /* memory region switch */
-    switch(mem_region)
-    {
-        case CLASSB_MEM_REGION_ITCM:
-            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
-            break;
-        case CLASSB_MEM_REGION_DTCM:
-            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
-            break;
-        
-        case CLASSB_MEM_REGION_SRAM:
-            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
-            break;
-        default:
-            sram_march_c_result = false;
-            break;           
-    }
-
-    // Test size is limited to CLASSB_SRAM_TEST_BUFFER_SIZE
-    if (test_size_bytes > test_buffer_size)
-    {
-        sram_march_c_result = false;
-    }
-
-    // Perform the next check only if the previous stage is passed
-    if (sram_march_c_result == true)
-    {
-        // Low to high, write zero
-        for (i = 0; i < test_size_words; i++)
-        {
-            start_addr[i] = 0;
-        }
-        // Low to high, read zero write one
-        for (i = 0; i < test_size_words; i++)
-        {
-            sram_read_val = start_addr[i];
-            if (sram_read_val == 0)
-            {
-                start_addr[i] = CLASSB_SRAM_ALL_32BITS_HIGH;
-            }
-            else
-            {
-                sram_march_c_result = false;
-                break;
-            }
-        }
-    }
-    if (sram_march_c_result == true)
-    {
-        // Low to high, read one write zero
-        for (i = 0; i < test_size_words; i++)
-        {
-            sram_read_val = start_addr[i];
-            if (sram_read_val == CLASSB_SRAM_ALL_32BITS_HIGH)
-            {
-                start_addr[i] = 0;
-            }
-            else
-            {
-                sram_march_c_result = false;
-                break;
-            }
-        }
-    }
-    if (sram_march_c_result == true)
-    {
-        // Low to high, read zero
-        for (i = 0; i < test_size_words; i++)
-        {
-            sram_read_val = start_addr[i];
-            if (sram_read_val != 0)
-            {
-                sram_march_c_result = false;
-                break;
-            }
-        }
-    }
-    if (sram_march_c_result == true)
-    {
-        // High to low, read zero, write one
-        for (i = (test_size_words - 1); i >= 0 ; i--)
-        {
-            sram_read_val = start_addr[i];
-            if (sram_read_val == 0)
-            {
-                start_addr[i] = CLASSB_SRAM_ALL_32BITS_HIGH;
-            }
-            else
-            {
-                sram_march_c_result = false;
-                break;
-            }
-        }
-    }
-    if (sram_march_c_result == true)
-    {
-        // High to low, read one, write zero
-        for (i = (test_size_words - 1); i >= 0 ; i--)
-        {
-            sram_read_val = start_addr[i];
-            if (sram_read_val == CLASSB_SRAM_ALL_32BITS_HIGH)
-            {
-                start_addr[i] = 0;
-            }
-            else
-            {
-                sram_march_c_result = false;
-                break;
-            }
-        }
-    }
-    if (sram_march_c_result == true)
-    {
-        // High to low, read zero
-        for (i = (test_size_words - 1); i >= 0 ; i--)
-        {
-            sram_read_val = start_addr[i];
-            if (sram_read_val != 0)
-            {
-                sram_march_c_result = false;
-                break;
-            }
-        }
-    }
-    return sram_march_c_result;
-}
-
-/*============================================================================
-bool CLASSB_RAMMarchCMinus( uint32_t * start_addr, 
-                            uint32_t test_size_bytes,
-                            CLASSB_MEM_REGION mem_region )
-------------------------------------------------------------------------------
-Purpose: Runs March C algorithm on the given SRAM area
-Input  : Start address, size and memory region
-Output : Success or failure
-Notes  : This function is used by SRAM tests. It performs the following,
-        // March C minus
-        // Low to high, write zero
-        // Low to high, read zero write one
-        // Low to high, read one write zero
-
-        // High to low, read zero write one
-        // High to low, read one write zero
-        // High to low, read zero
-============================================================================*/
-bool CLASSB_RAMMarchCMinus( uint32_t * start_addr, 
-                            uint32_t test_size_bytes,
-                            CLASSB_MEM_REGION mem_region )
-{
-    bool sram_march_c_result = true;
-    int32_t i = 0;
-    uint32_t sram_read_val = 0;
-    uint32_t test_size_words = (test_size_bytes / 4);
-    uint32_t test_buffer_size = 0;
-    
-    /* memory region switch */
-    switch(mem_region)
-    {
-        case CLASSB_MEM_REGION_ITCM:
-            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
-            break;
-        case CLASSB_MEM_REGION_DTCM:
-            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
-            break;
-        case CLASSB_MEM_REGION_SRAM:
-            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
-            break;
-        
-        default:
-            sram_march_c_result = false;
-            break;           
-    }
-
-    // Test size is limited to CLASSB_SRAM_TEST_BUFFER_SIZE
-    if (test_size_bytes > test_buffer_size)
-    {
-        sram_march_c_result = false;
-    }
-
-    // Perform the next check only if the previous stage is passed
-    if (sram_march_c_result == true)
-    {
-        // Low to high, write zero
-        for (i = 0; i < test_size_words; i++)
-        {
-            start_addr[i] = 0;
-        }
-        // Low to high, read zero write one
-        for (i = 0; i < test_size_words; i++)
-        {
-            sram_read_val = start_addr[i];
-            if (sram_read_val == 0)
-            {
-                start_addr[i] = CLASSB_SRAM_ALL_32BITS_HIGH;
-            }
-            else
-            {
-                sram_march_c_result = false;
-                break;
-            }
-        }
-    }
-    if (sram_march_c_result == true)
-    {
-        // Low to high, read one write zero
-        for (i = 0; i < test_size_words; i++)
-        {
-            sram_read_val = start_addr[i];
-            if (sram_read_val == CLASSB_SRAM_ALL_32BITS_HIGH)
-            {
-                start_addr[i] = 0;
-            }
-            else
-            {
-                sram_march_c_result = false;
-                break;
-            }
-        }
-    }
-    if (sram_march_c_result == true)
-    {
-        // High to low, read zero, write one
-        for (i = (test_size_words - 1); i >= 0 ; i--)
-        {
-            sram_read_val = start_addr[i];
-            if (sram_read_val == 0)
-            {
-                start_addr[i] = CLASSB_SRAM_ALL_32BITS_HIGH;
-            }
-            else
-            {
-                sram_march_c_result = false;
-                break;
-            }
-        }
-    }
-    if (sram_march_c_result == true)
-    {
-        // High to low, read one, write zero
-        for (i = (test_size_words - 1); i >= 0 ; i--)
-        {
-            sram_read_val = start_addr[i];
-            if (sram_read_val == CLASSB_SRAM_ALL_32BITS_HIGH)
-            {
-                start_addr[i] = 0;
-            }
-            else
-            {
-                sram_march_c_result = false;
-                break;
-            }
-        }
-    }
-    if (sram_march_c_result == true)
-    {
-        // High to low, read zero
-        for (i = (test_size_words - 1); i >= 0 ; i--)
-        {
-            sram_read_val = start_addr[i];
-            if (sram_read_val != 0)
-            {
-                sram_march_c_result = false;
-                break;
-            }
-        }
-    }
-    return sram_march_c_result;
-}
-
-/*============================================================================
-bool CLASSB_RAMMarchB(  uint32_t * start_addr, 
-                        uint32_t test_size_bytes,
-                        CLASSB_MEM_REGION mem_region)
-------------------------------------------------------------------------------
-Purpose: Runs March C algorithm on the given SRAM area
-Input  : Start address, size and memory region
-Output : Success or failure
-Notes  : This function is used by SRAM tests. It performs the following,
-        // March B
-        // Low to high, write zero
-        // Low to high, read zero write one, read one write zero,
-               read zero write one
-        // Low to high, read one write zero, write one
-
-        // High to low, read one write zero, write one write zero
-        // High to low, read zero write one, write zero
-============================================================================*/
-bool CLASSB_RAMMarchB(  uint32_t * start_addr, 
-                        uint32_t test_size_bytes,
-                        CLASSB_MEM_REGION mem_region )
-{
-    bool sram_march_c_result = true;
-    int32_t i = 0;
-    uint32_t sram_read_val = 0;
-    uint32_t test_size_words = (test_size_bytes / 4);
-    uint32_t test_buffer_size = 0;
-    
-    /* memory region switch */
-    switch(mem_region)
-    {
-        case CLASSB_MEM_REGION_ITCM:
-            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
-            break;
-        case CLASSB_MEM_REGION_DTCM:
-            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
-            break;
-        case CLASSB_MEM_REGION_SRAM:
-            test_buffer_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
-            break;
-        default:
-            sram_march_c_result = false;
-            break;           
-    }
-
-    // Test size is limited to CLASSB_SRAM_TEST_BUFFER_SIZE
-    if (test_size_bytes > test_buffer_size)
-    {
-        sram_march_c_result = false;
-    }
-
-    // Perform the next check only if the previous stage is passed
-    if (sram_march_c_result == true)
-    {
-        // Low to high, write zero
-        for (i = 0; i < test_size_words; i++)
-        {
-            start_addr[i] = 0;
-        }
-        // Low to high
-        for (i = 0; i < test_size_words; i++)
-        {
-            // Read zero write one
-            sram_read_val = start_addr[i];
-            if (sram_read_val == 0)
-            {
-                start_addr[i] = CLASSB_SRAM_ALL_32BITS_HIGH;
-                // Read one write zero
-                sram_read_val = start_addr[i];
-                if (sram_read_val == CLASSB_SRAM_ALL_32BITS_HIGH)
-                {
-                    start_addr[i] = 0;
-                    // Read zero write one
-                    sram_read_val = start_addr[i];
-                    if (sram_read_val == 0)
-                    {
-                        start_addr[i] = CLASSB_SRAM_ALL_32BITS_HIGH;
-                    }
-                    else
-                    {
-                        sram_march_c_result = false;
-                        break;
-                    }
-                }
-                else
-                {
-                    sram_march_c_result = false;
-                    break;
-                }
-            }
-            else
-            {
-                sram_march_c_result = false;
-                break;
-            }
-        }
-    }
-
-    if (sram_march_c_result == true)
-    {
-        // Low to high
-        for (i = 0; i < test_size_words; i++)
-        {
-            // Read one write zero
-            sram_read_val = start_addr[i];
-            if (sram_read_val == CLASSB_SRAM_ALL_32BITS_HIGH)
-            {
-                start_addr[i] = 0;
-                // Write one
-                start_addr[i] = CLASSB_SRAM_ALL_32BITS_HIGH;
-             }
-            else
-            {
-                sram_march_c_result = false;
-                break;
-            }
-        }
-    }
-
-    // High to low tests
-    if (sram_march_c_result == true)
-    {
-        // High to low, read one, write zero
-        for (i = (test_size_words - 1); i >= 0 ; i--)
-        {
-            sram_read_val = start_addr[i];
-            if (sram_read_val == CLASSB_SRAM_ALL_32BITS_HIGH)
-            {
-                start_addr[i] = 0;
-                // Write one
-                start_addr[i] = CLASSB_SRAM_ALL_32BITS_HIGH;
-                // Write zero
-                start_addr[i] = 0;
-            }
-            else
-            {
-                sram_march_c_result = false;
-                break;
-            }
-        }
-    }
-    if (sram_march_c_result == true)
-    {
-        // High to low, read zero, write one
-        for (i = (test_size_words - 1); i >= 0 ; i--)
-        {
-            sram_read_val = start_addr[i];
-            if (sram_read_val == 0)
-            {
-                start_addr[i] = CLASSB_SRAM_ALL_32BITS_HIGH;
-                // Write zero
-                start_addr[i] = 0;
-            }
-            else
-            {
-                sram_march_c_result = false;
-                break;
-            }
-        }
-    }
-
-    return sram_march_c_result;
-}
-
-/*============================================================================
 CLASSB_TEST_STATUS CLASSB_SRAM_MarchTestInit(   uint32_t * start_addr,
                                                 uint32_t test_size_bytes, 
                                                 CLASSB_SRAM_MARCH_ALGO march_algo,
@@ -618,22 +157,22 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTestInit(   uint32_t * start_addr,
 
     /* memory region switch */
     switch(mem_region)
-    {
+    {        
         case CLASSB_MEM_REGION_ITCM:
             max_march_test_end_address = CLASSB_ITCM_FINAL_WORD_ADDRESS;
             min_mem_start_address = CLASSB_ITCM_APP_AREA_START;
             stack_pointer_address = CLASSB_SRAM_TEMP_STACK_ADDRESS;
-            break;
+            break;       
         case CLASSB_MEM_REGION_DTCM:
             max_march_test_end_address = CLASSB_DTCM_FINAL_WORD_ADDRESS;
             min_mem_start_address = CLASSB_DTCM_APP_AREA_START;
             stack_pointer_address = CLASSB_SRAM_TEMP_STACK_ADDRESS;
-            break;
+            break;       
         case CLASSB_MEM_REGION_SRAM:
             max_march_test_end_address = CLASSB_SRAM_FINAL_WORD_ADDRESS;
             min_mem_start_address = CLASSB_SRAM_APP_AREA_START;
             stack_pointer_address = CLASSB_SRAM_TEMP_STACK_ADDRESS;
-            break;
+            break;       
         default:
             // error out the test
             min_mem_start_address = CLASSB_SRAM_APP_AREA_START + 10;
@@ -738,28 +277,28 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTest(   uint32_t * start_addr,
     uint32_t * iteration_start_addr = 0;
     uint32_t classb_buff_start_add = 0;
     uint32_t classb_test_buff_size = 0;    
-    
+
     /* memory region switch */
     switch(mem_region)
-    {
+    {        
         case CLASSB_MEM_REGION_ITCM:
             classb_test_buff_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
             classb_buff_start_add = CLASSB_SRAM_BUFF_START_ADDRESS;
             march_c_iterations = (test_size_bytes / CLASSB_SRAM_TEST_BUFFER_SIZE);
             march_c_short_itr_size = (test_size_bytes % CLASSB_SRAM_TEST_BUFFER_SIZE);
-            break;
+            break;        
         case CLASSB_MEM_REGION_DTCM:
             classb_test_buff_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
             classb_buff_start_add = CLASSB_SRAM_BUFF_START_ADDRESS;
             march_c_iterations = (test_size_bytes / CLASSB_SRAM_TEST_BUFFER_SIZE);
             march_c_short_itr_size = (test_size_bytes % CLASSB_SRAM_TEST_BUFFER_SIZE);
-            break;
+            break;       
         case CLASSB_MEM_REGION_SRAM:
             classb_test_buff_size = CLASSB_SRAM_TEST_BUFFER_SIZE;
             classb_buff_start_add = CLASSB_SRAM_BUFF_START_ADDRESS;
             march_c_iterations = (test_size_bytes / CLASSB_SRAM_TEST_BUFFER_SIZE);
             march_c_short_itr_size = (test_size_bytes % CLASSB_SRAM_TEST_BUFFER_SIZE);
-            break;
+            break;        
         default:
             // error out the test
             march_c_iterations = 0;
@@ -776,17 +315,17 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTest(   uint32_t * start_addr,
         if (march_algo == CLASSB_SRAM_MARCH_C)
         {
             march_test_retval = CLASSB_RAMMarchC(iteration_start_addr,
-                classb_test_buff_size, mem_region);
+                classb_test_buff_size);
         }
         else if (march_algo == CLASSB_SRAM_MARCH_C_MINUS)
         {
             march_test_retval = CLASSB_RAMMarchCMinus(iteration_start_addr,
-                classb_test_buff_size, mem_region);
+                classb_test_buff_size);
         }
         else if (march_algo == CLASSB_SRAM_MARCH_B)
         {
             march_test_retval = CLASSB_RAMMarchB(iteration_start_addr,
-                classb_test_buff_size, mem_region);
+                classb_test_buff_size);
         }
         if (march_test_retval == false)
         {
@@ -813,17 +352,17 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTest(   uint32_t * start_addr,
         if (march_algo == CLASSB_SRAM_MARCH_C)
         {
             march_test_retval = CLASSB_RAMMarchC(iteration_start_addr,
-                classb_test_buff_size, mem_region);
+                classb_test_buff_size);
         }
         else if (march_algo == CLASSB_SRAM_MARCH_C_MINUS)
         {
             march_test_retval = CLASSB_RAMMarchCMinus(iteration_start_addr,
-                classb_test_buff_size, mem_region);
+                classb_test_buff_size);
         }
         else if (march_algo == CLASSB_SRAM_MARCH_B)
         {
             march_test_retval = CLASSB_RAMMarchB(iteration_start_addr,
-                classb_test_buff_size, mem_region);
+                classb_test_buff_size);
         }
         if (march_test_retval == false)
         {

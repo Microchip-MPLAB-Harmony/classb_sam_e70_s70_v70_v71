@@ -44,7 +44,7 @@ SUBSTITUTE  GOODS,  TECHNOLOGY,  SERVICES,  OR  ANY  CLAIMS  BY  THIRD   PARTIES
 .global CLASSB_GetTestResult
 
 ; /* void CLASSB_ClearTestResults(CLASSB_TEST_TYPE test_type) */
-.global CLASSB_ClearTestResults 
+.global CLASSB_ClearTestResults
 
 ; /* void _CLASSB_UpdateTestResult(CLASSB_TEST_TYPE test_type,
 ;       CLASSB_TEST_ID test_id, CLASSB_TEST_STATUS value) */

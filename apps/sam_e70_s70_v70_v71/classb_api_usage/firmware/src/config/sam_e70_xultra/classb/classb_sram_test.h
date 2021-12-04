@@ -62,11 +62,11 @@ SUBSTITUTE  GOODS,  TECHNOLOGY,  SERVICES,  OR  ANY  CLAIMS  BY  THIRD   PARTIES
 #define CLASSB_ITCM_APP_AREA_START          (0x0U) // Do not modify
 #define CLASSB_DTCM_APP_AREA_START          (0x20000000U) // Do not modify
 #define CLASSB_SRAM_APP_AREA_START          (0x20400400U) // Do not modify
-        
+
  /* This final addresses value will differ according to device variant and TCM selection */
-#define CLASSB_ITCM_FINAL_WORD_ADDRESS      (0x0U)  
-#define CLASSB_DTCM_FINAL_WORD_ADDRESS      (0x20000000U)  
-#define CLASSB_SRAM_FINAL_WORD_ADDRESS      (0x2045fffcU)  
+#define CLASSB_ITCM_FINAL_WORD_ADDRESS      (0x7ffcU)  
+#define CLASSB_DTCM_FINAL_WORD_ADDRESS      (0x20007ffcU)  
+#define CLASSB_SRAM_FINAL_WORD_ADDRESS      (0x2044fffcU)  
 
 
 
@@ -124,18 +124,7 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTest(   uint32_t * start_addr,
                                             CLASSB_SRAM_MARCH_ALGO march_algo, 
                                             bool running_context,
                                             CLASSB_MEM_REGION mem_region);
-/* RAM march algorithms
- * Optimization is set to zero, else the compiler optimizes these functions away.
- */
-bool __attribute__((optimize("-O0"))) CLASSB_RAMMarchC( uint32_t * start_addr, 
-                                                        uint32_t test_size, 
-                                                        CLASSB_MEM_REGION mem_region);
-bool __attribute__((optimize("-O0"))) CLASSB_RAMMarchCMinus(uint32_t * start_addr, 
-                                                            uint32_t test_size, 
-                                                            CLASSB_MEM_REGION mem_region);
-bool __attribute__((optimize("-O0"))) CLASSB_RAMMarchB( uint32_t * start_addr, 
-                                                        uint32_t test_size, 
-                                                        CLASSB_MEM_REGION mem_region);
+
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
