@@ -678,8 +678,8 @@
         <property key="common-include-directories" value=""/>
         <property key="gp-relative-option" value=""/>
         <property key="legacy-libc" value="false"/>
-        <property key="mdtcm" value="0x10000"/>
-        <property key="mitcm" value="0x10000"/>
+        <property key="mdtcm" value="0x8000"/>
+        <property key="mitcm" value="0x8000"/>
         <property key="mstacktcm" value="false"/>
         <property key="omit-pack-options" value="1"/>
         <property key="relaxed-math" value="false"/>

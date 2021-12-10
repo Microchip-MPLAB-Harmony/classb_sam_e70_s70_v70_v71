@@ -24,7 +24,8 @@ that uses the Class B should include classb.h.
 4. classb_flash_test.h
 5. classb_interrupt_test.h
 6. classb_io_pin_test.h
-7. classb_sram_test.h
+7. classb_sram_algorithm.h
+8. classb_sram_test.h
 
 ## Library Source Files
 
@@ -36,7 +37,8 @@ that uses the Class B should include classb.h.
 6. classb_interrupt_test.c
 7. classb_io_pin_test.c
 8. classb_result_management.S
-9. classb_sram_test.c
+9. classb_sram_algorithm.c
+10. classb_sram_test.c
 
 ## Abstraction Model
 

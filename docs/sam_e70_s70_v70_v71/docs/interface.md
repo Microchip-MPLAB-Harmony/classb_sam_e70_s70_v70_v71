@@ -44,7 +44,11 @@ nav_order: 5
 | CLASSB_CLOCK_MUL_FACTOR | Multiplication factor used in clock test. |
 | CLASSB_FLASH_CRC32_POLYNOMIAL | CRC-32 polynomial. |
 | CLASSB_SRAM_TEST_BUFFER_SIZE | Defines the size of the buffer used for SRAM test. |
+| CLASSB_ITCM_APP_AREA_START | Defines the start address of the ITCM for the application. |
+| CLASSB_DTCM_APP_AREA_START | Defines the start address of the DTCM for the application. |
 | CLASSB_SRAM_APP_AREA_START | Defines the start address of the SRAM for the application. |
+| CLASSB_ITCM_FINAL_WORD_ADDRESS | Final word address in the ITCM. |
+| CLASSB_DTCM_FINAL_WORD_ADDRESS | Final word address in the DTCM. |
 | CLASSB_SRAM_FINAL_WORD_ADDRESS | Final word address in the SRAM. |
 | CLASSB_SRAM_BUFF_START_ADDRESS | SRAM test buffer start address. |
 | CLASSB_SRAM_TEMP_STACK_ADDRESS | Address of the temporary stack. |
@@ -68,6 +72,7 @@ nav_order: 5
 | *CLASSB_SST_RESULT_BF | Pointer to the structure for the Class B library startup self-test result. |
 | *CLASSB_RST_RESULT_BF | Pointer to the structure for the Class B library run-time self-test result. |
 | CLASSB_SRAM_MARCH_ALGO | Selects the RAM March algorithm to run. |
+| CLASSB_MEM_REGION | Selects the memory region to be tested. |
 | CLASSB_PORT_INDEX | PORT index definitions for Class B library I/O pin test. |
 | CLASSB_PORT_PIN | PIN definitions for Class B library I/O pin test. |
 | CLASSB_PORT_PIN_STATE | PORT pin state. |
@@ -251,12 +256,14 @@ This value must not be modified.
 #define CLASSB_INTERRUPT_COUNT_VAR_ADDR (0x2040001cU)
 ```
 
+### CLASSB_ITCM_STARTUP_TEST_SIZE
+### CLASSB_DTCM_STARTUP_TEST_SIZE
 ### CLASSB_SRAM_STARTUP_TEST_SIZE
 
 
 **Summary**
 
-Size of the SRAM tested during startup.
+Size of the SRAM areas tested during startup.
 
 **Description**
 
@@ -265,9 +272,11 @@ tested SRAM area. The test size must be a multiple of four.
 
 **Remarks**
 
-This value can be modified.
+These value can be modified.
 
 ```c
+#define CLASSB_SRAM_STARTUP_TEST_SIZE (8192U)
+#define CLASSB_SRAM_STARTUP_TEST_SIZE (8192U)
 #define CLASSB_SRAM_STARTUP_TEST_SIZE (65536U)
 ```
 
@@ -383,7 +392,7 @@ Defines the default CPU clock speed after a reset.
 This value must not be modified.
 
 ```c
-#define CLASSB_CLOCK_DEFAULT_CLOCK_FREQ (6000000U)
+#define CLASSB_CLOCK_DEFAULT_CLOCK_FREQ (12000000U)
 ```
 
 ### CLASSB_INVALID_TEST_ID
@@ -552,7 +561,7 @@ This constant defines the final word address in the SRAM.
 
 **Remarks**
 
-This value must not be modified. Varies depending on the device.
+This value must not be modified. Varies depending on the device and the configured TCM allocation.
 
 ```c
 #define CLASSB_SRAM_FINAL_WORD_ADDRESS (0x2045fffcU)
@@ -939,6 +948,30 @@ CLASSB_SRAM_MARCH_B = 2
 } CLASSB_SRAM_MARCH_ALGO;
 ```
 
+### CLASSB_MEM_REGION
+
+
+**Summary**
+
+Define which region of memory is to be tested.
+
+**Description**
+
+Define which region of memory is to be tested.
+
+**Remarks**
+
+None.
+
+```c
+typedef enum
+{
+CLASSB_MEM_REGION_ITCM      = 0,
+CLASSB_MEM_REGION_DTCM      = 1,
+CLASSB_MEM_REGION_SRAM      = 2
+} CLASSB_MEM_REGION;
+```
+
 ### CLASSB_PORT_INDEX
 
 
@@ -960,7 +993,8 @@ typedef enum
 PORTA = 0,
 PORTB = 1,
 PORTC = 2,
-PORTD = 3
+PORTD = 3,
+PORTE = 4
 } CLASSB_PORT_INDEX;
 ```
 
@@ -1690,7 +1724,9 @@ in an infinite loop to avoid unsafe code execution.
 **Function**
 
 ```c
-CLASSB_TEST_STATUS CLASSB_SRAM_MarchTestInit(uint32_t * start_addr, uint32_t test_size, CLASSB_SRAM_MARCH_ALGO march_algo, bool running_context);
+CLASSB_TEST_STATUS CLASSB_SRAM_MarchTestInit(   uint32_t * start_addr, uint32_t test_size, 
+                                                CLASSB_SRAM_MARCH_ALGO march_algo, bool running_context
+                                                CLASSB_MEM_REGION mem_region);
 ```
 
 **Summary**
@@ -1715,6 +1751,8 @@ None.
 
 *running_context* - False for startup test. True for run-time test.
 
+*mem_region* - Selects the memory region to be tested (ITCM/DTCM/SRAM).
+
 **Returns**
 
 *CLASSB_TEST_STATUS* - Status of the test.
@@ -1725,7 +1763,7 @@ None.
 CLASSB_TEST_STATUS classb_test_status = CLASSB_TEST_NOT_EXECUTED;
 // Perform run-time test of the internal SRAM
 classb_test_status = CLASSB_SRAM_MarchTestInit((uint32_t *)CLASSB_SRAM_APP_AREA_START,
-    1024, CLASSB_SRAM_MARCH_C, true);
+    1024, CLASSB_SRAM_MARCH_C, true, CLASSB_MEM_REGION_SRAM);
 ```
 
 **Remarks**
@@ -1774,7 +1812,7 @@ None.
 ```c
 CLASSB_TEST_STATUS classb_test_status = CLASSB_TEST_NOT_EXECUTED;
 // Perform run-time test of the CPU clock
-classb_test_status = CLASSB_ClockTest(150000000, 5, 500, true);
+classb_test_status = CLASSB_ClockTest(300000000, 5, 500, true);
 ```
 
 **Remarks**

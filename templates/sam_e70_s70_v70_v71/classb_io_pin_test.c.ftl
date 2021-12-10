@@ -69,28 +69,12 @@ Notes  : Before testing an output pin, call this function to enable input
 ============================================================================*/
 void CLASSB_IO_InputSamplingEnable(CLASSB_PORT_INDEX port, CLASSB_PORT_PIN pin)
 {
-   // Enable input sampling
-    switch(port)
-    {
-        case PORTA:
-            PIOA_REGS->PIO_ODR = (1 << pin);
-            break;
-        case PORTB:
-            PIOB_REGS->PIO_ODR = (1 << pin);
-            break;
-        case PORTC:
-            PIOC_REGS->PIO_ODR = (1 << pin);
-            break;
-        case PORTD:
-            PIOD_REGS->PIO_ODR = (1 << pin);
-            break;
-        case PORTE:
-            PIOE_REGS->PIO_ODR = (1 << pin);
-            break;
-        default:
-            break;
-        
-    }
+     int i = 0;
+
+    // The requirement for reading PIO_PDSR is a delay of at least 2 bus clock
+    // cycles.
+    for(i=0;i<100;i++){};
+    
 }
 
 /*============================================================================

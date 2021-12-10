@@ -68,14 +68,16 @@
 #define CLASSB_CLOCK_TEST_RTC_RATIO_NS      (30517U)
 #define CLASSB_CLOCK_TEST_RATIO_NS_MS       (1000000U)
 
-// Default - Internal RC 12MHz
+// Depends on Master clock setup
 #define CLASSB_CLOCK_DEFAULT_CLOCK_FREQ     (12000000U)
+//#define CLASSB_CLOCK_DEFAULT_CLOCK_FREQ     (300000000U)
 #define CLASSB_INVALID_TEST_ID              (0xFFU)
 
-// Master clock setup - default master clock is set to 32k Hz clock   
+// Master clock setup  
 #define CLASSB_MASTER_CLOCK_PRESCALE    PMC_MCKR_PRES_CLK_1
 #define CLASSB_MASTER_CLOCK_DIVIDE      PMC_MCKR_MDIV_PCK_DIV2
-#define CLASSB_MASTER_CLOCK_SOURCE      PMC_MCKR_CSS_MAIN_CLK
+#define CLASSB_MASTER_CLOCK_SOURCE          PMC_MCKR_CSS_MAIN_CLK
+//#define CLASSB_MASTER_CLOCK_SOURCE          PMC_MCKR_CSS_PLLA_CLK
 
 /*----------------------------------------------------------------------------
  *     Global Variables
@@ -131,6 +133,16 @@ Notes  :
 ============================================================================*/
 static void _CLASSB_MainClockInit(void)
 {
+    /* Disable Main Crystal Oscillator and Enable External Clock Signal on XIN pin  */
+    PMC_REGS->CKGR_MOR = (PMC_REGS->CKGR_MOR & ~CKGR_MOR_MOSCXTEN_Msk) | CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCXTBY_Msk;
+
+     /* External clock signal (XIN pin) is selected as the Main Clock (MAINCK) source.
+        Switch Main Clock (MAINCK) to External signal on XIN pin */
+    PMC_REGS->CKGR_MOR |= CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCSEL_Msk;
+
+    /* Wait until MAINCK is switched to External Clock Signal (XIN pin) */
+    while ( (PMC_REGS->PMC_SR & PMC_SR_MOSCSELS_Msk) != PMC_SR_MOSCSELS_Msk);
+
 
     /* Enable the RC Oscillator */
     PMC_REGS->CKGR_MOR|= CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCRCEN_Msk;
@@ -144,6 +156,25 @@ static void _CLASSB_MainClockInit(void)
     /* Wait until the RC oscillator clock is ready */
     while( (PMC_REGS->PMC_SR& PMC_SR_MOSCRCS_Msk) != PMC_SR_MOSCRCS_Msk);
 
+}
+
+/*============================================================================
+static void _CLASSB_PLLAInitialize ( void )
+------------------------------------------------------------------------------
+Purpose: Initializes the PLLA (PLLACK)
+Input  : None.
+Output : None.
+Notes  : 
+============================================================================*/
+
+static void _CLASSB_PLLAInitialize(void)
+{
+    /* Configure and Enable PLLA */
+    PMC_REGS->CKGR_PLLAR = CKGR_PLLAR_ONE_Msk | CKGR_PLLAR_PLLACOUNT(0x3f) |
+                              CKGR_PLLAR_MULA(25 - 1) |
+                              CKGR_PLLAR_DIVA(1);
+
+    while ( (PMC_REGS->PMC_SR & PMC_SR_LOCKA_Msk) != PMC_SR_LOCKA_Msk);
 
 }
 
@@ -163,7 +194,7 @@ static void _CLASSB_MasterClockInit (
     uint32_t pmc_mckr_mdiv,
     uint32_t pmc_mckr_css)
 {
-/* Program PMC_MCKR.PRES and wait for PMC_SR.MCKRDY to be set   */
+    /* Program PMC_MCKR.PRES and wait for PMC_SR.MCKRDY to be set   */
     PMC_REGS->PMC_MCKR = (PMC_REGS->PMC_MCKR & ~PMC_MCKR_PRES_Msk) | pmc_mckr_pres;
     while ((PMC_REGS->PMC_SR & PMC_SR_MCKRDY_Msk) != PMC_SR_MCKRDY_Msk);
 
@@ -429,9 +460,11 @@ static CLASSB_STARTUP_STATUS CLASSB_Startup_Tests(void)
 
      /* Init Main Clock */
     _CLASSB_MainClockInit();
+
+    /* Init PLL */
+    _CLASSB_PLLAInitialize();
     
-    // Set Master Clock Control to use default internal RC 12MHz instead of
-    // default startup 32k Hz clock
+    /* Init Master Clock */
     _CLASSB_MasterClockInit ((uint32_t)CLASSB_MASTER_CLOCK_PRESCALE, 
                              (uint32_t)CLASSB_MASTER_CLOCK_DIVIDE, 
                              (uint32_t)CLASSB_MASTER_CLOCK_SOURCE);

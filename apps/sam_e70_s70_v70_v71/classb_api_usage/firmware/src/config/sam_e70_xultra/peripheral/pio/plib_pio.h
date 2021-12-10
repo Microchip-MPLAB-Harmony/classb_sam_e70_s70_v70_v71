@@ -80,6 +80,15 @@
 #define LED0_Get()               ((PIOA_REGS->PIO_PDSR >> 5) & 0x1)
 #define LED0_PIN                  PIO_PIN_PA5
 
+/*** Macros for Test_Tick pin ***/
+#define Test_Tick_Set()               (PIOA_REGS->PIO_SODR = (1<<4))
+#define Test_Tick_Clear()             (PIOA_REGS->PIO_CODR = (1<<4))
+#define Test_Tick_Toggle()            (PIOA_REGS->PIO_ODSR ^= (1<<4))
+#define Test_Tick_OutputEnable()      (PIOA_REGS->PIO_OER = (1<<4))
+#define Test_Tick_InputEnable()       (PIOA_REGS->PIO_ODR = (1<<4))
+#define Test_Tick_Get()               ((PIOA_REGS->PIO_PDSR >> 4) & 0x1)
+#define Test_Tick_PIN                  PIO_PIN_PA4
+
 
 // *****************************************************************************
 /* PIO Port

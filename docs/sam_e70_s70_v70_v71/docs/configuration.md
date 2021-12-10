@@ -13,9 +13,14 @@ This section provides details necessary to integrate the Class B library with ot
 
 It is required to reserve 1kB of SRAM for exclusive use by the Class B library.
 When the Class B library is added into the project with the help of MHC, the linker setting is modified by MHC as shown below.
-In this example, the ATSAME70Q21B device with 384kB of SRAM is used.
+In this example, the ATSAME70Q21B device with 384kB of SRAM and 0kB of TCM allocation is used.
 
 `-DRAM_ORIGIN=0x20400400,-DRAM_LENGTH=0x5fc00`
+
+When one of the allowed portions (32kB/64kB/128kB each) is allocated to the TCM regions, the following option must be added to the
+'Additional driver options':
+
+`-mitcm`
 
 ![](./images/xc32_ld_SRAM_Reserve.png)
 
@@ -26,8 +31,8 @@ When generating project with help of MPLAB Harmony 3, the startup code is presen
 This file contains the `Reset_Handler` which has all startup code that runs before the `main()` function.
 Initialization of the Class B library is done from the `_on_reset` function which is the first function
 to be executed inside the `Reset_Handler`. The function named `CLASSB_Startup_Tests` executes all startup self-tests
-inserted into `classb.c` file by the MHC. If none of the self-tests are failed, this function returns `CLASSB_STARTUP_TEST_PASSED`.
-If any of the startup self-tests are failed, this function does not return.
+inserted into `classb.c` file by the MHC. If none of the self-tests are failed, this function returns 
+`CLASSB_STARTUP_TEST_PASSED`. If any of the startup self-tests are failed, this function does not return.
 The self-tests for SRAM, Clock and Interrupt are considered non-critical since it may be possible to execute
 a fail-safe function after detecting a failure. In such case, the `CLASSB_SelfTest_FailSafe()` function is
 called when a failure is detected. In the case of critical failures (CPU registers or internal flash),

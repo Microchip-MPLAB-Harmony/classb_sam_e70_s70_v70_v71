@@ -311,7 +311,7 @@
   &lt;core dnOrder=&quot;0&quot; id=&quot;DEVICE_TCM_SIZE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
       &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;0&quot;/&gt;
-      &lt;User dnOrder=&quot;1&quot; value=&quot;2&quot;/&gt;
+      &lt;User dnOrder=&quot;1&quot; value=&quot;1&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -1044,6 +1044,61 @@
 </value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PIN_77_DIR"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_77_DIR&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;Out&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PIN_77_DRIVER"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_77_DRIVER&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PIN_77_FUNCTION_NAME"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_77_FUNCTION_NAME&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;Test_Tick&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PIN_77_FUNCTION_TYPE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_77_FUNCTION_TYPE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;GPIO&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PIN_77_PERIPHERAL_FUNCTION"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_77_PERIPHERAL_FUNCTION&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;GPIO&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PIOA_ABCDSR1_VALUE"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIOA_ABCDSR1_VALUE&quot;&gt;
@@ -1103,7 +1158,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIOA_OER_VALUE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;32&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;48&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -1953,7 +2008,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;TCM_SIZE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;64 KB&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;32 KB&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -2849,7 +2904,7 @@
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\classb\classb_io_pin_test.c</file>
-         <hash>d268e672a1b77cba3313c488cbae3a00849f06aab6649a6704801eda10853aae</hash>
+         <hash>7903f55b9d2f9b036b0687041b6439e38ff61f12d85c3426df2f07d14fb69319</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\NN\Source\ConvolutionFunctions\arm_depthwise_conv_u8_basic_ver1.c</file>
@@ -2881,7 +2936,7 @@
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\classb\classb.c</file>
-         <hash>56042bd457223adf1b61ed49049c8606964272d6948c586feb9bcaa4dcefe540</hash>
+         <hash>2f4f5220043c623afe569433b1da936bd946041e0055ddbe44047061ee3afe11</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\NN\Source\FullyConnectedFunctions\arm_fully_connected_s8.c</file>
@@ -2973,7 +3028,7 @@
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\startup_xc32.c</file>
-         <hash>3ed5235787594ffd39867cdcb4de1f7bf5857395a81340e214e4a15542579cb4</hash>
+         <hash>f86f4f1efcae9bae434cc2b87a9e6255e57f0596e0790477deaac31ebd764a3f</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAME70Q21B_DFP\component\gpbr.h</file>
@@ -3156,12 +3211,12 @@
          <hash>be31c5f8ec2ec48d25c6cb7ceec9f95c3f01b3f1617b44ff42163425e5a52d75</hash>
       </entry>
       <entry>
-         <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_armclang_ltm.h</file>
-         <hash>8621969ea669a1b230ff2125a760ef66d575c48cb45e9e457f768909abcbda46</hash>
-      </entry>
-      <entry>
          <file>..\src\config\sam_e70_xultra\peripheral\efc\plib_efc.c</file>
          <hash>8be9112c3f429a87758ecf528bab200101a0843c1ee428400ed2b8c51dcbadb0</hash>
+      </entry>
+      <entry>
+         <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_armclang_ltm.h</file>
+         <hash>8621969ea669a1b230ff2125a760ef66d575c48cb45e9e457f768909abcbda46</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAME70Q21B_DFP\instance\rswdt.h</file>
@@ -3469,7 +3524,7 @@
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\peripheral\pio\plib_pio.h</file>
-         <hash>6b8ba72f6c87986d0b6d0d1b647d1f782994159cffad9ac5e8230be031619671</hash>
+         <hash>fc938756569d70ed2dd081518e6e1772bd67100809356288943f81764df65e18</hash>
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\peripheral\wdt\plib_wdt.c</file>
@@ -3505,7 +3560,7 @@
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\peripheral\pio\plib_pio.c</file>
-         <hash>f85899b0caae48f230f4eb5a62f4ce67c286edfc0fcc3484c64243e076cb1f83</hash>
+         <hash>b765bb714dfee5e1df890177b06b5d7922d6db443d5a302715eff777c15b2715</hash>
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\peripheral\wdt\plib_wdt.h</file>
@@ -3533,7 +3588,7 @@
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\initialization.c</file>
-         <hash>f7005e501a2faf4f1d218f51367d738113ad3a2537adcfcdd9e5b1c1fced5951</hash>
+         <hash>2a91b3b8b0395445f2c9f26ecbb86ec9b722f16d088b82d36e2b5bca0a514e7f</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAME70Q21B_DFP\instance\wdt.h</file>
@@ -3760,12 +3815,12 @@
          <hash>aaf0fe578f406f36b745fcd4b2697021b0a4a7d304ad74bad114a368140a0f25</hash>
       </entry>
       <entry>
-         <file>..\src\packs\CMSIS\CMSIS\DSP\Include\dsp\svm_defines.h</file>
-         <hash>8d264f69ee0d5cbf301da0a0638896f8943fe6932eb529698948e03296e57a38</hash>
-      </entry>
-      <entry>
          <file>..\src\config\sam_e70_xultra\peripheral\rtt\plib_rtt.c</file>
          <hash>75976a0a8242a4de870686305e60ed66c83468e4e12dd9c571dcac0644ae48ae</hash>
+      </entry>
+      <entry>
+         <file>..\src\packs\CMSIS\CMSIS\DSP\Include\dsp\svm_defines.h</file>
+         <hash>8d264f69ee0d5cbf301da0a0638896f8943fe6932eb529698948e03296e57a38</hash>
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\osal\osal_impl_basic.h</file>
@@ -3784,12 +3839,12 @@
          <hash>ba17bdfad5249e18bbaa264c3e10e797890af91a0872fb5be131abc5989a53b7</hash>
       </entry>
       <entry>
-         <file>..\src\packs\CMSIS\CMSIS\NN\Source\SoftmaxFunctions\arm_softmax_q7.c</file>
-         <hash>f3394924fc0f03815bf23db8cfa66aad8545f9bbc025c2159fa6bbdbdd2ffea8</hash>
-      </entry>
-      <entry>
          <file>..\src\config\sam_e70_xultra\peripheral\rtt\plib_rtt.h</file>
          <hash>6f1ded5b6e40ecf834f10c3db63840358b0a3b70b0c420a0327e39b4d8f4f26b</hash>
+      </entry>
+      <entry>
+         <file>..\src\packs\CMSIS\CMSIS\NN\Source\SoftmaxFunctions\arm_softmax_q7.c</file>
+         <hash>f3394924fc0f03815bf23db8cfa66aad8545f9bbc025c2159fa6bbdbdd2ffea8</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAME70Q21B_DFP\instance\supc.h</file>
@@ -3913,7 +3968,7 @@
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\classb\classb_sram_algorithm.c</file>
-         <hash>ddc720b6c9ff4555629e486df30bdbf264cabf0ed253df3c6b2e64adc211bdf7</hash>
+         <hash>191a7adad3888956c3751666e5f8dc0ffa1aca85238677a3f30eb9e5fe81b477</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAME70Q21B_DFP\component\rswdt.h</file>

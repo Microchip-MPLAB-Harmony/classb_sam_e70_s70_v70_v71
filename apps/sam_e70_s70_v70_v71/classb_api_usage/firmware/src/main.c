@@ -35,9 +35,29 @@
 #define APP_FLASH_LIMIT             0x050000
 #define PAGE_SIZE                   512
 
+/* ITCM */
+#define ITCM_RST_SIZE               16384
+#define ITCM_RST_START_ADDRESS      0x00000000
+#define CLASSB_ITCM_MARCH_TEST      CLASSB_SRAM_MARCH_C
+//#define CLASSB_ITCM_MARCH_TEST      CLASSB_SRAM_MARCH_C_MINUS
+//#define CLASSB_ITCM_MARCH_TEST      CLASSB_SRAM_MARCH_B
+  
+/* DTCM */
+#define DTCM_RST_SIZE              16384
+#define DTCM_RST_START_ADDRESS     0x20000000
+#define CLASSB_DTCM_MARCH_TEST      CLASSB_SRAM_MARCH_C
+//#define CLASSB_DTCM_MARCH_TEST      CLASSB_SRAM_MARCH_C_MINUS
+//#define CLASSB_DTCM_MARCH_TEST      CLASSB_SRAM_MARCH_B
 
-/* RAM */
+/* SRAM */
 #define SRAM_RST_SIZE               32768
+#define SRAM_RST_START_ADDRESS      0x20400400
+#define CLASSB_SRAM_MARCH_TEST      CLASSB_SRAM_MARCH_C
+//#define CLASSB_SRAM_MARCH_TEST      CLASSB_SRAM_MARCH_C_MINUS
+//#define CLASSB_SRAM_MARCH_TEST      CLASSB_SRAM_MARCH_B
+
+
+/* Console */
 #define RX_BUFFER_SIZE              256
 #define BUFFER_SIZE                 128
 
@@ -187,8 +207,16 @@ int main ( void )
    
     classb_test_status = CLASSB_TEST_FAILED;
     __disable_irq();
-    classb_test_status = CLASSB_SRAM_MarchTestInit((uint32_t *)0x20400400,
-                SRAM_RST_SIZE, CLASSB_SRAM_MARCH_C, true, CLASSB_MEM_REGION_SRAM);
+    // ITCM
+    classb_test_status = CLASSB_SRAM_MarchTestInit((uint32_t *)ITCM_RST_START_ADDRESS,
+                ITCM_RST_SIZE, CLASSB_ITCM_MARCH_TEST, true, CLASSB_MEM_REGION_ITCM);
+    // DTCM
+    classb_test_status = CLASSB_SRAM_MarchTestInit((uint32_t *)DTCM_RST_START_ADDRESS,
+                DTCM_RST_SIZE, CLASSB_DTCM_MARCH_TEST, true, CLASSB_MEM_REGION_DTCM);
+    // SRAM
+    classb_test_status = CLASSB_SRAM_MarchTestInit((uint32_t *)SRAM_RST_START_ADDRESS,
+                SRAM_RST_SIZE, CLASSB_SRAM_MARCH_TEST, true, CLASSB_MEM_REGION_SRAM);
+    
     __enable_irq();
     
     
@@ -238,12 +266,13 @@ int main ( void )
     //Drive LOW on the pin to be tested.
     LED0_OutputEnable();
     LED0_Clear();
+    CLASSB_IO_InputSamplingEnable(PORTA, PIN5);
     CLASSB_RST_IOTest(PORTA, PIN5, PORT_PIN_LOW);
     classb_test_status = CLASSB_GetTestResult(CLASSB_TEST_TYPE_RST, CLASSB_TEST_IO);
     printf("\r\n Result of PA5 LOW test is %s\r\n", test_status_str[classb_test_status]);
     
     //Drive HIGH on the pin to be tested.
-    LED0_OutputEnable();
+    LED0_OutputEnable();   
     LED0_Set();
     CLASSB_IO_InputSamplingEnable(PORTA, PIN5);
     CLASSB_RST_IOTest(PORTA, PIN5, PORT_PIN_HIGH);

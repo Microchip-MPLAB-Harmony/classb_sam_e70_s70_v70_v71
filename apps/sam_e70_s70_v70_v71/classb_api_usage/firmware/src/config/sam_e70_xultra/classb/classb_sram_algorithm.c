@@ -63,7 +63,7 @@ Input  : Address of the memory location
 Output : Success or failure
 Notes  : This function is used by SRAM tests.
          It checks bit by bit.
-         Opmization level of this function must be -O0.
+         Optimization level of this function must be -O0.
 ============================================================================*/
 bool _CLASSB_ReadZeroWriteOne(uint32_t * ptr)
 {
@@ -95,7 +95,7 @@ Input  : Address of the memory location
 Output : Success or failure
 Notes  : This function is used by SRAM tests.
          It checks bit by bit.
-         Opmization level of this function must be -O0.
+         Optimization level of this function must be -O0.
 ============================================================================*/
 bool _CLASSB_ReadZeroWriteOneWriteZero(uint32_t * ptr)
 {
@@ -130,7 +130,7 @@ Input  : Address of the memory location
 Output : Success or failure
 Notes  : This function is used by SRAM tests.
          It checks bit by bit.
-         Opmization level of this function must be -O0.
+         Optimization level of this function must be -O0.
 ============================================================================*/
 bool _CLASSB_ReadOneWriteZero(uint32_t * ptr) 
 {
@@ -164,7 +164,7 @@ Input  : Address of the memory location
 Output : Success or failure
 Notes  : This function is used by SRAM tests.
          It checks bit by bit.
-         Opmization level of this function must be -O0.
+         Optimization level of this function must be -O0.
 ============================================================================*/
 bool _CLASSB_ReadOneWriteZeroWriteOne(uint32_t * ptr) 
 {
@@ -200,7 +200,7 @@ Input  : Address of the memory location
 Output : Success or failure
 Notes  : This function is used by SRAM tests.
          It checks bit by bit.
-         Opmization level of this function must be -O0.
+         Optimization level of this function must be -O0.
 ============================================================================*/
 bool _CLASSB_WriteOneWriteZero(uint32_t * ptr) 
 {
@@ -228,7 +228,7 @@ Input  : Address of the memory location
 Output : Success or failure
 Notes  : This function is used by SRAM tests.
          It checks bit by bit.
-         Opmization level of this function must be -O0.
+         Optimization level of this function must be -O0.
 ============================================================================*/
 bool _CLASSB_ReadZero(uint32_t * ptr) 
 {
