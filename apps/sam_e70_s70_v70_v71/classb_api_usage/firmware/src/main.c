@@ -225,7 +225,6 @@ int main ( void )
     WDT_Clear();
     // Generate CRC-32 over internal flash address 0 to APP_FLASH_LIMIT
     crc_val[0] = CLASSB_FlashCRCGenerate(0, APP_FLASH_LIMIT);
-    
     WDT_Clear();
     
     // Use NVMCTRL to write the calculated CRC into a Flash location   
@@ -249,10 +248,8 @@ int main ( void )
     crc_val[0] = readCRC();
     
     WDT_Clear();
-
     classb_test_status = CLASSB_FlashCRCTest(0, APP_FLASH_LIMIT,
         *(uint32_t *)crc_val, true);
-    
     WDT_Clear();
     
     printf("\r\n Result of Flash RST is %s\r\n", test_status_str[classb_test_status]);
@@ -263,7 +260,7 @@ int main ( void )
     __enable_irq();
     printf("\r\n Result of CPU Clock RST is %s\r\n", test_status_str[classb_test_status]);
         
-    //Drive LOW on the pin to be tested.
+    //Drive LOW on the pin to be tested
     LED0_OutputEnable();
     LED0_Clear();
     CLASSB_IO_InputSamplingEnable(PORTA, PIN5);

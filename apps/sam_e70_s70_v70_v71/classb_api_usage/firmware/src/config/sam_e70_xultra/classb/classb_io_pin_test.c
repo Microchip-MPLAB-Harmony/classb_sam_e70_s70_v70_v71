@@ -73,8 +73,7 @@ void CLASSB_IO_InputSamplingEnable(CLASSB_PORT_INDEX port, CLASSB_PORT_PIN pin)
 
     // The requirement for reading PIO_PDSR is a delay of at least 2 bus clock
     // cycles.
-    for(i=0;i<100;i++){};
-    
+    for(i=0;i<25;i++){};   
 }
 
 /*============================================================================

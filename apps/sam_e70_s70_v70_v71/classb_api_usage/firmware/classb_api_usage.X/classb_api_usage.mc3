@@ -2904,7 +2904,7 @@
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\classb\classb_io_pin_test.c</file>
-         <hash>7903f55b9d2f9b036b0687041b6439e38ff61f12d85c3426df2f07d14fb69319</hash>
+         <hash>c1d8e8cc6c3c89df4835d50e0ad540e818e76a5c9f1e553b080564c25cf4e280</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\NN\Source\ConvolutionFunctions\arm_depthwise_conv_u8_basic_ver1.c</file>
@@ -2936,7 +2936,7 @@
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\classb\classb.c</file>
-         <hash>2f4f5220043c623afe569433b1da936bd946041e0055ddbe44047061ee3afe11</hash>
+         <hash>f5ea4377c5131fdcc9398f86929376d8bac46da395c11e43888228ee3e8df62c</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\NN\Source\FullyConnectedFunctions\arm_fully_connected_s8.c</file>
@@ -3211,12 +3211,12 @@
          <hash>be31c5f8ec2ec48d25c6cb7ceec9f95c3f01b3f1617b44ff42163425e5a52d75</hash>
       </entry>
       <entry>
-         <file>..\src\config\sam_e70_xultra\peripheral\efc\plib_efc.c</file>
-         <hash>8be9112c3f429a87758ecf528bab200101a0843c1ee428400ed2b8c51dcbadb0</hash>
-      </entry>
-      <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_armclang_ltm.h</file>
          <hash>8621969ea669a1b230ff2125a760ef66d575c48cb45e9e457f768909abcbda46</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\sam_e70_xultra\peripheral\efc\plib_efc.c</file>
+         <hash>8be9112c3f429a87758ecf528bab200101a0843c1ee428400ed2b8c51dcbadb0</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAME70Q21B_DFP\instance\rswdt.h</file>
@@ -3815,12 +3815,12 @@
          <hash>aaf0fe578f406f36b745fcd4b2697021b0a4a7d304ad74bad114a368140a0f25</hash>
       </entry>
       <entry>
-         <file>..\src\config\sam_e70_xultra\peripheral\rtt\plib_rtt.c</file>
-         <hash>75976a0a8242a4de870686305e60ed66c83468e4e12dd9c571dcac0644ae48ae</hash>
-      </entry>
-      <entry>
          <file>..\src\packs\CMSIS\CMSIS\DSP\Include\dsp\svm_defines.h</file>
          <hash>8d264f69ee0d5cbf301da0a0638896f8943fe6932eb529698948e03296e57a38</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\sam_e70_xultra\peripheral\rtt\plib_rtt.c</file>
+         <hash>75976a0a8242a4de870686305e60ed66c83468e4e12dd9c571dcac0644ae48ae</hash>
       </entry>
       <entry>
          <file>..\src\config\sam_e70_xultra\osal\osal_impl_basic.h</file>
@@ -3839,12 +3839,12 @@
          <hash>ba17bdfad5249e18bbaa264c3e10e797890af91a0872fb5be131abc5989a53b7</hash>
       </entry>
       <entry>
-         <file>..\src\config\sam_e70_xultra\peripheral\rtt\plib_rtt.h</file>
-         <hash>6f1ded5b6e40ecf834f10c3db63840358b0a3b70b0c420a0327e39b4d8f4f26b</hash>
-      </entry>
-      <entry>
          <file>..\src\packs\CMSIS\CMSIS\NN\Source\SoftmaxFunctions\arm_softmax_q7.c</file>
          <hash>f3394924fc0f03815bf23db8cfa66aad8545f9bbc025c2159fa6bbdbdd2ffea8</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\sam_e70_xultra\peripheral\rtt\plib_rtt.h</file>
+         <hash>6f1ded5b6e40ecf834f10c3db63840358b0a3b70b0c420a0327e39b4d8f4f26b</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAME70Q21B_DFP\instance\supc.h</file>

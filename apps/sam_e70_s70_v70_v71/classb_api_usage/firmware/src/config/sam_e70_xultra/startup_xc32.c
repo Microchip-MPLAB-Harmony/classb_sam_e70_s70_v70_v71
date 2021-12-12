@@ -230,7 +230,7 @@ void __attribute__((optimize("-O1"), section(".text.Reset_Handler"), long_call, 
     
     /* Reserved for use by MPLAB XC32. */
     __xc32_on_bootstrap();
-
+    
     /* Branch to application's main function */
     int retval = main();
     (void)retval;

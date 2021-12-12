@@ -308,9 +308,7 @@ CLASSB_TEST_STATUS CLASSB_SRAM_MarchTest(   uint32_t * start_addr,
 
     for (i = 0; i < march_c_iterations; i++)
     {
-        // TODO_SMS
-        //Test_Tick_Toggle();
-            
+   
         iteration_start_addr = (uint32_t *)(mem_start_address + (i * classb_test_buff_size));
         // Copy the tested area
         _CLASSB_MemCopy((uint32_t *)classb_buff_start_add,

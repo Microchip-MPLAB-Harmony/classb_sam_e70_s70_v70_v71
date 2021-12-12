@@ -42,6 +42,7 @@
  *     include files
  *----------------------------------------------------------------------------*/
 #include "classb/classb.h"
+#include "definitions.h"
 
 /*----------------------------------------------------------------------------
  *     Constants
@@ -128,33 +129,30 @@ Notes  :
 ============================================================================*/
 static void _CLASSB_MainClockInit(void)
 {
+    /* Disable Main Crystal Oscillator and Enable External Clock Signal on XIN pin  */
+    PMC_REGS->CKGR_MOR = (PMC_REGS->CKGR_MOR & ~CKGR_MOR_MOSCXTEN_Msk) | CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCXTBY_Msk;
 
-//    /* Disable Main Crystal Oscillator and Enable External Clock Signal on XIN pin  */
-//    PMC_REGS->CKGR_MOR = (PMC_REGS->CKGR_MOR & ~CKGR_MOR_MOSCXTEN_Msk) | CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCXTBY_Msk;
-//
-//     /* External clock signal (XIN pin) is selected as the Main Clock (MAINCK) source.
-//        Switch Main Clock (MAINCK) to External signal on XIN pin */
-//    PMC_REGS->CKGR_MOR |= CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCSEL_Msk;
-//
-//    /* Wait until MAINCK is switched to External Clock Signal (XIN pin) */
-//    while ( (PMC_REGS->PMC_SR & PMC_SR_MOSCSELS_Msk) != PMC_SR_MOSCSELS_Msk);
-//
-//
-//    /* Enable the RC Oscillator */
-//    PMC_REGS->CKGR_MOR|= CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCRCEN_Msk;
-//
-//    /* Wait until the RC oscillator clock is ready. */
-//    while( (PMC_REGS->PMC_SR & PMC_SR_MOSCRCS_Msk) != PMC_SR_MOSCRCS_Msk);
-//
-//    /* Configure the RC Oscillator frequency */
-//    PMC_REGS->CKGR_MOR = (PMC_REGS->CKGR_MOR & ~CKGR_MOR_MOSCRCF_Msk) | CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCRCF_12_MHz;
-//
-//    /* Wait until the RC oscillator clock is ready */
-//    while( (PMC_REGS->PMC_SR& PMC_SR_MOSCRCS_Msk) != PMC_SR_MOSCRCS_Msk);
+     /* External clock signal (XIN pin) is selected as the Main Clock (MAINCK) source.
+        Switch Main Clock (MAINCK) to External signal on XIN pin */
+    PMC_REGS->CKGR_MOR |= CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCSEL_Msk;
 
+    /* Wait until MAINCK is switched to External Clock Signal (XIN pin) */
+    while ( (PMC_REGS->PMC_SR & PMC_SR_MOSCSELS_Msk) != PMC_SR_MOSCSELS_Msk);
+
+
+    /* Enable the RC Oscillator */
+    PMC_REGS->CKGR_MOR|= CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCRCEN_Msk;
+
+    /* Wait until the RC oscillator clock is ready. */
+    while( (PMC_REGS->PMC_SR & PMC_SR_MOSCRCS_Msk) != PMC_SR_MOSCRCS_Msk);
+
+    /* Configure the RC Oscillator frequency */
+    PMC_REGS->CKGR_MOR = (PMC_REGS->CKGR_MOR & ~CKGR_MOR_MOSCRCF_Msk) | CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCRCF_12_MHz;
+
+    /* Wait until the RC oscillator clock is ready */
+    while( (PMC_REGS->PMC_SR& PMC_SR_MOSCRCS_Msk) != PMC_SR_MOSCRCS_Msk);
 
 }
-
 
 /*============================================================================
 static void _CLASSB_PLLAInitialize ( void )
@@ -181,28 +179,23 @@ static void _CLASSB_MasterClockInit ( void )
 ------------------------------------------------------------------------------
 Purpose: Sets the Master clock to use the default internal RC (12MHz). Startup
  default is the slow clock.
-Input  : uint32_t pmc_mckr_pres - prescaler value
- *       uint32_t pmc_mckr_mdiv - divider value
- *       uint32_t pmc_mckr_css - master clock source
+Input  : NOne.
 Output : None.
 Notes  : Modify clock setup here for other clock test setups
 ============================================================================*/
-static void _CLASSB_MasterClockInit ( 
-    uint32_t pmc_mckr_pres,
-    uint32_t pmc_mckr_mdiv,
-    uint32_t pmc_mckr_css)
+static void _CLASSB_MasterClockInit ( void )
 {
-    
+
     /* Program PMC_MCKR.PRES and wait for PMC_SR.MCKRDY to be set   */
-    PMC_REGS->PMC_MCKR = (PMC_REGS->PMC_MCKR & ~PMC_MCKR_PRES_Msk) | pmc_mckr_pres;
+    PMC_REGS->PMC_MCKR = (PMC_REGS->PMC_MCKR & ~PMC_MCKR_PRES_Msk) | CLASSB_MASTER_CLOCK_PRESCALE;
     while ((PMC_REGS->PMC_SR & PMC_SR_MCKRDY_Msk) != PMC_SR_MCKRDY_Msk);
 
     /* Program PMC_MCKR.MDIV and Wait for PMC_SR.MCKRDY to be set   */
-    PMC_REGS->PMC_MCKR = (PMC_REGS->PMC_MCKR & ~PMC_MCKR_MDIV_Msk) | pmc_mckr_mdiv;
+    PMC_REGS->PMC_MCKR = (PMC_REGS->PMC_MCKR & ~PMC_MCKR_MDIV_Msk) | CLASSB_MASTER_CLOCK_DIVIDE;
     while ((PMC_REGS->PMC_SR & PMC_SR_MCKRDY_Msk) != PMC_SR_MCKRDY_Msk);
 
     /* Program PMC_MCKR.CSS and Wait for PMC_SR.MCKRDY to be set    */
-    PMC_REGS->PMC_MCKR = (PMC_REGS->PMC_MCKR & ~PMC_MCKR_CSS_Msk) | pmc_mckr_css;
+    PMC_REGS->PMC_MCKR = (PMC_REGS->PMC_MCKR & ~PMC_MCKR_CSS_Msk) | CLASSB_MASTER_CLOCK_SOURCE;
     while ((PMC_REGS->PMC_SR & PMC_SR_MCKRDY_Msk) != PMC_SR_MCKRDY_Msk);
     
     
@@ -309,13 +302,12 @@ static void CLASSB_TestWDT(void)
 {
     /* This persistent flag is checked after reset */
     *wdt_test_in_progress = CLASSB_TEST_STARTED;
-
+        
     // If WDT is not enabled, enable WDT and wait
     if ((WDT_REGS->WDT_MR & WDT_MR_WDRSTEN_Msk) == 0)
     {
         // Configure timeout
-        WDT_REGS->WDT_MR = WDT_MR_WDD (4095) | WDT_MR_WDV(4095) \
-               | WDT_MR_WDRSTEN_Msk;
+        WDT_REGS->WDT_MR = WDT_MR_WDD (4095) | WDT_MR_WDV(4095) | WDT_MR_WDRSTEN_Msk;
         // Infinite loop
         while (1)
         {
@@ -437,14 +429,7 @@ static CLASSB_STARTUP_STATUS CLASSB_Startup_Tests(void)
     CLASSB_STARTUP_STATUS cb_temp_startup_status = CLASSB_STARTUP_TEST_NOT_EXECUTED;
     CLASSB_TEST_STATUS cb_test_status = CLASSB_TEST_NOT_EXECUTED;
     uint16_t clock_test_rtc_cycles = ((5 * CLASSB_CLOCK_TEST_RATIO_NS_MS) / CLASSB_CLOCK_TEST_RTC_RATIO_NS);
-
-
-     /* Enable WDT */
-    if ((WDT_REGS->WDT_MR & WDT_MR_WDRSTEN_Msk) == 0)
-    {
-        WDT_REGS->WDT_MR = WDT_MR_WDD (4095) | WDT_MR_WDV(4095) \
-                   | WDT_MR_WDRSTEN_Msk;
-    }
+    
 
     /* Init Main Clock */
     _CLASSB_MainClockInit();
@@ -453,10 +438,17 @@ static CLASSB_STARTUP_STATUS CLASSB_Startup_Tests(void)
     _CLASSB_PLLAInitialize();
     
     /* Init Master Clock */
-    _CLASSB_MasterClockInit ((uint32_t)CLASSB_MASTER_CLOCK_PRESCALE, 
-                             (uint32_t)CLASSB_MASTER_CLOCK_DIVIDE, 
-                             (uint32_t)CLASSB_MASTER_CLOCK_SOURCE);
-
+    _CLASSB_MasterClockInit ();
+     
+    /* Disable RSWDT  */
+    RSWDT_REGS->RSWDT_MR = RSWDT_MR_WDDIS_Msk;
+    
+    /* Enable WDT */
+    if ((WDT_REGS->WDT_MR & WDT_MR_WDRSTEN_Msk) == 0)
+    {
+        WDT_REGS->WDT_MR = WDT_MR_WDD (4095) | WDT_MR_WDV(4095) \
+                   | WDT_MR_WDRSTEN_Msk;
+    }
     
         *ongoing_sst_id = CLASSB_TEST_CPU;
         // Test processor core registers
@@ -501,9 +493,12 @@ static CLASSB_STARTUP_STATUS CLASSB_Startup_Tests(void)
         }
 
     // SRAM test
+        
+    /* Enable ITCM/DTCM memory */
+    TCM_Enable();
     
     *ongoing_sst_id = CLASSB_TEST_RAM;
-
+           
                 
     // Clear WDT before test
     WDT_REGS->WDT_CR = (WDT_CR_KEY_PASSWD | WDT_CR_WDRSTT_Msk);
@@ -587,9 +582,6 @@ Notes  : This function is called from Reset_Handler.
 void _on_reset(void)
 {
     CLASSB_STARTUP_STATUS startup_tests_status = CLASSB_STARTUP_TEST_FAILED;
-
-    /* Enable ITCM/DTCM memory */
-    TCM_Enable();
 
     CLASSB_INIT_STATUS init_status = CLASSB_Init();
 
