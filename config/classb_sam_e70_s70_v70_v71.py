@@ -48,6 +48,7 @@ def instantiateComponent(classBComponent):
         classB_FLASH_SIZE = classBComponent.createIntegerSymbol("CLASSB_FLASH_SIZE", None)
         classB_FLASH_SIZE.setVisible(False)
         classB_FLASH_SIZE.setDefaultValue(int(classBFlashNode.getAttribute("size"), 16))
+        classB_FLASH_SIZE.setHelp("CLASSB_FlashCRCTest")
         
     classBSRAMNode = ATDF.getNode("/avr-tools-device-file/devices/device/address-spaces/address-space/memory-segment@[name=\"IRAM\"]")
     if classBSRAMNode != None:
@@ -55,32 +56,38 @@ def instantiateComponent(classBComponent):
         classB_SRAM_SIZE = classBComponent.createIntegerSymbol("CLASSB_SRAM_SIZE", None)
         classB_SRAM_SIZE.setVisible(False)
         classB_SRAM_SIZE.setDefaultValue(int(classBSRAMNode.getAttribute("size"), 16))
+        classB_SRAM_SIZE.setHelp("CLASSB_SRAM_MarchTestInit")
         #SRAM address
         classB_SRAM_ADDR = classBComponent.createHexSymbol("CLASSB_SRAM_START_ADDRESS", None)
         classB_SRAM_ADDR.setVisible(False)
         classB_SRAM_ADDR.setDefaultValue(int(classBSRAMNode.getAttribute("start"), 16))
+        classB_SRAM_ADDR.setHelp("CLASSB_SRAM_MarchTestInit")
         #SRAM address MSB 24 bits
         classB_SRAM_START_MSB = classBComponent.createHexSymbol("CLASSB_SRAM_START_MSB", None)
         classB_SRAM_START_MSB.setVisible(False)
         classB_SRAM_START_MSB.setDefaultValue(int(classBSRAMNode.getAttribute("start"), 16) >> 8)
+        classB_SRAM_START_MSB.setHelp("CLASSB_SRAM_MarchTestInit")
     
     # Insert CPU test
     classB_UseCPUTest = classBComponent.createBooleanSymbol("CLASSB_CPU_TEST_OPT", classBMenu)
     classB_UseCPUTest.setLabel("Test CPU Registers?")
     classB_UseCPUTest.setVisible(True)
     classB_UseCPUTest.setDefaultValue(False)
+    classB_UseCPUTest.setHelp("CLASSB_CPU_RegistersTest")
     
     # Enable FPU register test
     classB_FPU_Option = classBComponent.createBooleanSymbol("CLASSB_FPU_OPT", classBMenu)
     classB_FPU_Option.setLabel("Test FPU Registers?")
     classB_FPU_Option.setVisible(True)
     classB_FPU_Option.setDefaultValue(False)
+    classB_FPU_Option.setHelp("CLASSB_CPU_RegistersTest")
     
     # Insert SRAM test
     classB_UseSRAMTest = classBComponent.createBooleanSymbol("CLASSB_SRAM_TEST_OPT", classBMenu)
     classB_UseSRAMTest.setLabel("Test SRAM?")
     classB_UseSRAMTest.setVisible(True)
     classB_UseSRAMTest.setDefaultValue(False)
+    classB_UseSRAMTest.setHelp("CLASSB_CPU_RegistersTest")
     
     # Select March algorithm for SRAM test
     classb_Ram_marchAlgo = classBComponent.createKeyValueSetSymbol("CLASSB_SRAM_MARCH_ALGORITHM", classB_UseSRAMTest)
@@ -95,6 +102,7 @@ def instantiateComponent(classBComponent):
     classb_Ram_marchAlgo.setVisible(False)
     #This should be enabled based on the above configuration
     classb_Ram_marchAlgo.setDependencies(setClassB_SymbolVisibility, ["CLASSB_SRAM_TEST_OPT"])
+    classb_Ram_marchAlgo.setHelp("CLASSB_SRAM_MARCH_ALGO")
 
      # Size of the ITCM area to be tested
     classb_ITCM_marchSize = classBComponent.createIntegerSymbol("CLASSB_ITCM_MARCH_SIZE", classB_UseSRAMTest)
@@ -106,6 +114,7 @@ def instantiateComponent(classBComponent):
     classb_ITCM_marchSize.setDescription("Size of the ITCM area to be tested starting from 0x00000000")
     classb_ITCM_marchSize.setDependencies(setClassB_SymbolVisibility, ["CLASSB_SRAM_TEST_OPT"])
     #classb_ITCM_marchSize.setDependencies(classB_TCM_Update,["CLASSB_TCM_SIZE"])
+    classb_ITCM_marchSize.setHelp("CLASSB_ITCM_STARTUP_TEST_SIZE")
 
     # Size of the DTCM area to be tested
     classb_DTCM_marchSize = classBComponent.createIntegerSymbol("CLASSB_DTCM_MARCH_SIZE", classB_UseSRAMTest)
@@ -117,6 +126,7 @@ def instantiateComponent(classBComponent):
     classb_DTCM_marchSize.setDescription("Size of the DTCM area to be tested starting from 0x20000000")
     classb_DTCM_marchSize.setDependencies(setClassB_SymbolVisibility, ["CLASSB_SRAM_TEST_OPT"])
     #classb_DTCM_marchSize.setDependencies(classB_TCM_Update,["CLASSB_TCM_SIZE"])
+    classb_DTCM_marchSize.setHelp("CLASSB_DTCM_STARTUP_TEST_SIZE")
 
 
     # Size of the SRAM area to be tested
@@ -130,6 +140,7 @@ def instantiateComponent(classBComponent):
     classb_Ram_marchSize.setDescription("Size of the SRAM area to be tested starting from 0x20400400")
     classb_Ram_marchSize.setDependencies(setClassB_SymbolVisibility, ["CLASSB_SRAM_TEST_OPT"])
     #classb_Ram_marchSize.setDependencies(classB_TCM_Update,["CLASSB_TCM_SIZE"])
+    classb_Ram_marchSize.setHelp("CLASSB_SRAM_STARTUP_TEST_SIZE")
     
     
     # CRC-32 checksum availability
@@ -138,6 +149,7 @@ def instantiateComponent(classBComponent):
     classB_FlashCRC_Option.setVisible(True)
     classB_FlashCRC_Option.setDefaultValue(False)
     classB_FlashCRC_Option.setDescription("Enable this option if the CRC-32 checksum of the application image is stored at a specific address in the Flash")
+    classB_FlashCRC_Option.setHelp("CLASSB_FlashCRCTest")
     
     # Address at which CRC-32 of the application image is stored
     classB_CRC_address = classBComponent.createHexSymbol("CLASSB_FLASHCRC_ADDR", classB_FlashCRC_Option)
@@ -148,11 +160,13 @@ def instantiateComponent(classBComponent):
     classB_CRC_address.setVisible(False)
     #This should be enabled based on the above configuration
     classB_CRC_address.setDependencies(setClassB_SymbolVisibility, ["CLASSB_FLASH_CRC_CONF"])
+    classB_CRC_address.setHelp("CLASSB_FlashCRCTest")
     
     # Insert Clock test
     classB_UseClockTest = classBComponent.createBooleanSymbol("CLASSB_CLOCK_TEST_OPT", classBMenu)
     classB_UseClockTest.setLabel("Test CPU Clock?")
     classB_UseClockTest.setVisible(True)
+    classB_UseClockTest.setHelp("CLASSB_ClockTest")
     
     # Acceptable CPU clock frequency error at startup
     classb_ClockTestPercentage = classBComponent.createKeyValueSetSymbol("CLASSB_CLOCK_TEST_PERCENT", classB_UseClockTest)
@@ -166,6 +180,7 @@ def instantiateComponent(classBComponent):
     classb_ClockTestPercentage.setDefaultValue(0)
     classb_ClockTestPercentage.setVisible(False)
     classb_ClockTestPercentage.setDependencies(setClassB_SymbolVisibility, ["CLASSB_CLOCK_TEST_OPT"])
+    classb_ClockTestPercentage.setHelp("CLASSB_ClockTest")
     
     # Clock test duration
     classb_ClockTestDuration = classBComponent.createIntegerSymbol("CLASSB_CLOCK_TEST_DURATION", classB_UseClockTest)
@@ -175,6 +190,7 @@ def instantiateComponent(classBComponent):
     classb_ClockTestDuration.setMin(5)
     classb_ClockTestDuration.setMax(20)
     classb_ClockTestDuration.setDependencies(setClassB_SymbolVisibility, ["CLASSB_CLOCK_TEST_OPT"])
+    classb_ClockTestDuration.setHelp("CLASSB_ClockTest")
     
     # Insert Interrupt test
     classB_UseInterTest = classBComponent.createBooleanSymbol("CLASSB_INTERRUPT_TEST_OPT", classBMenu)
@@ -182,10 +198,12 @@ def instantiateComponent(classBComponent):
     classB_UseInterTest.setVisible(True)
     classB_UseInterTest.setDefaultValue(False)
     classB_UseInterTest.setDescription("This self-test check interrupts operation with the help of NVIC, RTC and TC0")
+    classB_UseInterTest.setHelp("CLASSB_SST_InterruptTest")
 
     # TCM Settings
     classB_TCMSettings = classBComponent.createMenuSymbol("CLASSB_TCM_MENU", None)
     classB_TCMSettings.setLabel("DTCM/ITCM Settings")
+    classB_TCMSettings.setHelp("CLASSB_SRAM_MarchTestInit")
 
     classB_TCM_size = classBComponent.createKeyValueSetSymbol("CLASSB_TCM_SIZE", classB_TCMSettings)
     classB_TCM_size.setLabel("TCM Size - set to match config bits")
@@ -196,10 +214,12 @@ def instantiateComponent(classBComponent):
     classB_TCM_size.addKey("64KB", "2", "DTCM: 64 KB, ITCM: 64KB")
     classB_TCM_size.addKey("128KB", "3", "DTCM: 128 KB,  ITCM: 128KB")
     classB_TCM_size.setSelectedKey("0KB", 1)
+    classB_TCM_size.setHelp("CLASSB_SRAM_MarchTestInit")
     tcm_size = (0)
 
-    classB_TCM_Comment = classBComponent.createCommentSymbol("classBTCMComment", classB_TCMSettings)
+    classB_TCM_Comment = classBComponent.createCommentSymbol("CLASSB_TCM_COMMENT", classB_TCMSettings)
     classB_TCM_Comment.setLabel("*** This must match the TCM Size config bit setting")
+    classB_TCM_Comment.setHelp("CLASSB_SRAM_MarchTestInit")
 
     # TCM Settings Update Event
     def classB_TCM_Update(comment, event):
@@ -271,6 +291,7 @@ def instantiateComponent(classBComponent):
     # Read-only
     classBReadOnlyParams = classBComponent.createMenuSymbol("CLASSB_ADDR_MENU", None)
     classBReadOnlyParams.setLabel("Build parameters (read-only) used by the library")
+    classBReadOnlyParams.setHelp("CLASSB_ADDR_MENU")
     
     # Read-only symbol for start of non-reserved ITCM
     classb_AppITCM_start = classBComponent.createHexSymbol("CLASSB_ITCM_APP_START", classBReadOnlyParams)
@@ -280,6 +301,7 @@ def instantiateComponent(classBComponent):
     classb_AppITCM_start.setMin(0x00000000)
     classb_AppITCM_start.setMax(0x00000000)
     classb_AppITCM_start.setDescription("Start address of ITCM")
+    classb_AppITCM_start.setHelp("CLASSB_ITCM_APP_AREA_START")
     
     #ITCM last word address
     classB_ITCM_lastWordAddr = classBComponent.createHexSymbol("CLASSB_ITCM_LASTWORD_ADDR", classBReadOnlyParams)
@@ -291,6 +313,7 @@ def instantiateComponent(classBComponent):
     itcm_top = hex(classB_ITCM_lastWordAddr.getValue() + 4)
     classB_ITCM_lastWordAddr.setDescription("The ITCM memory address range is 0x00000000 to " + str(itcm_top))
     classB_ITCM_lastWordAddr.setDependencies(classB_TCM_Update,["CLASSB_TCM_SIZE"])
+    classB_ITCM_lastWordAddr.setHelp("CLASSB_ITCM_FINAL_WORD_ADDRESS")
 
     # Read-only symbol for start of non-reserved DTCM
     classb_AppDTCM_start = classBComponent.createHexSymbol("CLASSB_DTCM_APP_START", classBReadOnlyParams)
@@ -300,6 +323,7 @@ def instantiateComponent(classBComponent):
     classb_AppDTCM_start.setMin(0x20000000)
     classb_AppDTCM_start.setMax(0x20000000)
     classb_AppDTCM_start.setDescription("Start address of DTCM")
+    classb_AppDTCM_start.setHelp("CLASSB_DTCM_APP_AREA_START")
     
     #DTCM last word address
     classB_DTCM_lastWordAddr = classBComponent.createHexSymbol("CLASSB_DTCM_LASTWORD_ADDR", classBReadOnlyParams)
@@ -311,6 +335,7 @@ def instantiateComponent(classBComponent):
     dtcm_top = hex(classB_DTCM_lastWordAddr.getValue() + 4)
     classB_DTCM_lastWordAddr.setDescription("The DTCM memory address range is 0x20000000 to " + str(dtcm_top))
     classB_DTCM_lastWordAddr.setDependencies(classB_TCM_Update,["CLASSB_TCM_SIZE"])
+    classB_DTCM_lastWordAddr.setHelp("CLASSB_DTCM_FINAL_WORD_ADDRESS")
 
 
     # Read-only symbol for start of non-reserved SRAM
@@ -321,6 +346,7 @@ def instantiateComponent(classBComponent):
     classb_AppRam_start.setMin(0x20400400)
     classb_AppRam_start.setMax(0x20400400)
     classb_AppRam_start.setDescription("Initial 1kB of SRAM is used by the Class B library")
+    classb_AppRam_start.setHelp("CLASSB_SRAM_APP_AREA_START")
     
     #SRAM last word address
     classB_SRAM_lastWordAddr = classBComponent.createHexSymbol("CLASSB_SRAM_LASTWORD_ADDR", classBReadOnlyParams)
@@ -332,6 +358,7 @@ def instantiateComponent(classBComponent):
     sram_top = hex(classB_SRAM_lastWordAddr.getValue() + 4)
     classB_SRAM_lastWordAddr.setDescription("The SRAM memory address range is 0x20400000 to " + str(sram_top))
     classB_SRAM_lastWordAddr.setDependencies(classB_TCM_Update,["CLASSB_TCM_SIZE"])
+    classB_SRAM_lastWordAddr.setHelp("CLASSB_SRAM_FINAL_WORD_ADDRESS")
     
     # Read-only symbol for CRC-32 polynomial
     classb_FlashCRCPoly = classBComponent.createHexSymbol("CLASSB_FLASH_CRC32_POLY", classBReadOnlyParams)
@@ -341,6 +368,7 @@ def instantiateComponent(classBComponent):
     classb_FlashCRCPoly.setMin(0xEDB88320)
     classb_FlashCRCPoly.setMax(0xEDB88320)
     classb_FlashCRCPoly.setDescription("The CRC-32 polynomial used for Flash self-test is " + str(hex(classb_FlashCRCPoly.getValue())))
+    classb_FlashCRCPoly.setHelp("CLASSB_FLASH_CRC32_POLYNOMIAL")
     
     # Read-only symbol for max SysTick count
     classb_SysTickMaxCount = classBComponent.createHexSymbol("CLASSB_SYSTICK_MAXCOUNT", classBReadOnlyParams)
@@ -350,6 +378,7 @@ def instantiateComponent(classBComponent):
     classb_SysTickMaxCount.setMin(0xFFFFFF)
     classb_SysTickMaxCount.setMax(0xFFFFFF)
     classb_SysTickMaxCount.setDescription("The SysTick is a 24-bit counter with max count value " + str(hex(classb_SysTickMaxCount.getValue())))
+    classb_SysTickMaxCount.setHelp("CLASSB_CLOCK_MAX_SYSTICK_VAL")
     
     # Read-only symbol for max CPU clock frequency
     classb_CPU_MaxClock = classBComponent.createIntegerSymbol("CLASSB_CPU_MAX_CLOCK", classBReadOnlyParams)
@@ -359,7 +388,8 @@ def instantiateComponent(classBComponent):
     classb_CPU_MaxClock.setMin(300000000)
     classb_CPU_MaxClock.setMax(300000000)
     classb_CPU_MaxClock.setDescription("The self-test for CPU clock frequency assumes that the maximum CPU clock frequency is " + str(classb_CPU_MaxClock.getValue()) + "Hz")
-    
+    classb_CPU_MaxClock.setHelp("CLASSB_ClockTest")
+
     # Read-only symbol for expected RTC clock frequency
     classb_RTC_Clock = classBComponent.createIntegerSymbol("CLASSB_RTC_EXPECTED_CLOCK", classBReadOnlyParams)
     classb_RTC_Clock.setLabel("Expected RTC clock frequency")
@@ -368,6 +398,7 @@ def instantiateComponent(classBComponent):
     classb_RTC_Clock.setMin(32768)
     classb_RTC_Clock.setMax(32768)
     classb_RTC_Clock.setDescription("The self-test for CPU clock frequency expects the RTC clock frequency to be " + str(classb_RTC_Clock.getValue()) + "Hz")
+    classb_RTC_Clock.setHelp("CLASSB_CLOCK_RTC_CLK_FREQ")
     
     # Read-only symbol for maximum configurable accuracy for CPU clock self-test
     classb_MaxAccuracy = classBComponent.createIntegerSymbol("CLASSB_CPU_CLOCK_TEST_ACCUR", classBReadOnlyParams)
@@ -377,6 +408,7 @@ def instantiateComponent(classBComponent):
     classb_MaxAccuracy.setMin(5)
     classb_MaxAccuracy.setMax(5)
     classb_MaxAccuracy.setDescription("Error percentage selected for CPU clock frequency test must be " + str(classb_MaxAccuracy.getValue()) + "% or higher")
+    classb_MaxAccuracy.setHelp("CLASSB_ClockTest")
     
         
 ############################################################################
@@ -568,7 +600,8 @@ def instantiateComponent(classBComponent):
     classB_xc32ld_reserve_sram.setKey("appendMe")
     classB_xc32ld_reserve_sram.setValue("-DRAM_ORIGIN=0x20400400"+",-DRAM_LENGTH=" + hex(classB_SRAM_SIZE.getValue() - 1024))
 
-    classB_xc32ld_reserve_sram_comment = classBComponent.createCommentSymbol("classB_XC32_LD_Comment", classBReadOnlyParams)
+    classB_xc32ld_reserve_sram_comment = classBComponent.createCommentSymbol("CLASSB_XC32_LD_COMMENT", classBReadOnlyParams)
     classB_xc32ld_reserve_sram_comment.setLabel("LD Option: " + classB_xc32ld_reserve_sram.getValue())
+    classB_xc32ld_reserve_sram_comment.setHelp("Harmony_ClassB_Library_for_SAM_E70_S70_V70_V71")
 
    

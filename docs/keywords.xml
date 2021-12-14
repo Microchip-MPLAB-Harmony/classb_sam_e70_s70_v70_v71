@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<keywords publicationid="GUID-BE9FBDF4-5E64-4C2E-AC51-0D83255C3137"
+          language="en-US"
+          version="1"
+          documenttitle="MPLAB® Harmony Class B Library for SAM E70/S70/V70/V71 devices"
+          pubtype="Online Reference"
+          pubsubtype=""
+          pubuserguidesubtype=""
+          pubproductheirarchy=""
+          devices=""
+          revisiondate="14/12/2021 00:00:00"
+          revisionletter="A"
+          isbn=""
+          pubid=""
+          reachid=""
+          description=""
+          lastmodified="15/12/2021 03:26:54"
+          covertitle="MPLAB® Harmony Class B Library for SAM E70/S70/V70/V71 devices">
+   <keyworditem topicid="GUID-85C09776-46F4-43A4-9FA5-26997226A3EA" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>MPLAB® Harmony Class B Library for SAM E70 S70 V70 V71 devices</register>
+      <title>MPLAB® Harmony Class B Library for SAM E70 S70 V70 V71 devices</title>
+      <bitfield/>
+      <keyword>Harmony_ClassB_Library_for_SAM_E70_S70_V70_V71</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-A1B756A6-4DE2-4F45-9B90-26331CAA883D" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_App_WDT_Recovery</register>
+      <title>CLASSB_App_WDT_Recovery</title>
+      <bitfield/>
+      <keyword>CLASSB_App_WDT_Recovery</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-9CE5DABF-42B9-45D5-BCDC-B9B38835FB90" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_ClearTestResults</register>
+      <title>CLASSB_ClearTestResults</title>
+      <bitfield/>
+      <keyword>CLASSB_ClearTestResults</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-30678899-D8EA-485A-8FC0-FF39676E009B" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_CLOCK_DEFAULT_CLOCK_FREQ</register>
+      <title>CLASSB_CLOCK_DEFAULT_CLOCK_FREQ</title>
+      <bitfield/>
+      <keyword>CLASSB_CLOCK_DEFAULT_CLOCK_FREQ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-FCA4B9BE-2E4E-4D4A-A41A-E126DE67BA51" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_CLOCK_ERROR_PERCENT</register>
+      <title>CLASSB_CLOCK_ERROR_PERCENT</title>
+      <bitfield/>
+      <keyword>CLASSB_CLOCK_ERROR_PERCENT</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-836959F5-3B38-485F-807B-783B742890AA" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_CLOCK_MAX_CLOCK_FREQ</register>
+      <title>CLASSB_CLOCK_MAX_CLOCK_FREQ</title>
+      <bitfield/>
+      <keyword>CLASSB_CLOCK_MAX_CLOCK_FREQ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-1EC58123-4B6C-4F61-AC81-5DE7FC2EFFAD" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_CLOCK_MAX_SYSTICK_VAL</register>
+      <title>CLASSB_CLOCK_MAX_SYSTICK_VAL</title>
+      <bitfield/>
+      <keyword>CLASSB_CLOCK_MAX_SYSTICK_VAL</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-EBEFEB1B-5B1D-4024-9065-9794094CEC38" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_CLOCK_MAX_TEST_ACCURACY</register>
+      <title>CLASSB_CLOCK_MAX_TEST_ACCURACY</title>
+      <bitfield/>
+      <keyword>CLASSB_CLOCK_MAX_TEST_ACCURACY</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-A1234126-DB1F-4D0A-9EE9-F8D6935C7095" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_CLOCK_MUL_FACTOR</register>
+      <title>CLASSB_CLOCK_MUL_FACTOR</title>
+      <bitfield/>
+      <keyword>CLASSB_CLOCK_MUL_FACTOR</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-3D4A0B34-BA2A-45FD-A5D4-BA50577FF657" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_CLOCK_RTC_CLK_FREQ</register>
+      <title>CLASSB_CLOCK_RTC_CLK_FREQ</title>
+      <bitfield/>
+      <keyword>CLASSB_CLOCK_RTC_CLK_FREQ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-FB4C391D-D80A-451B-8701-D4FA720E76BF" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_CLOCK_TEST_RATIO_NS_MS</register>
+      <title>CLASSB_CLOCK_TEST_RATIO_NS_MS</title>
+      <bitfield/>
+      <keyword>CLASSB_CLOCK_TEST_RATIO_NS_MS</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-B71AB403-A2F2-45AB-8D31-7BA426FDE6FD" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_CLOCK_TEST_RTC_CYCLES</register>
+      <title>CLASSB_CLOCK_TEST_RTC_CYCLES</title>
+      <bitfield/>
+      <keyword>CLASSB_CLOCK_TEST_RTC_CYCLES</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-AB757290-79E9-4B94-BE6E-B4C8368E113A" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_CLOCK_TEST_RTC_RATIO_NS</register>
+      <title>CLASSB_CLOCK_TEST_RTC_RATIO_NS</title>
+      <bitfield/>
+      <keyword>CLASSB_CLOCK_TEST_RTC_RATIO_NS</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-7341B826-37B0-4B20-97F9-8D1874007B44" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_ClockTest</register>
+      <title>CLASSB_ClockTest</title>
+      <bitfield/>
+      <keyword>CLASSB_ClockTest</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-67B7A395-9FA1-4226-9FB8-B55DEFF444D6" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_COMPL_RESULT_ADDR</register>
+      <title>CLASSB_COMPL_RESULT_ADDR</title>
+      <bitfield/>
+      <keyword>CLASSB_COMPL_RESULT_ADDR</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-6B9DE9CC-FF19-4566-9E32-12BAA1A06EAE" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_CPU_PC_TEST_VALUES</register>
+      <title>CLASSB_CPU_PC_TEST_VALUES</title>
+      <bitfield/>
+      <keyword>CLASSB_CPU_PC_TEST_VALUES</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-7FAF1433-8EA5-4116-BEC9-1CA399EB17CB" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_CPU_PCTest</register>
+      <title>CLASSB_CPU_PCTest</title>
+      <bitfield/>
+      <keyword>CLASSB_CPU_PCTest</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-4B5C2FC7-A0C1-49D0-89BC-DEA35C0E5CBD" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_CPU_RegistersTest</register>
+      <title>CLASSB_CPU_RegistersTest</title>
+      <bitfield/>
+      <keyword>CLASSB_CPU_RegistersTest</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-50051D1C-DE89-4AA8-B171-9A6487946AFE" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_DTCM_APP_AREA_START</register>
+      <title>CLASSB_DTCM_APP_AREA_START</title>
+      <bitfield/>
+      <keyword>CLASSB_DTCM_APP_AREA_START</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-AC760342-6904-4063-BCAE-1F96747EAF98" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_DTCM_FINAL_WORD_ADDRESS</register>
+      <title>CLASSB_DTCM_FINAL_WORD_ADDRESS</title>
+      <bitfield/>
+      <keyword>CLASSB_DTCM_FINAL_WORD_ADDRESS</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-A577E4ED-7150-43BB-BDC9-F0904CC88CB9" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_DTCM_STARTUP_TEST_SIZE</register>
+      <title>CLASSB_DTCM_STARTUP_TEST_SIZE</title>
+      <bitfield/>
+      <keyword>CLASSB_DTCM_STARTUP_TEST_SIZE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-CD3F8BD6-A6E2-4615-94B6-A5E53C4C5A2F" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_FLASH_CRC32_POLYNOMIAL</register>
+      <title>CLASSB_FLASH_CRC32_POLYNOMIAL</title>
+      <bitfield/>
+      <keyword>CLASSB_FLASH_CRC32_POLYNOMIAL</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-A83E37BC-A346-4606-BF82-D081A6A6A803" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_FlashCRCGenerate</register>
+      <title>CLASSB_FlashCRCGenerate</title>
+      <bitfield/>
+      <keyword>CLASSB_FlashCRCGenerate</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-56F1AC64-0883-4762-8FB9-AD3B02298B7D" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_FlashCRCTest</register>
+      <title>CLASSB_FlashCRCTest</title>
+      <bitfield/>
+      <keyword>CLASSB_FlashCRCTest</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-E9DE2934-438A-4E95-8D76-8368AE9110FC" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_GetTestResult</register>
+      <title>CLASSB_GetTestResult</title>
+      <bitfield/>
+      <keyword>CLASSB_GetTestResult</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-8588C903-037F-43D1-B354-EC5CA3C78E9F" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_GlobalsInit</register>
+      <title>CLASSB_GlobalsInit</title>
+      <bitfield/>
+      <keyword>CLASSB_GlobalsInit</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-B3B60259-6A62-4197-8B57-8CCC5467289E" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_Init</register>
+      <title>CLASSB_Init</title>
+      <bitfield/>
+      <keyword>CLASSB_Init</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-D8178641-68D3-42B2-9FEC-3269BF0CA107" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_INIT_STATUS</register>
+      <title>CLASSB_INIT_STATUS</title>
+      <bitfield/>
+      <keyword>CLASSB_INIT_STATUS</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-A5DD508B-A7B3-4F54-BB5C-B760A7FB3442" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_INTERRUPT_COUNT_VAR_ADDR</register>
+      <title>CLASSB_INTERRUPT_COUNT_VAR_ADDR</title>
+      <bitfield/>
+      <keyword>CLASSB_INTERRUPT_COUNT_VAR_ADDR</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-5DA80DB3-4F96-42D1-8B3F-00856638BBB2" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_INTERRUPT_TEST_VAR_ADDR</register>
+      <title>CLASSB_INTERRUPT_TEST_VAR_ADDR</title>
+      <bitfield/>
+      <keyword>CLASSB_INTERRUPT_TEST_VAR_ADDR</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-706268F2-CADC-4BAB-9FD2-F4714DFF0E30" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_INTR_DEVICE_VECT_OFFSET</register>
+      <title>CLASSB_INTR_DEVICE_VECT_OFFSET</title>
+      <bitfield/>
+      <keyword>CLASSB_INTR_DEVICE_VECT_OFFSET</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-61D21311-7862-4052-ADBE-8273DB7228CB" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_INTR_MAX_INT_COUNT</register>
+      <title>CLASSB_INTR_MAX_INT_COUNT</title>
+      <bitfield/>
+      <keyword>CLASSB_INTR_MAX_INT_COUNT</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-ADD6E25F-FE36-488D-A36C-EBF0F24B3236" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_INTR_TEST_RTC_COUNT</register>
+      <title>CLASSB_INTR_TEST_RTC_COUNT</title>
+      <bitfield/>
+      <keyword>CLASSB_INTR_TEST_RTC_COUNT</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-33F7065E-59A8-449E-9C2A-0BC64418B38B" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_INTR_TEST_TC_COUNT</register>
+      <title>CLASSB_INTR_TEST_TC_COUNT</title>
+      <bitfield/>
+      <keyword>CLASSB_INTR_TEST_TC_COUNT</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-E10A7030-D116-45F0-A49E-8649496A7B3C" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_INTR_VECTOR_TABLE_SIZE</register>
+      <title>CLASSB_INTR_VECTOR_TABLE_SIZE</title>
+      <bitfield/>
+      <keyword>CLASSB_INTR_VECTOR_TABLE_SIZE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-905BD8D9-BC1D-43C8-8959-F0DE6730B530" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_INVALID_TEST_ID</register>
+      <title>CLASSB_INVALID_TEST_ID</title>
+      <bitfield/>
+      <keyword>CLASSB_INVALID_TEST_ID</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-A2A9C2A3-75BE-4C02-AEE5-B18775D603EC" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_IO_InputSamplingEnable</register>
+      <title>CLASSB_IO_InputSamplingEnable</title>
+      <bitfield/>
+      <keyword>CLASSB_IO_InputSamplingEnable</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-BD3B7071-E1E8-428B-AAF6-42CDD00531E7" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_ITCM_APP_AREA_START</register>
+      <title>CLASSB_ITCM_APP_AREA_START</title>
+      <bitfield/>
+      <keyword>CLASSB_ITCM_APP_AREA_START</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-C96F6E8A-272C-4E55-83AB-D49198FCFD57" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_ITCM_FINAL_WORD_ADDRESS</register>
+      <title>CLASSB_ITCM_FINAL_WORD_ADDRESS</title>
+      <bitfield/>
+      <keyword>CLASSB_ITCM_FINAL_WORD_ADDRESS</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-A34A9617-D6EA-4EB1-8250-3607AB1D4D0D" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_ITCM_STARTUP_TEST_SIZE</register>
+      <title>CLASSB_ITCM_STARTUP_TEST_SIZE</title>
+      <bitfield/>
+      <keyword>CLASSB_ITCM_STARTUP_TEST_SIZE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-E03C41F9-CCB3-4351-9FBA-FE835C170010" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_MEM_REGION</register>
+      <title>CLASSB_MEM_REGION</title>
+      <bitfield/>
+      <keyword>CLASSB_MEM_REGION</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-42E93773-90D4-4146-A7BD-3E36D57BB9AC" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_ONGOING_TEST_VAR_ADDR</register>
+      <title>CLASSB_ONGOING_TEST_VAR_ADDR</title>
+      <bitfield/>
+      <keyword>CLASSB_ONGOING_TEST_VAR_ADDR</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-9BACD070-3A49-4B29-B805-753EB36B45F3" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_PORT_INDEX</register>
+      <title>CLASSB_PORT_INDEX</title>
+      <bitfield/>
+      <keyword>CLASSB_PORT_INDEX</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-CBFD921E-2E63-46F6-8E7D-17926A9EE92F" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_PORT_PIN</register>
+      <title>CLASSB_PORT_PIN</title>
+      <bitfield/>
+      <keyword>CLASSB_PORT_PIN</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-DC0D9491-A928-4A46-92C4-D0428412FFE0" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_PORT_PIN_STATE</register>
+      <title>CLASSB_PORT_PIN_STATE</title>
+      <bitfield/>
+      <keyword>CLASSB_PORT_PIN_STATE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-3BFAB09B-3FB8-4096-A8C7-52208D4FE669" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_RESULT_ADDR</register>
+      <title>CLASSB_RESULT_ADDR</title>
+      <bitfield/>
+      <keyword>CLASSB_RESULT_ADDR</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-8FBB5816-C44D-4010-A97F-5ED7FBA8B4F8" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_RST_IOTest</register>
+      <title>CLASSB_RST_IOTest</title>
+      <bitfield/>
+      <keyword>CLASSB_RST_IOTest</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-0A3C3F9B-2758-48C8-98C4-8F707A4A4FA0" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_RST_RESULT_BF</register>
+      <title>CLASSB_RST_RESULT_BF</title>
+      <bitfield/>
+      <keyword>CLASSB_RST_RESULT_BF</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-07C67220-A77F-4255-B1F7-AE53D4736CEF" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_SelfTest_FailSafe</register>
+      <title>CLASSB_SelfTest_FailSafe</title>
+      <bitfield/>
+      <keyword>CLASSB_SelfTest_FailSafe</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-63F3143F-9D4D-45A0-9E50-8C4F54E3A1CB" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_SRAM_ALL_32BITS_HIGH</register>
+      <title>CLASSB_SRAM_ALL_32BITS_HIGH</title>
+      <bitfield/>
+      <keyword>CLASSB_SRAM_ALL_32BITS_HIGH</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-E9B5707E-C043-4842-A9B3-4AC81105D6C1" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_SRAM_APP_AREA_START</register>
+      <title>CLASSB_SRAM_APP_AREA_START</title>
+      <bitfield/>
+      <keyword>CLASSB_SRAM_APP_AREA_START</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-059EE26E-6971-4E8D-9054-3C7CE6A6257C" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_SRAM_BUFF_START_ADDRESS</register>
+      <title>CLASSB_SRAM_BUFF_START_ADDRESS</title>
+      <bitfield/>
+      <keyword>CLASSB_SRAM_BUFF_START_ADDRESS</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-0596FE42-7858-48C4-ADCB-E0361BF1DBE0" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_SRAM_FINAL_WORD_ADDRESS</register>
+      <title>CLASSB_SRAM_FINAL_WORD_ADDRESS</title>
+      <bitfield/>
+      <keyword>CLASSB_SRAM_FINAL_WORD_ADDRESS</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-92614495-99C6-4E57-9715-A343D3F7D961" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_SRAM_MARCH_ALGO</register>
+      <title>CLASSB_SRAM_MARCH_ALGO</title>
+      <bitfield/>
+      <keyword>CLASSB_SRAM_MARCH_ALGO</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-14EB38E8-AD4B-4A3C-A2D4-297EF780A71A" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_SRAM_MarchTestInit</register>
+      <title>CLASSB_SRAM_MarchTestInit</title>
+      <bitfield/>
+      <keyword>CLASSB_SRAM_MarchTestInit</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-617FF25F-3192-40BC-8C27-B5A3CF863114" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_SRAM_STARTUP_TEST_SIZE</register>
+      <title>CLASSB_SRAM_STARTUP_TEST_SIZE</title>
+      <bitfield/>
+      <keyword>CLASSB_SRAM_STARTUP_TEST_SIZE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-221B5186-10CB-493C-8653-30105BDEDE53" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_SRAM_TEMP_STACK_ADDRESS</register>
+      <title>CLASSB_SRAM_TEMP_STACK_ADDRESS</title>
+      <bitfield/>
+      <keyword>CLASSB_SRAM_TEMP_STACK_ADDRESS</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-9A879EBA-3E73-4580-B960-413F7DCE3FDC" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_SRAM_TEST_BUFFER_SIZE</register>
+      <title>CLASSB_SRAM_TEST_BUFFER_SIZE</title>
+      <bitfield/>
+      <keyword>CLASSB_SRAM_TEST_BUFFER_SIZE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-60CCA062-E390-4E89-ABDF-7DC119C16E93" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_SST_InterruptTest</register>
+      <title>CLASSB_SST_InterruptTest</title>
+      <bitfield/>
+      <keyword>CLASSB_SST_InterruptTest</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-5554DD7C-8186-4D9D-A6A9-A7C5FB39D0D7" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_SST_RESULT_BF</register>
+      <title>CLASSB_SST_RESULT_BF</title>
+      <bitfield/>
+      <keyword>CLASSB_SST_RESULT_BF</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-609689B1-0232-465E-A9CC-DF393D82CAFC" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_SST_WDT_Recovery</register>
+      <title>CLASSB_SST_WDT_Recovery</title>
+      <bitfield/>
+      <keyword>CLASSB_SST_WDT_Recovery</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-3544164F-356A-4947-B45E-44967EAE3471" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_STARTUP_STATUS</register>
+      <title>CLASSB_STARTUP_STATUS</title>
+      <bitfield/>
+      <keyword>CLASSB_STARTUP_STATUS</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-82D74717-004F-426B-92B3-C8991E5EB075" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_Startup_Tests</register>
+      <title>CLASSB_Startup_Tests</title>
+      <bitfield/>
+      <keyword>CLASSB_Startup_Tests</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-06A5F6D9-9D40-4794-8044-1B98385B92B9" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_TEST_ID</register>
+      <title>CLASSB_TEST_ID</title>
+      <bitfield/>
+      <keyword>CLASSB_TEST_ID</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-0E75295D-92A0-44E0-8175-347109722C3A" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_TEST_IN_PROG_VAR_ADDR</register>
+      <title>CLASSB_TEST_IN_PROG_VAR_ADDR</title>
+      <bitfield/>
+      <keyword>CLASSB_TEST_IN_PROG_VAR_ADDR</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-F2302AEB-CC77-461C-8EC1-684F4658C1F0" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_TEST_STATE</register>
+      <title>CLASSB_TEST_STATE</title>
+      <bitfield/>
+      <keyword>CLASSB_TEST_STATE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-DFC41D99-EEC8-497E-82BF-83A75CB9E6F7" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_TEST_STATUS</register>
+      <title>CLASSB_TEST_STATUS</title>
+      <bitfield/>
+      <keyword>CLASSB_TEST_STATUS</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-12B5D5A5-5B4B-4844-97FC-1889846CF842" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_TEST_TYPE</register>
+      <title>CLASSB_TEST_TYPE</title>
+      <bitfield/>
+      <keyword>CLASSB_TEST_TYPE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-9CA22CBE-1FFC-47AE-8BDA-957354E6CA45" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_TestWDT</register>
+      <title>CLASSB_TestWDT</title>
+      <bitfield/>
+      <keyword>CLASSB_TestWDT</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-82C948E1-D59B-47FA-8EC9-3BE5D016E536" nocomponent="true">
+      <device/>
+      <module/>
+      <component/>
+      <register>CLASSB_WDT_TEST_IN_PROG_VAR_ADDR</register>
+      <title>CLASSB_WDT_TEST_IN_PROG_VAR_ADDR</title>
+      <bitfield/>
+      <keyword>CLASSB_WDT_TEST_IN_PROG_VAR_ADDR</keyword>
+   </keyworditem>
+</keywords>
