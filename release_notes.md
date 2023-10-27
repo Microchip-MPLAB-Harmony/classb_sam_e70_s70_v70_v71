@@ -3,6 +3,10 @@
 
 # Microchip MPLAB® Harmony 3 Release Notes
 
+## Class B Release v1.0.1
+
+Patch release to address wrong or missing metadata.
+
 ## Class B Release v1.0.0
 
 ### New features

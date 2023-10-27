@@ -1,0 +1,12 @@
+package:
+  format-version: "1.0.0"
+  name: "bsp"
+  type: "api"
+  status: "production"
+  required: true
+  version: "1.0.1"
+
+  dependencies:
+    - name: "csp"
+      type: "package"
+      version: "v3.0.0"
